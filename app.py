@@ -13,8 +13,18 @@ app = Flask(__name__)
 # Application Configuration
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'arecanut-dl-mini-project-secret-2026')
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Vercel and serverless functions only have write permissions in /tmp
+if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+    UPLOAD_FOLDER = '/tmp/uploads'
+else:
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
+
+try:
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+except Exception as e:
+    print(f"[WARN] Could not create uploads folder: {e}")
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 Megabytes limit
 
@@ -23,7 +33,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Initialize SQLite Database
+# Initialize SQLite Database safely
 database.init_db()
 
 # --- WEB PAGE ROUTES ---
@@ -56,6 +66,11 @@ def history_page():
 def about_page():
     """Renders About page with methodology, team and guide."""
     return render_template('about.html', active_page='about')
+
+# Custom route to serve dynamically uploaded files (especially on /tmp for Vercel)
+@app.route('/static/uploads/<path:filename>')
+def custom_static_uploads(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # --- API ENDPOINTS ---
 
