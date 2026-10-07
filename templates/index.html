@@ -37,9 +37,9 @@
             <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
             <span data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ ಹಚ್ಚಿ">Detect Disease</span>
           </a>
-          <a href="{{ url_for('mobile_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-semibold text-base px-6 py-3.5 rounded-2xl border border-emerald-300 dark:border-emerald-800 transition-all">
-            <i class="fa-brands fa-android text-emerald-600 text-lg"></i>
-            <span data-en="Mobile App (Offline)" data-kn="ಮೊಬೈಲ್ ಆಪ್ (ಆಫ್‌ಲೈನ್)">Mobile App (Offline)</span>
+          <a href="{{ url_for('mobile_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold text-base px-6 py-3.5 rounded-2xl border border-emerald-300 dark:border-emerald-800 transition-all shadow-sm">
+            <i class="fa-solid fa-download text-emerald-600 text-lg"></i>
+            <span data-en="Download Android App" data-kn="ಆಂಡ್ರಾಯ್ಡ್ ಆಪ್ ಡೌನ್‌ಲೋಡ್">Download Android App</span>
           </a>
           <a href="{{ url_for('diseases_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-base px-6 py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm transition-all">
             <i class="fa-solid fa-book-medical text-emerald-600"></i>
@@ -289,117 +289,106 @@
   </div>
 </section>
 
-<!-- MULTI-PLATFORM ECOSYSTEM SECTION -->
+<!-- USER DOWNLOAD MOBILE APP SECTION -->
 <section class="py-16 sm:py-24 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
     
-    <div class="text-center max-w-3xl mx-auto space-y-3">
-      <div class="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800">
-        <i class="fa-solid fa-layer-group"></i>
-        <span data-en="Multi-Platform AI Suite" data-kn="ಬಹು-ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ AI ಸೂಟ್">Multi-Platform AI Suite</span>
-      </div>
-      <h2 class="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white" data-en="Complete Arecanut AI Ecosystem" data-kn="ಸಮಗ್ರ ArecaAI ತಂತ್ರಜ್ಞಾನ ವ್ಯವಸ್ಥೆ">
-        Complete Arecanut AI Ecosystem
-      </h2>
-      <p class="text-base text-zinc-600 dark:text-zinc-400" data-en="Designed for practical agricultural field deployment across web, mobile devices, and automated cloud training pipelines." data-kn="ವೆಬ್ ಪೋರ್ಟಲ್, ಮೊಬೈಲ್ ಆಪ್ ಮತ್ತು ಕ್ಲೌಡ್ ತರಬೇತಿ ಪೈಪ್‌ಲೈನ್ ಮೂಲಕ ಕೃಷಿ ಕ್ಷೇತ್ರಕ್ಕೆ ಸಂಪೂರ್ಣ ಪರಿಹಾರ.">
-        Designed for practical agricultural field deployment across web, mobile devices, and automated cloud training pipelines.
-      </p>
-    </div>
+    <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-8 sm:p-14 text-white shadow-2xl relative overflow-hidden">
+      <!-- Background Decorative Blur -->
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
-      <!-- Card 1: Flutter Android Mobile App -->
-      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border-2 border-emerald-500/30 hover:border-emerald-500 transition-all shadow-md hover:shadow-xl space-y-5 flex flex-col justify-between">
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-2xl">
-              <i class="fa-brands fa-android"></i>
-            </div>
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
-              Offline TFLite
-            </span>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+        
+        <!-- Left: App Description & Download CTAs -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          <div class="inline-flex items-center space-x-2 bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-bold px-3.5 py-1.5 rounded-full">
+            <i class="fa-brands fa-android text-base text-emerald-300"></i>
+            <span data-en="Android Mobile Application • Free Download" data-kn="ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್ ಆಪ್ • ಉಚಿತ ಡೌನ್‌ಲೋಡ್">Android Mobile Application • Free Download</span>
           </div>
-          <h3 class="text-xl font-bold text-zinc-900 dark:text-white" data-en="Flutter Android Mobile App" data-kn="ಫ್ಲಟರ್ ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್ ಆಪ್">
-            Flutter Android Mobile App
-          </h3>
-          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Engineered for offline inference in remote plantations using TensorFlow Lite (model.tflite, 224x224x3). Features 7 screens, camera/gallery picker, history logging, and bilingual Kannada UI." data-kn="ದೂರದ ತೋಟಗಳಲ್ಲಿ ನೆಟ್‌ವರ್ಕ್ ಇಲ್ಲದಿದ್ದರೂ ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಮೊಬೈಲ್ ಆಪ್. 7 ಸ್ಕ್ರೀನ್‌ಗಳು, ಕ್ಯಾಮೆರಾ ಸ್ಕ್ಯಾನರ್ ಹಾಗೂ ಕನ್ನಡ ಇಂಟರ್ಫೇಸ್ ಒಳಗೊಂಡಿದೆ.">
-            Engineered for offline inference in remote plantations using TensorFlow Lite (model.tflite, 224x224x3). Features 7 screens, camera/gallery picker, history logging, and bilingual Kannada UI.
-          </p>
-          <ul class="space-y-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> 100% offline edge classification</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Low confidence alert (&lt;60%)</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Material 3 green theme</li>
-          </ul>
-        </div>
-        <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-          <a href="{{ url_for('mobile_page') }}" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-all shadow">
-            <span data-en="Explore Mobile App" data-kn="ಮೊಬೈಲ್ ಆಪ್ ವಿವರ">Explore Mobile App</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
-        </div>
-      </div>
 
-      <!-- Card 2: Google Colab Kaggle Pipeline -->
-      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border-2 border-amber-500/30 hover:border-amber-500 transition-all shadow-md hover:shadow-xl space-y-5 flex flex-col justify-between">
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-600 dark:text-amber-400 text-2xl">
-              <i class="fa-solid fa-book-open"></i>
-            </div>
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-700">
-              Google Colab
-            </span>
-          </div>
-          <h3 class="text-xl font-bold text-zinc-900 dark:text-white" data-en="Colab Kaggle Data Pipeline" data-kn="ಕೊಲ್ಯಾಬ್ ಕಾಗಲ್ ಡೇಟಾ ಪೈಪ್‌ಲೈನ್">
-            Colab Kaggle Data Pipeline
-          </h3>
-          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Automated 9-cell end-to-end training notebook: Kaggle API authentication, automated dataset unzipping, folder flattening, corrupt image filtration, 70/15/15 stratified split, and tf.keras prefetching." data-kn="ಕಾಗಲ್ API ನಿಂದ ಡೇಟಾಸೆಟ್ ಡೌನ್‌ಲೋಡ್, ಚಿತ್ರಗಳ ಶುದ್ಧೀಕರಣ, 70/15/15 ವಿಭಾಗ ಹಾಗೂ ಟ್ರಾನ್ಸ್‌ಫರ್ ಲರ್ನಿಂಗ್ ತರಬೇತಿಯ 9 ಹಂತಗಳ ಗೂಗಲ್ ಕೊಲ್ಯಾಬ್ ಕೋಡ್.">
-            Automated 9-cell end-to-end training notebook: Kaggle API authentication, automated dataset unzipping, folder flattening, corrupt image filtration, 70/15/15 stratified split, and tf.keras prefetching.
-          </p>
-          <ul class="space-y-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500"></i> Automated Kaggle API download</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500"></i> Stratified 70/15/15 train/val/test split</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-500"></i> 3x3 sample visualization grid</li>
-          </ul>
-        </div>
-        <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-          <a href="https://colab.research.google.com/github/Vinaysamaldar/Areca/blob/main/arecanut_kaggle_dataset_prep.ipynb" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center space-x-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-all shadow">
-            <span>Open in Google Colab</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-          </a>
-        </div>
-      </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+            <span data-en="ArecaAI Mobile App for Farmers" data-kn="ರೈತರಿಗಾಗಿ ArecaAI ಮೊಬೈಲ್ ಆಪ್">ArecaAI Mobile App for Farmers</span>
+          </h2>
 
-      <!-- Card 3: Open-Source GitHub Repository -->
-      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border-2 border-zinc-300 dark:border-zinc-700 hover:border-zinc-500 transition-all shadow-md hover:shadow-xl space-y-5 flex flex-col justify-between">
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200 text-2xl">
-              <i class="fa-brands fa-github"></i>
-            </div>
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
-              Open Source
-            </span>
-          </div>
-          <h3 class="text-xl font-bold text-zinc-900 dark:text-white" data-en="GitHub Repository & Code" data-kn="ಗಿಟ್‌ಹಬ್ ಕೋಡ್ ರೆಪೊಸಿಟರಿ">
-            GitHub Repository & Code
-          </h3>
-          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Complete, clean version-controlled repository containing the Flask web backend, Flutter mobile app, database schemas, disease pathology JSON, and deployment configurations." data-kn="ಫ್ಲಾಸ್ಕ್ ವೆಬ್ ಅಪ್ಲಿಕೇಶನ್, ಫ್ಲಟರ್ ಮೊಬೈಲ್ ಆಪ್, ಡೇಟಾಬೇಸ್ ಮತ್ತು ರೋಗಗಳ ಸಂಪೂರ್ಣ ಕೋಡ್ ಒಳಗೊಂಡ ಅಧಿಕೃತ ಗಿಟ್‌ಹಬ್ ರೆಪೊಸಿಟರಿ.">
-            Complete, clean version-controlled repository containing the Flask web backend, Flutter mobile app, database schemas, disease pathology JSON, and deployment configurations.
+          <p class="text-emerald-100 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0" data-en="Diagnose arecanut diseases directly in your plantation — 100% offline with zero internet needed. Snap photos using your phone camera and get immediate organic and chemical remedy recommendations in English and Kannada." data-kn="ತೋಟದಲ್ಲೇ ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದಿದ್ದರೂ 100% ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಅಡಿಕೆ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಿ. ಮೊಬೈಲ್ ಕ್ಯಾಮೆರಾದಿಂದ ಫೋಟೋ ತೆಗೆದು ತಕ್ಷಣವೇ ಸಾವಯವ ಮತ್ತು ರಾಸಾಯನಿಕ ಚಿಕಿತ್ಸೆಯ ವಿವರಗಳನ್ನು ಕನ್ನಡ ಹಾಗೂ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಪಡೆಯಿರಿ.">
+            Diagnose arecanut diseases directly in your plantation — 100% offline with zero internet needed. Snap photos using your phone camera and get immediate organic and chemical remedy recommendations in English and Kannada.
           </p>
-          <ul class="space-y-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-zinc-500"></i> Full Flutter & Dart codebase</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-zinc-500"></i> Python Flask & SQLite API</li>
-            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-zinc-500"></i> Vercel serverless deployment</li>
-          </ul>
+
+          <!-- Key Benefit Bullets -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-emerald-100 pt-1">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-circle-check text-emerald-300"></i>
+              <span data-en="Works 100% Offline (No Internet)" data-kn="ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ">Works 100% Offline (No Internet)</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-circle-check text-emerald-300"></i>
+              <span data-en="English & Authentic Kannada" data-kn="ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ವಿವರಣೆ">English & Authentic Kannada</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-circle-check text-emerald-300"></i>
+              <span data-en="Instant Camera & Gallery Scan" data-kn="ಕ್ಯಾಮೆರಾ ಮತ್ತು ಗ್ಯಾಲರಿ ಸ್ಕ್ಯಾನರ್">Instant Camera & Gallery Scan</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-circle-check text-emerald-300"></i>
+              <span data-en="Past Scan Records Saved Locally" data-kn="ಹಿಂದಿನ ವರದಿಗಳ ಸಂಗ್ರಹಣೆ">Past Scan Records Saved Locally</span>
+            </div>
+          </div>
+
+          <!-- Download Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
+            <a href="{{ url_for('download_apk') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-white text-emerald-950 hover:bg-emerald-50 font-extrabold text-base px-8 py-4 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95">
+              <i class="fa-solid fa-download text-lg text-emerald-700"></i>
+              <span data-en="Download Android APK" data-kn="ಆಂಡ್ರಾಯ್ಡ್ ಆಪ್ ಡೌನ್‌ಲೋಡ್ (APK)">Download Android APK</span>
+            </a>
+            <a href="{{ url_for('mobile_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-emerald-800/80 hover:bg-emerald-800 text-white font-semibold text-sm px-6 py-4 rounded-2xl border border-emerald-600/50 transition-all">
+              <i class="fa-solid fa-circle-info text-emerald-300"></i>
+              <span data-en="View App Details & Guide" data-kn="ಆಪ್ ವಿವರ ಮತ್ತು ಬಳಕೆ ಹೇಗೆ?">View App Details & Guide</span>
+            </a>
+          </div>
+
+          <div class="text-[11px] text-emerald-200/80">
+            <span>Version 1.0.0 • Size: ~18 MB • Android 8.0 or newer • Free for farmers</span>
+          </div>
         </div>
-        <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-          <a href="https://github.com/Vinaysamaldar/Areca" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-900 dark:bg-zinc-800 hover:bg-black text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-all shadow">
-            <i class="fa-brands fa-github"></i>
-            <span>View GitHub Repository</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1"></i>
-          </a>
+
+        <!-- Right: Mobile App Visual Card -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl max-w-sm w-full space-y-4 text-center">
+            <div class="w-20 h-20 mx-auto rounded-3xl bg-white text-emerald-700 flex items-center justify-center text-4xl shadow-lg">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-white">ArecaAI Mobile</h3>
+              <p class="text-xs text-emerald-200 mt-0.5">On-Device Plant Disease Diagnosis</p>
+            </div>
+
+            <div class="bg-black/20 rounded-2xl p-4 text-left space-y-2.5 text-xs text-emerald-100 border border-white/10">
+              <div class="flex items-center justify-between font-bold text-white pb-1 border-b border-white/10">
+                <span>Quick Installation:</span>
+                <span class="text-[10px] bg-emerald-500/40 text-emerald-200 px-2 py-0.5 rounded-full">3 Easy Steps</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
+                <span>Click <strong>Download Android APK</strong> button</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
+                <span>Open downloaded file & tap <strong>Install</strong></span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
+                <span>Launch app & scan leaves offline anywhere!</span>
+              </div>
+            </div>
+
+            <a href="{{ url_for('download_apk') }}" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold text-sm py-3 rounded-xl transition-all shadow">
+              <i class="fa-solid fa-cloud-arrow-down"></i>
+              <span>Get Free APK Now</span>
+            </a>
+          </div>
         </div>
+
       </div>
 
     </div>

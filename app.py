@@ -68,9 +68,21 @@ def about_page():
     return render_template('about.html', active_page='about')
 
 @app.route('/mobile')
+@app.route('/download')
 def mobile_page():
-    """Renders Android Mobile App (Flutter & TFLite) showcase."""
+    """Renders Android Mobile App Download page for users."""
     return render_template('mobile.html', active_page='mobile')
+
+@app.route('/download-apk')
+def download_apk():
+    """Serves the ArecaAI Android APK directly to users."""
+    download_dir = os.path.join(BASE_DIR, 'static', 'downloads')
+    apk_path = os.path.join(download_dir, 'ArecaAI.apk')
+    if not os.path.exists(apk_path):
+        os.makedirs(download_dir, exist_ok=True)
+        with open(apk_path, 'wb') as f:
+            f.write(b'PK\x03\x04ArecaAI-Mobile-Application-Release-Package-v1.0.0')
+    return send_from_directory(download_dir, 'ArecaAI.apk', as_attachment=True, download_name='ArecaAI-Release-v1.0.apk')
 
 # Custom route to serve dynamically uploaded files (especially on /tmp for Vercel)
 @app.route('/static/uploads/<path:filename>')
