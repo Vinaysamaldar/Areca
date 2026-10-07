@@ -119,6 +119,92 @@
     </div>
   </div>
 
+  <!-- MOBILE APP & EDGE COMPUTING ARCHITECTURE -->
+  <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 sm:p-10 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+    <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center space-x-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+          <i class="fa-brands fa-android"></i>
+          <span>Edge Computing</span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-zinc-900 dark:text-white mt-1">
+          Flutter Android Mobile Architecture (TFLite)
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+          Standalone Android client powered by on-device quantized TensorFlow Lite for zero-connectivity field diagnosis.
+        </p>
+      </div>
+      <a href="{{ url_for('mobile_page') }}" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow shrink-0">
+        <i class="fa-brands fa-android"></i>
+        <span>Full Mobile App Docs →</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">Offline Inference</span>
+        <p class="text-zinc-500">Executes directly using <code class="font-mono text-emerald-600">tflite_flutter</code> on mobile hardware with zero cellular data required.</p>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">Dual Mode Switching</span>
+        <p class="text-zinc-500">Supports offline TFLite as primary, with automatic fallback to central REST API (<code class="font-mono text-blue-600">POST /predict</code>) when online.</p>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">Quality Guardrails</span>
+        <p class="text-zinc-500">Enforces low-confidence alert under 60% with instant advice for farmers to retake clearer, well-lit photos.</p>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">7 Screen System</span>
+        <p class="text-zinc-500">Splash, Home, Crop/Preview, Diagnostics, SQLite History, Disease Catalog, and Bilingual Settings.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KAGGLE DATASET & GOOGLE COLAB PIPELINE -->
+  <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 sm:p-10 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+    <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center space-x-2 text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+          <i class="fa-solid fa-code"></i>
+          <span>Automated Data Pipeline</span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-zinc-900 dark:text-white mt-1">
+          Kaggle Dataset Curation & Google Colab Pipeline
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+          Reproducible 9-cell data engineering workflow from raw Kaggle API ingestion to stratified training batches.
+        </p>
+      </div>
+      <a href="https://colab.research.google.com/github/Vinaysamaldar/Areca/blob/main/arecanut_kaggle_dataset_prep.ipynb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow shrink-0">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        <span>Launch Google Colab ↗</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">1. Auth & Ingestion</span>
+        <p class="text-zinc-500">Automated authentication via <code class="font-mono text-amber-600">kaggle.json</code>, downloading and unzipping directly into Colab environment.</p>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">2. Cleaning & Stratification</span>
+        <p class="text-zinc-500">Flattens nested directory anomalies, verifies image bitstreams (PIL/OpenCV), removes corrupt duplicates, and creates 70/15/15 stratified splits.</p>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-1.5">
+        <span class="font-bold text-zinc-900 dark:text-white block">3. Prefetched Batches</span>
+        <p class="text-zinc-500">Constructs high-performance <code class="font-mono text-emerald-600">tf.data</code> input pipelines with in-memory caching and background GPU prefetching.</p>
+      </div>
+    </div>
+
+    <div class="pt-2 flex items-center justify-between text-xs text-zinc-500">
+      <span>Notebook file: <code class="font-mono bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded">arecanut_kaggle_dataset_prep.ipynb</code></span>
+      <a href="https://github.com/Vinaysamaldar/Areca" target="_blank" rel="noopener noreferrer" class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1">
+        <i class="fa-brands fa-github"></i>
+        <span>GitHub Repository</span>
+      </a>
+    </div>
+  </div>
+
   <!-- TEAM MEMBERS & PROJECT GUIDE -->
   <div class="space-y-8">
     <div class="text-center">

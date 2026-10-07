@@ -10,6 +10,8 @@ An end-to-end, full-stack AI web application developed as an **Engineering Mini 
 - **Dual Inference Engine**:
   - Automatically loads and runs `model.h5` if TensorFlow and model weights exist.
   - Automatically falls back to an intelligent, lightweight Computer Vision (CV) feature extractor if running in constrained environments (e.g. Render free tier 512MB RAM or Python 3.14+).
+- **Android Mobile App (Flutter & TFLite)**: Complete edge AI mobile app running on-device inference 100% offline with camera & gallery, 7 screens, and Material 3 design.
+- **Google Colab Kaggle Pipeline**: 9-cell end-to-end automated data ingestion, cleaning, 70/15/15 stratified splitting, and `tf.keras` batch loading notebook.
 - **Dual Language UI**: Instant language toggle between English and authentic Kannada (ಕನ್ನಡ) agricultural terminology.
 - **Interactive Scanning**: Drag-and-drop file upload, live webcam video capture with camera switching, and pre-loaded quick-test sample leaves.
 - **Clinical Diagnostic PDF Report**: Generates official agronomic advisory reports with plant photo, confidence metrics, and organic/chemical fungicide schedules.
@@ -35,40 +37,52 @@ An end-to-end, full-stack AI web application developed as an **Engineering Mini 
 
 ```
 arecanut_disease_detection/
-├── app.py                     # Main Flask backend application & routing
-├── database.py                # SQLite database management (predictions.db)
-├── model_helper.py            # ModelManager (loads model.h5 + CV fallback engine)
-├── disease_info.json          # Comprehensive medical/agronomic knowledge base
-├── train_model.py             # MobileNetV2 Transfer Learning training script
-├── generate_model.py          # Quick Keras model generator script
-├── requirements.txt           # Python package dependencies
-├── Procfile                   # Process file for Render / Heroku
-├── render.yaml                # Render Blueprint deployment configuration
-├── Dockerfile                 # Container image for Hugging Face Spaces
-├── README.md                  # Project documentation & deployment guide
+├── app.py                             # Main Flask backend application & routing
+├── database.py                        # SQLite database management (predictions.db)
+├── model_helper.py                    # ModelManager (loads model.h5 + CV fallback engine)
+├── disease_info.json                  # Comprehensive medical/agronomic knowledge base
+├── arecanut_kaggle_dataset_prep.ipynb # Google Colab Kaggle dataset download & prep pipeline
+├── train_model.py                     # MobileNetV2 Transfer Learning training script
+├── generate_model.py                  # Quick Keras model generator script
+├── requirements.txt                   # Python package dependencies
+├── vercel.json                        # Vercel serverless deployment config
+├── api/
+│   └── index.py                       # Vercel serverless WSGI entry point
+├── mobile_app/                        # Complete Flutter Android Mobile Application
+│   ├── pubspec.yaml                   # Flutter dependencies (tflite_flutter, camera, etc.)
+│   ├── convert_to_tflite.py           # Keras H5 to TFLite model converter
+│   ├── android/                       # Android permissions & build settings
+│   │   └── app/src/main/AndroidManifest.xml
+│   ├── assets/
+│   │   ├── models/model.tflite        # 224x224x3 TFLite model bundle
+│   │   ├── models/labels.txt          # Class labels
+│   │   └── images/                    # UI branding assets
+│   └── lib/                           # Complete Dart code
+│       ├── main.dart                  # App bootstrap & Material 3 theme
+│       ├── models/                    # Data models (PredictionResult, DiseaseInfo)
+│       ├── services/                  # TFLite Classifier, REST API & SQLite DB
+│       └── screens/                   # 7 Screens (Splash, Home, Preview, Result, etc.)
+├── Procfile                           # Process file for Render / Heroku
+├── render.yaml                        # Render Blueprint deployment configuration
+├── Dockerfile                         # Container image for Hugging Face Spaces
+├── README.md                          # Project documentation & deployment guide
 ├── static/
 │   ├── css/
-│   │   └── style.css          # Custom styling, dark mode variables & print CSS
+│   │   └── style.css                  # Custom styling, dark mode variables & print CSS
 │   ├── js/
-│   │   ├── main.js            # Theme switching, language toggle & mobile menu
-│   │   ├── detect.js          # File dropzone, webcam capture, API calls & results
-│   │   └── pdf_export.js      # Diagnostic PDF report generation
-│   ├── images/                # Vector SVG illustrations for all 6 diseases
-│   │   ├── logo.svg
-│   │   ├── healthy.svg
-│   │   ├── koleroga.svg
-│   │   ├── yellow_leaf.svg
-│   │   ├── bud_rot.svg
-│   │   ├── stem_bleeding.svg
-│   │   └── leaf_spot.svg
-│   └── uploads/               # Directory for user-uploaded test scans
+│   │   ├── main.js                    # Theme switching, language toggle & mobile menu
+│   │   ├── detect.js                  # File dropzone, webcam capture, API calls & results
+│   │   └── pdf_export.js              # Diagnostic PDF report generation
+│   ├── images/                        # Vector SVG illustrations for all 6 diseases
+│   └── uploads/                       # Directory for user-uploaded test scans
 └── templates/
-    ├── base.html              # Base layout with navbar, footer, language switch
-    ├── index.html             # Home page with project overview & statistics
-    ├── detect.html            # Detection page (Drag-drop, webcam, analysis view)
-    ├── diseases.html          # Disease catalog & treatment encyclopedia
-    ├── history.html           # Prediction logs table with search & deletion
-    └── about.html             # Project objectives, architecture, team & guide
+    ├── base.html                      # Base layout with navbar, footer, language switch
+    ├── index.html                     # Home page with project overview & ecosystem cards
+    ├── detect.html                    # Detection page (Drag-drop, webcam, analysis view)
+    ├── mobile.html                    # Android Mobile App showcase & build guide
+    ├── diseases.html                  # Disease catalog & treatment encyclopedia
+    ├── history.html                   # Prediction logs table with search & deletion
+    └── about.html                     # Project objectives, architecture, team & guide
 ```
 
 ---

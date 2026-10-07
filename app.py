@@ -67,6 +67,11 @@ def about_page():
     """Renders About page with methodology, team and guide."""
     return render_template('about.html', active_page='about')
 
+@app.route('/mobile')
+def mobile_page():
+    """Renders Android Mobile App (Flutter & TFLite) showcase."""
+    return render_template('mobile.html', active_page='mobile')
+
 # Custom route to serve dynamically uploaded files (especially on /tmp for Vercel)
 @app.route('/static/uploads/<path:filename>')
 def custom_static_uploads(filename):

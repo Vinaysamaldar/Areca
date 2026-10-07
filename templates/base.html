@@ -72,6 +72,14 @@
           <a href="{{ url_for('detect_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ">
             Detect Disease
           </a>
+          <a href="{{ url_for('mobile_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1.5 {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}">
+            <span data-en="Mobile App" data-kn="ಮೊಬೈಲ್ ಆಪ್">Mobile App</span>
+            <span class="bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold">Android</span>
+          </a>
+          <a href="https://colab.research.google.com/github/Vinaysamaldar/Areca/blob/main/arecanut_kaggle_dataset_prep.ipynb" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-lg text-sm font-semibold text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400 transition-colors flex items-center space-x-1" title="Open Google Colab Pipeline">
+            <span>Colab</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-amber-500"></i>
+          </a>
           <a href="{{ url_for('diseases_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">
             Disease Info
           </a>
@@ -86,6 +94,11 @@
         <!-- Right Controls: Language & Theme -->
         <div class="flex items-center space-x-2 sm:space-x-3">
           
+          <!-- GitHub Link Button -->
+          <a href="https://github.com/Vinaysamaldar/Areca" target="_blank" rel="noopener noreferrer" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center justify-center text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 transition-colors" title="GitHub Repository">
+            <i class="fa-brands fa-github text-lg"></i>
+          </a>
+
           <!-- Language Toggle (EN / ಕನ್ನಡ) -->
           <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs font-bold">
             <button class="lang-btn-en px-2 py-1 rounded-lg transition-all" title="English">
@@ -120,9 +133,18 @@
       <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-zinc-200 dark:border-zinc-800 space-y-2">
         <a href="{{ url_for('home') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">Home</a>
         <a href="{{ url_for('detect_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ">Detect Disease</a>
+        <a href="{{ url_for('mobile_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}">
+          <span data-en="Mobile App (Android)" data-kn="ಮೊಬೈಲ್ ಆಪ್ (ಆಂಡ್ರಾಯ್ಡ್)">Mobile App (Android)</span>
+        </a>
+        <a href="https://colab.research.google.com/github/Vinaysamaldar/Areca/blob/main/arecanut_kaggle_dataset_prep.ipynb" target="_blank" rel="noopener noreferrer" class="block px-3 py-2 rounded-lg text-base font-semibold text-amber-600 dark:text-amber-400">
+          Google Colab Notebook ↗
+        </a>
         <a href="{{ url_for('diseases_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">Disease Info</a>
         <a href="{{ url_for('history_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">History</a>
         <a href="{{ url_for('about_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">About Project</a>
+        <a href="https://github.com/Vinaysamaldar/Areca" target="_blank" rel="noopener noreferrer" class="block px-3 py-2 rounded-lg text-base font-semibold text-zinc-700 dark:text-zinc-300">
+          <i class="fa-brands fa-github mr-2"></i>GitHub Repository ↗
+        </a>
       </div>
 
     </div>
@@ -134,33 +156,53 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 py-10 transition-colors">
+  <footer class="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 py-12 transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-        <div class="md:col-span-2">
+        
+        <!-- Col 1: Platform & Team Summary -->
+        <div>
           <div class="flex items-center space-x-3 mb-3">
             <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="w-8 h-8">
-            <span class="text-lg font-bold text-emerald-800 dark:text-emerald-400">ArecaAI Diagnostic Platform</span>
+            <span class="text-lg font-bold text-emerald-800 dark:text-emerald-400">ArecaAI Platform</span>
           </div>
-          <p class="text-sm text-zinc-500 dark:text-zinc-400 max-w-md leading-relaxed" data-en="An engineering mini project applying Deep Learning (MobileNetV2 Transfer Learning) for real-time automated diagnosis of Arecanut palm diseases to empower farmers and agricultural officers." data-kn="ಅಡಿಕೆ ಬೆಳೆಗಾರರಿಗೆ ನೆರವಾಗಲು ಡೀಪ್ ಲರ್ನಿಂಗ್ (ಮೊಬೈಲ್ ನೆಟ್ V2) ತಂತ್ರಜ್ಞಾನವನ್ನು ಬಳಸಿ ಅಡಿಕೆ ರೋಗಗಳನ್ನು ತ್ವರಿತವಾಗಿ ಪತ್ತೆಹಚ್ಚುವ ಎಂಜಿನಿಯರಿಂಗ್ ಮಿನಿ ಪ್ರಾಜೆಕ್ಟ್.">
-            An engineering mini project applying Deep Learning (MobileNetV2 Transfer Learning) for real-time automated diagnosis of Arecanut palm diseases to empower farmers and agricultural officers.
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-3" data-en="AI-driven agricultural diagnostic suite for Arecanut palms with Web, Android Mobile (TFLite), and Cloud inference." data-kn="ವೆಬ್ ಮತ್ತು ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್ (TFLite) ಮೂಲಕ ಅಡಿಕೆ ಬೆಳೆ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚುವ ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ ವ್ಯವಸ್ಥೆ.">
+            AI-driven agricultural diagnostic suite for Arecanut palms with Web, Android Mobile (TFLite), and Cloud inference.
           </p>
+          <div class="text-[11px] text-zinc-600 dark:text-zinc-400">
+            <div class="font-bold text-emerald-700 dark:text-emerald-400">Guide: Prof. Vinutha H R</div>
+            <div class="text-zinc-500">Dept. of Computer Science & Engineering</div>
+          </div>
         </div>
 
+        <!-- Col 2: Student Engineering Team -->
         <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3" data-en="Target Classes" data-kn="ರೋಗಗಳ ವಿಭಾಗಗಳು">
-            Target Classes
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3" data-en="Student Team" data-kn="ವಿದ್ಯಾರ್ಥಿ ತಂಡ">
+            Student Team
           </h4>
-          <ul class="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400">
-            <li>• Healthy (ಆರೋಗ್ಯಕರ)</li>
-            <li>• Koleroga / Fruit Rot (ಕೊಳೆರೋಗ)</li>
-            <li>• Yellow Leaf Disease (ಹಳದಿ ಎಲೆ)</li>
-            <li>• Bud Rot (ಸುಳಿ ಕೊಳೆ)</li>
-            <li>• Stem Bleeding (ಕಾಂಡ ಸ್ರಾವ)</li>
-            <li>• Leaf Spot (ಎಲೆ ಚುಕ್ಕೆ)</li>
+          <ul class="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+            <li>• Gurunath P Bankapur</li>
+            <li>• S J Ganesh Gowda</li>
+            <li>• Sadashiv S Hutagi</li>
+            <li>• Vinayaka.V</li>
+          </ul>
+          <p class="text-[11px] text-zinc-400 mt-2">B.E. Final Year Mini Project</p>
+        </div>
+
+        <!-- Col 3: Resources & Apps -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3" data-en="Ecosystem Resources" data-kn="ಸಂಪನ್ಮೂಲಗಳು">
+            Ecosystem Resources
+          </h4>
+          <ul class="space-y-1.5 text-xs">
+            <li><a href="{{ url_for('mobile_page') }}" class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1.5"><i class="fa-brands fa-android"></i> Flutter Android App</a></li>
+            <li><a href="https://colab.research.google.com/github/Vinaysamaldar/Areca/blob/main/arecanut_kaggle_dataset_prep.ipynb" target="_blank" rel="noopener noreferrer" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline flex items-center gap-1.5"><i class="fa-solid fa-code"></i> Google Colab Pipeline ↗</a></li>
+            <li><a href="https://github.com/Vinaysamaldar/Areca" target="_blank" rel="noopener noreferrer" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 flex items-center gap-1.5"><i class="fa-brands fa-github"></i> GitHub Repository ↗</a></li>
+            <li><a href="{{ url_for('diseases_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600">Disease Guide (6 Classes)</a></li>
           </ul>
         </div>
 
+        <!-- Col 4: Quick Links -->
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3" data-en="Quick Links" data-kn="ಉಪಯುಕ್ತ ಕೊಂಡಿಗಳು">
             Quick Links
@@ -176,7 +218,7 @@
 
       <div class="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
         <p>&copy; 2026 Detection of Diseases in Arecanut Plants using Deep Learning. Engineering Mini Project.</p>
-        <p class="mt-2 sm:mt-0 font-medium text-emerald-700 dark:text-emerald-400">Powered by MobileNetV2 • Flask • SQLite</p>
+        <p class="mt-2 sm:mt-0 font-medium text-emerald-700 dark:text-emerald-400">MobileNetV2 • TensorFlow Lite • Flutter • Flask</p>
       </div>
     </div>
   </footer>
