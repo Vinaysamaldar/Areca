@@ -1,0 +1,8 @@
+Flask>=3.0.0
+Pillow>=10.0.0
+numpy>=1.24.0
+werkzeug>=3.0.0
+gunicorn>=21.0.0
+matplotlib>=3.7.0
+# Note: For running train_model.py or direct TensorFlow inference, install tensorflow:
+# tensorflow>=2.15.0 (Recommended Python 3.9 - 3.12)

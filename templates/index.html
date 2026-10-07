@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Detection of Diseases in Arecanut Plants using Deep Learning{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-gradient-to-b from-emerald-50/60 via-zinc-50 to-zinc-50 dark:from-emerald-950/20 dark:via-zinc-950 dark:to-zinc-950 border-b border-emerald-900/10 dark:border-emerald-500/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Copy & CTAs -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-300 dark:border-emerald-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span data-en="Engineering Mini Project • AI Agriculture" data-kn="ಎಂಜಿನಿಯರಿಂಗ್ ಮಿನಿ ಪ್ರಾಜೆಕ್ಟ್ • ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ ಕೃಷಿ">
+            Engineering Mini Project • AI Agriculture
+          </span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
+          <span data-en="Detection of Diseases in" data-kn="ಅಡಿಕೆ ಬೆಳೆಗಳಲ್ಲಿ">Detection of Diseases in</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-green-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 block sm:inline">
+            <span data-en="Arecanut Plants" data-kn="ರೋಗಗಳ ಪತ್ತೆ">Arecanut Plants</span>
+          </span>
+          <span class="block text-2xl sm:text-4xl text-zinc-600 dark:text-zinc-400 font-semibold mt-1" data-en="using Deep Learning" data-kn="ಡೀಪ್ ಲರ್ನಿಂಗ್ ತಂತ್ರಜ್ಞಾನ">
+            using Deep Learning
+          </span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-en="Automated, instant diagnostic system using MobileNetV2 Transfer Learning CNN. Accurately identifies 6 arecanut conditions including Koleroga, Yellow Leaf Disease, Bud Rot, Stem Bleeding, and Leaf Spot with organic and chemical remedies." data-kn="ಮೊಬೈಲ್ ನೆಟ್ V2 ಡೀಪ್ ಲರ್ನಿಂಗ್ ತಂತ್ರಜ್ಞಾನ ಬಳಸಿ ಅಡಿಕೆ ಬೆಳೆಯ ಕೊಳೆರೋಗ, ಹಳದಿ ಎಲೆ ರೋಗ, ಸುಳಿ ಕೊಳೆ, ಕಾಂಡ ಸ್ರಾವ ಹಾಗೂ ಎಲೆ ಚುಕ್ಕೆ ರೋಗಗಳನ್ನು ತಕ್ಷಣವೇ ನಿಖರವಾಗಿ ಪತ್ತೆಹಚ್ಚಿ ಸಾವಯವ ಮತ್ತು ರಾಸಾಯನಿಕ ಪರಿಹಾರಗಳನ್ನು ನೀಡುವ ತಂತ್ರಾಂಶ.">
+          Automated, instant diagnostic system using MobileNetV2 Transfer Learning CNN. Accurately identifies 6 arecanut conditions including Koleroga, Yellow Leaf Disease, Bud Rot, Stem Bleeding, and Leaf Spot with organic and chemical remedies.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+          <a href="{{ url_for('detect_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base px-8 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all hover:scale-[1.02] active:scale-[0.98]">
+            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+            <span data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ ಹಚ್ಚಿ">Detect Disease</span>
+          </a>
+          <a href="{{ url_for('diseases_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-base px-6 py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-sm transition-all">
+            <i class="fa-solid fa-book-medical text-emerald-600"></i>
+            <span data-en="View Disease Guide" data-kn="ರೋಗಗಳ ಕೈಪಿಡಿ ನೋಡಿ">View Disease Guide</span>
+          </a>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+          <span class="flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+            <span>MobileNetV2 CNN</span>
+          </span>
+          <span class="flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+            <span data-en="English & Kannada UI" data-kn="ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ವಿವರಣೆ">English & Kannada UI</span>
+          </span>
+          <span class="flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+            <span data-en="Downloadable PDF Report" data-kn="ಪಿಡಿಎಫ್ ವರದಿ ಡೌನ್‌ಲೋಡ್">Downloadable PDF Report</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Illustration / Visual Card -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="relative w-full max-w-md">
+          <div class="absolute -top-4 -left-4 w-72 h-72 bg-emerald-400/20 dark:bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
+          <div class="absolute -bottom-4 -right-4 w-72 h-72 bg-teal-400/20 dark:bg-teal-500/10 rounded-full blur-3xl -z-10"></div>
+          
+          <div class="bg-white dark:bg-zinc-900 border border-emerald-900/15 dark:border-emerald-500/20 rounded-3xl p-6 shadow-2xl space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
+              <div class="flex items-center space-x-3">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span class="text-xs font-bold uppercase tracking-wider text-zinc-500" data-en="Live Demonstration Preview" data-kn="ಲೈವ್ ಡೆಮೊ ಮುನ್ನೋಟ">Live Demonstration Preview</span>
+              </div>
+              <span class="text-[11px] font-mono bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-md font-semibold">224x224 RGB</span>
+            </div>
+
+            <!-- Preview Card Image -->
+            <div class="h-56 rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
+              <img src="{{ url_for('static', filename='images/koleroga.svg') }}" alt="Koleroga Sample" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Simulation Banner -->
+            <div class="bg-emerald-50 dark:bg-emerald-950/50 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-bold text-emerald-800 dark:text-emerald-300" data-en="Identified Disease:" data-kn="ಪತ್ತೆಯಾದ ರೋಗ:">Identified Disease:</span>
+                <span class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400">97.8% Confidence</span>
+              </div>
+              <div class="text-base font-extrabold text-zinc-900 dark:text-white">
+                Koleroga (Fruit Rot) <span class="text-xs font-semibold text-emerald-600 font-kannada">(ಕೊಳೆರೋಗ)</span>
+              </div>
+              <div class="mt-2.5 w-full bg-zinc-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                <div class="bg-emerald-600 h-full rounded-full" style="width: 97.8%;"></div>
+              </div>
+            </div>
+
+            <a href="{{ url_for('detect_page') }}" class="block text-center text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline">
+              <span data-en="Try Scanning Your Own Image →" data-kn="ನಿಮ್ಮ ಸ್ವಂತ ಚಿತ್ರವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ →">Try Scanning Your Own Image →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHT METRICS -->
+<section class="py-12 bg-white dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/60">
+        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">6</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-zinc-500 mt-1" data-en="Disease Classes" data-kn="ರೋಗ ವಿಭಾಗಗಳು">Disease Classes</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/60">
+        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">95%+</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-zinc-500 mt-1" data-en="Model Accuracy" data-kn="ಮಾದರಿ ನಿಖರತೆ">Model Accuracy</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/60">
+        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">{{ stats.total_scans }}</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-zinc-500 mt-1" data-en="Total Scans Executed" data-kn="ಒಟ್ಟು ಸ್ಕ್ಯಾನ್‌ಗಳು">Total Scans Executed</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/60">
+        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">&lt; 1s</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-zinc-500 mt-1" data-en="Inference Speed" data-kn="ಪತ್ತೆ ವೇಗ">Inference Speed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE CAPABILITIES GRID -->
+<section class="py-16 sm:py-24 bg-zinc-50 dark:bg-zinc-950">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <h2 class="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white" data-en="Engineered for Precision Plant Pathology" data-kn="ನಿಖರ ಸಸ್ಯ ರೋಗಶಾಸ್ತ್ರಕ್ಕಾಗಿ ಅಭಿವೃದ್ಧಿಪಡಿಸಲಾಗಿದೆ">
+        Engineered for Precision Plant Pathology
+      </h2>
+      <p class="text-base text-zinc-600 dark:text-zinc-400" data-en="Everything you need in a modern AI agricultural mini-project: deep learning pipeline, multilingual interface, webcam capture, and SQLite record logging." data-kn="ಆಧುನಿಕ ಕೃಷಿ AI ಮಿನಿ-ಪ್ರಾಜೆಕ್ಟ್‌ನ ಎಲ್ಲಾ ಸೌಲಭ್ಯಗಳು: ಡೀಪ್ ಲರ್ನಿಂಗ್, ದ್ವಿಭಾಷಾ ಬೆಂಬಲ, ಕ್ಯಾಮೆರಾ ಸ್ಕ್ಯಾನರ್ ಹಾಗೂ ಪಿಡಿಎಫ್ ವರದಿ.">
+        Everything you need in a modern AI agricultural mini-project: deep learning pipeline, multilingual interface, webcam capture, and SQLite record logging.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Card 1 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl">
+          <i class="fa-solid fa-network-wired"></i>
+        </div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white" data-en="MobileNetV2 Transfer Learning" data-kn="ಮೊಬೈಲ್ ನೆಟ್ V2 ಟ್ರಾನ್ಸ್‌ಫರ್ ಲರ್ನಿಂಗ್">
+          MobileNetV2 Transfer Learning
+        </h3>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Utilizes depthwise separable convolutions pre-trained on ImageNet. Lightweight, fast inference, optimized for both desktop and mobile devices." data-kn="ಇಮೇಜ್‌ನೆಟ್‌ನಲ್ಲಿ ತರಬೇತಿ ಪಡೆದ ಮೊಬೈಲ್ ನೆಟ್ V2 ಮಾದರಿಯನ್ನು ಬಳಸಿ ತ್ವರಿತವಾಗಿ ಮತ್ತು ನಿಖರವಾಗಿ ರೋಗ ಲಕ್ಷಣಗಳನ್ನು ಗುರುತಿಸಲಾಗುತ್ತದೆ.">
+          Utilizes depthwise separable convolutions pre-trained on ImageNet. Lightweight, fast inference, optimized for both desktop and mobile devices.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950 flex items-center justify-center text-teal-600 dark:text-teal-400 text-xl">
+          <i class="fa-solid fa-language"></i>
+        </div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white" data-en="English & Kannada Support" data-kn="ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ಭಾಷಾ ಬೆಂಬಲ">
+          English & Kannada Support
+        </h3>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Empowers local farmers in Karnataka's Malnad and Coastal belts with authentic Kannada agricultural terminology alongside English technical terms." data-kn="ಕರ್ನಾಟಕದ ಮಲೆನಾಡು ಮತ್ತು ಕರಾವಳಿಯ ರೈತರಿಗೆ ಸುಲಭವಾಗುವಂತೆ ಎಲ್ಲಾ ರೋಗಗಳ ವಿವರ ಮತ್ತು ಪರಿಹಾರಗಳು ಕನ್ನಡದಲ್ಲಿ ಲಭ್ಯವಿದೆ.">
+          Empowers local farmers in Karnataka's Malnad and Coastal belts with authentic Kannada agricultural terminology alongside English technical terms.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-600 dark:text-amber-400 text-xl">
+          <i class="fa-solid fa-file-pdf"></i>
+        </div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white" data-en="Downloadable Clinical Report" data-kn="ಡೌನ್‌ಲೋಡ್ ಮಾಡಬಹುದಾದ ಪಿಡಿಎಫ್ ವರದಿ">
+          Downloadable Clinical Report
+        </h3>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Instantly generate formatted PDF agronomic reports containing diagnosis, confidence metrics, and organic/chemical fungicide schedules." data-kn="ರೋಗದ ಚಿತ್ರ, ನಿಖರತೆಯ ಶೇಕಡಾವಾರು ಹಾಗೂ ಶಿಫಾರಸು ಮಾಡಿದ ಔಷಧಿಗಳ ಸಂಪೂರ್ಣ ಪಿಡಿಎಫ್ ವರದಿಯನ್ನು ತಕ್ಷಣ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿಕೊಳ್ಳಿ.">
+          Instantly generate formatted PDF agronomic reports containing diagnosis, confidence metrics, and organic/chemical fungicide schedules.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DISEASE CLASSIFICATION PREVIEW -->
+<section class="py-16 sm:py-20 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400" data-en="Pathological Classification" data-kn="ರೋಗಗಳ ವರ್ಗೀಕರಣ">
+          Pathological Classification
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white mt-1" data-en="Recognized Arecanut Conditions" data-kn="ಗುರುತಿಸಲಾಗುವ 6 ಪ್ರಮುಖ ರೋಗಗಳು">
+          Recognized Arecanut Conditions
+        </h2>
+      </div>
+      <a href="{{ url_for('diseases_page') }}" class="mt-4 md:mt-0 inline-flex items-center space-x-2 text-sm font-bold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">
+        <span data-en="Explore full advisory catalog →" data-kn="ಸಂಪೂರ್ಣ ಮಾಹಿತಿ ನೋಡಿ →">Explore full advisory catalog →</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- 1. Healthy -->
+      <div class="group bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 transition-all hover:-translate-y-1 hover:shadow-md">
+        <div class="h-44 rounded-xl overflow-hidden mb-4 bg-zinc-100 dark:bg-zinc-900">
+          <img src="{{ url_for('static', filename='images/healthy.svg') }}" alt="Healthy" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+        </div>
+        <div class="flex items-center justify-between mb-1">
+          <h4 class="font-bold text-zinc-900 dark:text-white">Healthy Palm</h4>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300">Normal</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-kannada">ಆರೋಗ್ಯಕರ ಅಡಿಕೆ ಮರ</p>
+      </div>
+
+      <!-- 2. Koleroga -->
+      <div class="group bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 transition-all hover:-translate-y-1 hover:shadow-md">
+        <div class="h-44 rounded-xl overflow-hidden mb-4 bg-zinc-100 dark:bg-zinc-900">
+          <img src="{{ url_for('static', filename='images/koleroga.svg') }}" alt="Koleroga" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+        </div>
+        <div class="flex items-center justify-between mb-1">
+          <h4 class="font-bold text-zinc-900 dark:text-white">Koleroga (Fruit Rot)</h4>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300">Critical</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-kannada">ಕೊಳೆರೋಗ / ಕಾಯಿ ಕೊಳೆ (ಮಹಾಲಿ)</p>
+      </div>
+
+      <!-- 3. Yellow Leaf -->
+      <div class="group bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 transition-all hover:-translate-y-1 hover:shadow-md">
+        <div class="h-44 rounded-xl overflow-hidden mb-4 bg-zinc-100 dark:bg-zinc-900">
+          <img src="{{ url_for('static', filename='images/yellow_leaf.svg') }}" alt="Yellow Leaf" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+        </div>
+        <div class="flex items-center justify-between mb-1">
+          <h4 class="font-bold text-zinc-900 dark:text-white">Yellow Leaf Disease</h4>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">Severe</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-kannada">ಹಳದಿ ಎಲೆ ರೋಗ (ವೈ.ಎಲ್.ಡಿ)</p>
+      </div>
+
+      <!-- 4. Bud Rot -->
+      <div class="group bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 transition-all hover:-translate-y-1 hover:shadow-md">
+        <div class="h-44 rounded-xl overflow-hidden mb-4 bg-zinc-100 dark:bg-zinc-900">
+          <img src="{{ url_for('static', filename='images/bud_rot.svg') }}" alt="Bud Rot" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+        </div>
+        <div class="flex items-center justify-between mb-1">
+          <h4 class="font-bold text-zinc-900 dark:text-white">Bud Rot</h4>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300">Critical</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-kannada">ಸುಳಿ ಕೊಳೆ ರೋಗ</p>
+      </div>
+
+      <!-- 5. Stem Bleeding -->
+      <div class="group bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 transition-all hover:-translate-y-1 hover:shadow-md">
+        <div class="h-44 rounded-xl overflow-hidden mb-4 bg-zinc-100 dark:bg-zinc-900">
+          <img src="{{ url_for('static', filename='images/stem_bleeding.svg') }}" alt="Stem Bleeding" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+        </div>
+        <div class="flex items-center justify-between mb-1">
+          <h4 class="font-bold text-zinc-900 dark:text-white">Stem Bleeding</h4>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300">High</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-kannada">ಕಾಂಡ ಸ್ರಾವ ರೋಗ</p>
+      </div>
+
+      <!-- 6. Leaf Spot -->
+      <div class="group bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 transition-all hover:-translate-y-1 hover:shadow-md">
+        <div class="h-44 rounded-xl overflow-hidden mb-4 bg-zinc-100 dark:bg-zinc-900">
+          <img src="{{ url_for('static', filename='images/leaf_spot.svg') }}" alt="Leaf Spot" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+        </div>
+        <div class="flex items-center justify-between mb-1">
+          <h4 class="font-bold text-zinc-900 dark:text-white">Leaf Spot</h4>
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">Moderate</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-kannada">ಎಲೆ ಚುಕ್ಕೆ ರೋಗ</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CALL TO ACTION BANNER -->
+<section class="py-16 bg-gradient-to-r from-emerald-700 to-green-800 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight" data-en="Ready to Diagnose Arecanut Health?" data-kn="ಅಡಿಕೆ ಮರದ ಆರೋಗ್ಯವನ್ನು ಪರೀಕ್ಷಿಸಲು ಸಿದ್ಧರಿದ್ದೀರಾ?">
+      Ready to Diagnose Arecanut Health?
+    </h2>
+    <p class="text-emerald-100 max-w-2xl mx-auto text-base" data-en="Upload a photo from your field or use your device camera to run the deep learning classifier immediately." data-kn="ನಿಮ್ಮ ತೋಟದ ಫೋಟೋವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಅಥವಾ ಕ್ಯಾಮೆರಾ ಬಳಸಿ ತಕ್ಷಣ ರೋಗ ಪತ್ತೆ ಮಾಡಿ.">
+      Upload a photo from your field or use your device camera to run the deep learning classifier immediately.
+    </p>
+    <a href="{{ url_for('detect_page') }}" class="inline-flex items-center space-x-3 bg-white text-emerald-900 hover:bg-emerald-50 font-bold px-8 py-3.5 rounded-2xl shadow-xl transition-all hover:scale-105">
+      <i class="fa-solid fa-camera"></i>
+      <span data-en="Start Disease Detection Now" data-kn="ಈಗಲೇ ರೋಗ ಪತ್ತೆ ಆರಂಭಿಸಿ">Start Disease Detection Now</span>
+    </a>
+  </div>
+</section>
+{% endblock %}

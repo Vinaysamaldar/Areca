@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Detection of Diseases in Arecanut Plants using Deep Learning{% endblock %}</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- html2pdf.js for client-side diagnostic report download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- NAVIGATION HEADER -->
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-b border-emerald-900/10 dark:border-emerald-500/10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo & Branding -->
+        <a href="{{ url_for('home') }}" class="flex items-center space-x-3 group">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Arecanut AI Logo" class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105">
+          <div>
+            <span class="block text-lg sm:text-xl font-extrabold tracking-tight text-emerald-800 dark:text-emerald-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
+              ArecaAI
+            </span>
+            <span class="block text-[10px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400 leading-none" data-en="Arecanut Disease Detection" data-kn="ಅಡಿಕೆ ರೋಗ ಪತ್ತೆ ಹಚ್ಚುವಿಕೆ">
+              Arecanut Disease Detection
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+          <a href="{{ url_for('home') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
+            Home
+          </a>
+          <a href="{{ url_for('detect_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ">
+            Detect Disease
+          </a>
+          <a href="{{ url_for('diseases_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">
+            Disease Info
+          </a>
+          <a href="{{ url_for('history_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
+            History
+          </a>
+          <a href="{{ url_for('about_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">
+            About Project
+          </a>
+        </nav>
+
+        <!-- Right Controls: Language & Theme -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          
+          <!-- Language Toggle (EN / ಕನ್ನಡ) -->
+          <div class="flex items-center bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs font-bold">
+            <button class="lang-btn-en px-2 py-1 rounded-lg transition-all" title="English">
+              EN
+            </button>
+            <button class="lang-btn-kn px-2 py-1 rounded-lg transition-all" title="ಕನ್ನಡ">
+              ಕನ್ನಡ
+            </button>
+          </div>
+
+          <!-- Dark/Light Theme Toggle -->
+          <button class="theme-toggle-btn w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center justify-center text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 transition-colors" title="Toggle Dark/Light Mode">
+            <i class="fa-solid fa-sun theme-icon-sun hidden text-amber-400"></i>
+            <i class="fa-solid fa-moon theme-icon-moon text-indigo-500"></i>
+          </button>
+
+          <!-- Detect CTA Button (Desktop) -->
+          <a href="{{ url_for('detect_page') }}" class="hidden sm:inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
+            <i class="fa-solid fa-camera"></i>
+            <span data-en="Scan Now" data-kn="ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Scan Now</span>
+          </a>
+
+          <!-- Mobile Hamburger Menu Button -->
+          <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-zinc-200 dark:border-zinc-800 space-y-2">
+        <a href="{{ url_for('home') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">Home</a>
+        <a href="{{ url_for('detect_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ">Detect Disease</a>
+        <a href="{{ url_for('diseases_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">Disease Info</a>
+        <a href="{{ url_for('history_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">History</a>
+        <a href="{{ url_for('about_page') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">About Project</a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN BODY CONTENT -->
+  <main class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 py-10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div class="md:col-span-2">
+          <div class="flex items-center space-x-3 mb-3">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="w-8 h-8">
+            <span class="text-lg font-bold text-emerald-800 dark:text-emerald-400">ArecaAI Diagnostic Platform</span>
+          </div>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 max-w-md leading-relaxed" data-en="An engineering mini project applying Deep Learning (MobileNetV2 Transfer Learning) for real-time automated diagnosis of Arecanut palm diseases to empower farmers and agricultural officers." data-kn="ಅಡಿಕೆ ಬೆಳೆಗಾರರಿಗೆ ನೆರವಾಗಲು ಡೀಪ್ ಲರ್ನಿಂಗ್ (ಮೊಬೈಲ್ ನೆಟ್ V2) ತಂತ್ರಜ್ಞಾನವನ್ನು ಬಳಸಿ ಅಡಿಕೆ ರೋಗಗಳನ್ನು ತ್ವರಿತವಾಗಿ ಪತ್ತೆಹಚ್ಚುವ ಎಂಜಿನಿಯರಿಂಗ್ ಮಿನಿ ಪ್ರಾಜೆಕ್ಟ್.">
+            An engineering mini project applying Deep Learning (MobileNetV2 Transfer Learning) for real-time automated diagnosis of Arecanut palm diseases to empower farmers and agricultural officers.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3" data-en="Target Classes" data-kn="ರೋಗಗಳ ವಿಭಾಗಗಳು">
+            Target Classes
+          </h4>
+          <ul class="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400">
+            <li>• Healthy (ಆರೋಗ್ಯಕರ)</li>
+            <li>• Koleroga / Fruit Rot (ಕೊಳೆರೋಗ)</li>
+            <li>• Yellow Leaf Disease (ಹಳದಿ ಎಲೆ)</li>
+            <li>• Bud Rot (ಸುಳಿ ಕೊಳೆ)</li>
+            <li>• Stem Bleeding (ಕಾಂಡ ಸ್ರಾವ)</li>
+            <li>• Leaf Spot (ಎಲೆ ಚುಕ್ಕೆ)</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-3" data-en="Quick Links" data-kn="ಉಪಯುಕ್ತ ಕೊಂಡಿಗಳು">
+            Quick Links
+          </h4>
+          <ul class="space-y-1.5 text-xs">
+            <li><a href="{{ url_for('detect_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ">Detect Disease</a></li>
+            <li><a href="{{ url_for('diseases_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Treatment Catalog" data-kn="ಚಿಕಿತ್ಸಾ ವಿವರಗಳು">Treatment Catalog</a></li>
+            <li><a href="{{ url_for('history_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Prediction History" data-kn="ಹಿಂದಿನ ವರದಿಗಳು">Prediction History</a></li>
+            <li><a href="{{ url_for('about_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Project Architecture" data-kn="ಯೋಜನಾ ವಿನ್ಯಾಸ">Project Architecture</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+        <p>&copy; 2026 Detection of Diseases in Arecanut Plants using Deep Learning. Engineering Mini Project.</p>
+        <p class="mt-2 sm:mt-0 font-medium text-emerald-700 dark:text-emerald-400">Powered by MobileNetV2 • Flask • SQLite</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main Scripts -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

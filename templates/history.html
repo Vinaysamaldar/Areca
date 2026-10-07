@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction History | Detection of Diseases in Arecanut Plants{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+
+  <!-- PAGE HEADER -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <div class="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800 mb-2">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span data-en="Diagnostic History Log" data-kn="ಹಿಂದಿನ ತಪಾಸಣಾ ಇತಿಹಾಸ">Diagnostic History Log</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-zinc-900 dark:text-white" data-en="Past Scan Records" data-kn="ಹಿಂದಿನ ಸ್ಕ್ಯಾನ್ ದಾಖಲೆಗಳು">
+        Past Scan Records
+      </h1>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1" data-en="Persistent record of all arecanut disease diagnoses recorded in SQLite database." data-kn="SQLite ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾದ ಎಲ್ಲಾ ಹಿಂದಿನ ರೋಗ ಪತ್ತೆ ವರದಿಗಳು.">
+        Persistent record of all arecanut disease diagnoses recorded in SQLite database.
+      </p>
+    </div>
+
+    <!-- Clear History CTA -->
+    {% if predictions %}
+    <button id="clear-all-btn" class="inline-flex items-center space-x-2 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold text-xs px-4 py-2.5 rounded-xl transition-colors">
+      <i class="fa-solid fa-trash-can"></i>
+      <span data-en="Clear All History" data-kn="ಎಲ್ಲಾ ದಾಖಲೆಗಳನ್ನು ಅಳಿಸಿ">Clear All History</span>
+    </button>
+    {% endif %}
+  </div>
+
+  <!-- STATS SUMMARY CARDS -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center space-x-4">
+      <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl">
+        <i class="fa-solid fa-camera"></i>
+      </div>
+      <div>
+        <div class="text-2xl font-black text-zinc-900 dark:text-white">{{ stats.total_scans }}</div>
+        <div class="text-xs text-zinc-500 font-medium" data-en="Total Images Processed" data-kn="ಒಟ್ಟು ಪರಿಶೀಲಿಸಿದ ಚಿತ್ರಗಳು">Total Images Processed</div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center space-x-4">
+      <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div>
+        <div class="text-2xl font-black text-zinc-900 dark:text-white">{{ stats.average_confidence }}%</div>
+        <div class="text-xs text-zinc-500 font-medium" data-en="Average Model Confidence" data-kn="ಸರಾಸರಿ ನಿಖರತೆ">Average Model Confidence</div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center space-x-4">
+      <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-600 dark:text-amber-400 text-xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <div class="text-lg font-black text-zinc-900 dark:text-white truncate max-w-[180px]">
+          {% if stats.disease_counts %}{{ stats.disease_counts[0].disease }}{% else %}None yet{% endif %}
+        </div>
+        <div class="text-xs text-zinc-500 font-medium" data-en="Most Frequent Disease" data-kn="ಹೆಚ್ಚು ಕಂಡುಬಂದ ರೋಗ">Most Frequent Disease</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH & FILTER BAR -->
+  <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="relative w-full sm:w-80">
+      <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-zinc-400 text-sm"></i>
+      <input type="text" id="search-input" placeholder="Search disease or date..." class="w-full pl-10 pr-4 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+    </div>
+    <div class="text-xs text-zinc-500 dark:text-zinc-400">
+      <span data-en="Showing {{ predictions|length }} records" data-kn="{{ predictions|length }} ದಾಖಲೆಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ">Showing {{ predictions|length }} records</span>
+    </div>
+  </div>
+
+  <!-- TABLE CARD -->
+  <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden">
+    {% if predictions %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-sm" id="history-table">
+        <thead>
+          <tr class="bg-zinc-50 dark:bg-zinc-800/60 border-b border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider">
+            <th class="py-4 px-6">Image</th>
+            <th class="py-4 px-6">Identified Disease</th>
+            <th class="py-4 px-6">Confidence</th>
+            <th class="py-4 px-6">Severity</th>
+            <th class="py-4 px-6">Date & Time</th>
+            <th class="py-4 px-6 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+          {% for row in predictions %}
+          <tr class="hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40 transition-colors history-row" data-search="{{ row.disease|lower }} {{ row.disease_kn|lower }} {{ row.created_at|lower }}">
+            
+            <!-- Thumbnail -->
+            <td class="py-4 px-6">
+              <div class="w-14 h-14 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">
+                <img src="{{ row.image_url }}" alt="Scan thumbnail" class="w-full h-full object-cover">
+              </div>
+            </td>
+
+            <!-- Disease -->
+            <td class="py-4 px-6 font-bold text-zinc-900 dark:text-white">
+              <div>{{ row.disease }}</div>
+              {% if row.disease_kn %}
+              <div class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 font-kannada">{{ row.disease_kn }}</div>
+              {% endif %}
+            </td>
+
+            <!-- Confidence -->
+            <td class="py-4 px-6">
+              <div class="flex items-center space-x-2">
+                <span class="font-bold {% if row.confidence >= 80 %}text-emerald-600 dark:text-emerald-400{% elif row.confidence >= 60 %}text-amber-600 dark:text-amber-400{% else %}text-red-600 dark:text-red-400{% endif %}">
+                  {{ row.confidence }}%
+                </span>
+                {% if row.low_confidence %}
+                <span class="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-medium" title="Confidence below 60%">Low</span>
+                {% endif %}
+              </div>
+            </td>
+
+            <!-- Severity -->
+            <td class="py-4 px-6">
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold border 
+                {% if row.severity == 'Critical' %}bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-300
+                {% elif row.severity == 'Severe' %}bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300
+                {% elif row.severity == 'High' %}bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-950 dark:text-orange-300
+                {% elif row.severity == 'Moderate' %}bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-950 dark:text-yellow-300
+                {% else %}bg-green-100 text-green-800 border-green-300 dark:bg-green-950 dark:text-green-300{% endif %}">
+                {{ row.severity }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td class="py-4 px-6 text-xs text-zinc-500 font-mono">
+              {{ row.created_at }}
+            </td>
+
+            <!-- Actions -->
+            <td class="py-4 px-6 text-right">
+              <div class="inline-flex items-center space-x-2">
+                <button onclick="deleteRecord({{ row.id }})" class="p-2 text-zinc-400 hover:text-red-600 transition-colors" title="Delete record">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16 px-4 space-y-4">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 text-2xl">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+      </div>
+      <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-200" data-en="No scan history found yet" data-kn="ಯಾವುದೇ ಇತಿಹಾಸ ದಾಖಲಾಗಿಲ್ಲ">
+        No scan history found yet
+      </h3>
+      <p class="text-xs text-zinc-500 max-w-sm mx-auto" data-en="Predictions you make on the Detect page will automatically be logged here for tracking." data-kn="ರೋಗ ಪತ್ತೆ ಪುಟದಲ್ಲಿ ನೀವು ಮಾಡುವ ತಪಾಸಣೆಗಳು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಇಲ್ಲಿ ದಾಖಲಾಗುತ್ತವೆ.">
+        Predictions you make on the Detect page will automatically be logged here for tracking.
+      </p>
+      <a href="{{ url_for('detect_page') }}" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition-colors">
+        <i class="fa-solid fa-camera"></i>
+        <span data-en="Perform First Scan" data-kn="ಮೊದಲ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Perform First Scan</span>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Filter table by search query
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.history-row').forEach(row => {
+        const text = row.getAttribute('data-search') || '';
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  }
+
+  // Delete individual record
+  async function deleteRecord(id) {
+    if (!confirm("Are you sure you want to delete this prediction record?")) return;
+    try {
+      const res = await fetch(`/api/history/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        window.location.reload();
+      } else {
+        alert("Error deleting record: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      alert("Network error: " + err.message);
+    }
+  }
+
+  // Clear all records
+  const clearAllBtn = document.getElementById('clear-all-btn');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', async () => {
+      if (!confirm("Are you sure you want to delete ALL past diagnosis records? This cannot be undone.")) return;
+      try {
+        const res = await fetch('/api/history/clear', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          window.location.reload();
+        }
+      } catch (err) {
+        alert("Network error: " + err.message);
+      }
+    });
+  }
+</script>
+{% endblock %}

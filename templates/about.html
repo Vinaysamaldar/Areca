@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}About Project | Detection of Diseases in Arecanut Plants{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+
+  <!-- PAGE HEADER -->
+  <div class="text-center max-w-3xl mx-auto space-y-3">
+    <div class="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span data-en="Engineering Mini Project" data-kn="ಎಂಜಿನಿಯರಿಂಗ್ ಮಿನಿ ಪ್ರಾಜೆಕ್ಟ್">Engineering Mini Project</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white" data-en="About the Project & Team" data-kn="ಯೋಜನೆ ಮತ್ತು ತಂಡದ ವಿವರ">
+      About the Project & Team
+    </h1>
+    <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400" data-en="Complete technical overview of dataset curation, deep learning architecture, project objectives, and project contributors." data-kn="ಡೇಟಾಸೆಟ್, ಡೀಪ್ ಲರ್ನಿಂಗ್ ತಂತ್ರಜ್ಞಾನ, ಯೋಜನೆಯ ಉದ್ದೇಶಗಳು ಮತ್ತು ಮಾರ್ಗದರ್ಶಕರ ಸಮಗ್ರ ತಾಂತ್ರಿಕ ವಿವರ.">
+      Complete technical overview of dataset curation, deep learning architecture, project objectives, and project contributors.
+    </p>
+  </div>
+
+  <!-- PROJECT OBJECTIVES & MOTIVATION -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-lg space-y-4">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-xl">
+        <i class="fa-solid fa-bullseye"></i>
+      </div>
+      <h2 class="text-xl font-bold text-zinc-900 dark:text-white" data-en="Project Objective" data-kn="ಯೋಜನೆಯ ಮುಖ್ಯ ಉದ್ದೇಶ">
+        Project Objective
+      </h2>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="To design and deploy an automated, end-to-end deep learning web application capable of classifying arecanut palm diseases from photographic imagery in real time, delivering localized organic and chemical remedy recommendations directly to farmers and extension workers." data-kn="ಅಡಿಕೆ ಮರಗಳ ರೋಗಗಳನ್ನು ಮೊಬೈಲ್ ಅಥವಾ ಕಂಪ್ಯೂಟರ್ ಮೂಲಕ ತಕ್ಷಣವೇ ನಿಖರವಾಗಿ ಪತ್ತೆಹಚ್ಚಿ, ಸ್ಥಳೀಯ ಭಾಷೆಯಲ್ಲಿ ಸಾವಯವ ಮತ್ತು ರಾಸಾಯನಿಕ ಪರಿಹಾರಗಳನ್ನು ಒದಗಿಸುವ ಸಂಪೂರ್ಣ ವೆಬ್ ಅಪ್ಲಿಕೇಶನ್ ಅಭಿವೃದ್ಧಿಪಡಿಸುವುದು.">
+        To design and deploy an automated, end-to-end deep learning web application capable of classifying arecanut palm diseases from photographic imagery in real time, delivering localized organic and chemical remedy recommendations directly to farmers and extension workers.
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-lg space-y-4">
+      <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl">
+        <i class="fa-solid fa-seedling"></i>
+      </div>
+      <h2 class="text-xl font-bold text-zinc-900 dark:text-white" data-en="Agronomic Motivation" data-kn="ಕೃಷಿ ಪ್ರೇರಣೆ">
+        Agronomic Motivation
+      </h2>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed" data-en="Arecanut (Areca catechu) is a premier commercial cash crop in Karnataka (Malnad and coastal belts). Fungal outbreaks like Koleroga cause catastrophic fruit rot within days of heavy monsoon downpours, leading to massive financial losses. Due to scarcity of skilled tree-climbers, automated non-invasive visual screening provides essential early intervention." data-kn="ಅಡಿಕೆಯು ಕರ್ನಾಟಕದ ಪ್ರಮುಖ ವಾಣಿಜ್ಯ ಬೆಳೆಯಾಗಿದ್ದು, ಮುಂಗಾರು ಮಳೆಯ ಸಮಯದಲ್ಲಿ ಕೊಳೆರೋಗ ಮತ್ತು ಸುಳಿ ಕೊಳೆ ಉಲ್ಬಣಿಸಿ ಅಪಾರ ನಷ್ಟ ಉಂಟುಮಾಡುತ್ತದೆ. ಮರ ಹತ್ತುವ ಕಾರ್ಮಿಕರ ಕೊರತೆಯಿರುವ ಇಂದಿನ ದಿನಗಳಲ್ಲಿ, ಕ್ಯಾಮೆರಾ ಮೂಲಕ ಮುಂಚಿತವಾಗಿಯೇ ರೋಗ ಗುರುತಿಸುವುದು ಅತ್ಯಂತ ಸಹಕಾರಿಯಾಗಿದೆ.">
+        Arecanut (Areca catechu) is a premier commercial cash crop in Karnataka (Malnad and coastal belts). Fungal outbreaks like Koleroga cause catastrophic fruit rot within days of heavy monsoon downpours, leading to massive financial losses. Due to scarcity of skilled tree-climbers, automated non-invasive visual screening provides essential early intervention.
+      </p>
+    </div>
+  </div>
+
+  <!-- DEEP LEARNING ARCHITECTURE SECTION -->
+  <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 sm:p-10 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-8">
+    <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+      <h2 class="text-2xl font-extrabold text-zinc-900 dark:text-white" data-en="Deep Learning Model Architecture: MobileNetV2" data-kn="ಡೀಪ್ ಲರ್ನಿಂಗ್ ಮಾದರಿ ವಿನ್ಯಾಸ: ಮೊಬೈಲ್ ನೆಟ್ V2">
+        Deep Learning Model Architecture: MobileNetV2
+      </h2>
+      <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+        Transfer Learning with Depthwise Separable Convolutions & Inverted Residual Blocks
+      </p>
+    </div>
+
+    <!-- Pipeline Diagram -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-center">
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-2">
+        <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-bold">1</div>
+        <div class="text-xs font-bold text-zinc-900 dark:text-white">Image Input</div>
+        <div class="text-[11px] text-zinc-500">Camera / Upload<br>RGB Imagery</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-2">
+        <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-bold">2</div>
+        <div class="text-xs font-bold text-zinc-900 dark:text-white">Preprocessing</div>
+        <div class="text-[11px] text-zinc-500">224 × 224 Resize<br>[-1, 1] Normalization</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-2">
+        <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-bold">3</div>
+        <div class="text-xs font-bold text-zinc-900 dark:text-white">MobileNetV2 Base</div>
+        <div class="text-[11px] text-zinc-500">ImageNet Weights<br>Bottleneck Residuals</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-2">
+        <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-bold">4</div>
+        <div class="text-xs font-bold text-zinc-900 dark:text-white">Custom Head</div>
+        <div class="text-[11px] text-zinc-500">GlobalAvgPool2D<br>Dropout(0.4) + Dense(256)</div>
+      </div>
+      <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 space-y-2">
+        <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-bold">5</div>
+        <div class="text-xs font-bold text-zinc-900 dark:text-white">Softmax Classifier</div>
+        <div class="text-[11px] text-zinc-500">6 Output Neurons<br>Confidence Probabilities</div>
+      </div>
+    </div>
+
+    <!-- Technical Parameters Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border border-zinc-200 dark:border-zinc-800 rounded-xl">
+        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+          <tr class="bg-zinc-50 dark:bg-zinc-800/40 font-medium">
+            <td class="p-3 font-bold text-zinc-900 dark:text-white w-1/3">Base Pre-trained Network</td>
+            <td class="p-3 text-zinc-600 dark:text-zinc-300">MobileNetV2 (ImageNet weights, α = 1.0)</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold text-zinc-900 dark:text-white">Input Tensor Resolution</td>
+            <td class="p-3 text-zinc-600 dark:text-zinc-300">(224, 224, 3) Normalized RGB</td>
+          </tr>
+          <tr class="bg-zinc-50 dark:bg-zinc-800/40">
+            <td class="p-3 font-bold text-zinc-900 dark:text-white">Target Output Classes</td>
+            <td class="p-3 text-zinc-600 dark:text-zinc-300">6 Classes (Healthy, Koleroga, Yellow Leaf, Bud Rot, Stem Bleeding, Leaf Spot)</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold text-zinc-900 dark:text-white">Loss Function & Optimizer</td>
+            <td class="p-3 text-zinc-600 dark:text-zinc-300">Categorical Cross-Entropy, Adam Optimizer (Initial lr=1e-3, Fine-tune lr=1e-5)</td>
+          </tr>
+          <tr class="bg-zinc-50 dark:bg-zinc-800/40">
+            <td class="p-3 font-bold text-zinc-900 dark:text-white">Regularization Techniques</td>
+            <td class="p-3 text-zinc-600 dark:text-zinc-300">Spatial Dropout (0.4), Batch Normalization, Data Augmentation (Rotation, Zoom, Flip)</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-bold text-zinc-900 dark:text-white">Confidence Acceptance Threshold</td>
+            <td class="p-3 text-zinc-600 dark:text-zinc-300">60.0% (Triggers "Unable to identify" alert below threshold)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TEAM MEMBERS & PROJECT GUIDE -->
+  <div class="space-y-8">
+    <div class="text-center">
+      <h2 class="text-2xl font-extrabold text-zinc-900 dark:text-white" data-en="Project Contributors" data-kn="ಪ್ರಾಜೆಕ್ಟ್ ತಂಡ ಮತ್ತು ಮಾರ್ಗದರ್ಶಕರು">
+        Project Contributors
+      </h2>
+      <p class="text-xs text-zinc-500 mt-1">Department of Computer Science & Engineering</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Student 1 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-3">
+        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-extrabold text-lg">
+          GB
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Gurunath P Bankapur</h3>
+          <p class="text-xs text-zinc-500 font-medium">Developer & DL Engineer</p>
+        </div>
+        <p class="text-[11px] text-zinc-500">Deep Learning Model Training & Optimization</p>
+      </div>
+
+      <!-- Student 2 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-3">
+        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-extrabold text-lg">
+          GG
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-zinc-900 dark:text-white">S J Ganesh Gowda</h3>
+          <p class="text-xs text-zinc-500 font-medium">Backend & API Architect</p>
+        </div>
+        <p class="text-[11px] text-zinc-500">Flask Backend Architecture & SQLite Integration</p>
+      </div>
+
+      <!-- Student 3 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-3">
+        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-extrabold text-lg">
+          SH
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Sadashiv S Hutagi</h3>
+          <p class="text-xs text-zinc-500 font-medium">Frontend & UI/UX Lead</p>
+        </div>
+        <p class="text-[11px] text-zinc-500">Frontend UI/UX & Multilingual Localization</p>
+      </div>
+
+      <!-- Student 4 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-3">
+        <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-extrabold text-lg">
+          VV
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Vinayaka.V</h3>
+          <p class="text-xs text-zinc-500 font-medium">Dataset & Diagnostics</p>
+        </div>
+        <p class="text-[11px] text-zinc-500">Dataset Preprocessing & Clinical Report Module</p>
+      </div>
+
+    </div>
+
+    <!-- PROJECT GUIDE CARD -->
+    <div class="max-w-xl mx-auto bg-white dark:bg-zinc-900 rounded-3xl p-6 border-2 border-emerald-500/40 shadow-lg flex items-center space-x-6">
+      <div class="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl font-bold flex-shrink-0 shadow">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
+      <div>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Project Guide & Supervisor</span>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mt-0.5">Prof. Vinutha H R</h3>
+        <p class="text-xs text-zinc-500">Department of Computer Science & Engineering</p>
+        <p class="text-[11px] text-zinc-400 mt-1">Project Guide & Academic Mentor</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
