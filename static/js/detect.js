@@ -71,6 +71,30 @@ function setupFileUpload() {
     }
   });
 
+  // Mobile camera button and native file capture
+  const mobileCamBtn = document.getElementById('mobile-cam-btn');
+  const chooseFileBtn = document.getElementById('choose-file-btn');
+  const cameraFileInput = document.getElementById('camera-file-input');
+
+  if (mobileCamBtn && cameraFileInput) {
+    mobileCamBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cameraFileInput.click();
+    });
+    cameraFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFileSelected(e.target.files[0]);
+      }
+    });
+  }
+
+  if (chooseFileBtn && fileInput) {
+    chooseFileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      fileInput.click();
+    });
+  }
+
   // Remove preview
   if (removeBtn) {
     removeBtn.addEventListener('click', (e) => {
@@ -126,7 +150,9 @@ function handleFileSelected(file) {
 function clearSelection() {
   selectedFile = null;
   const fileInput = document.getElementById('file-input');
+  const cameraFileInput = document.getElementById('camera-file-input');
   if (fileInput) fileInput.value = '';
+  if (cameraFileInput) cameraFileInput.value = '';
 
   const dropzonePrompt = document.getElementById('dropzone-prompt');
   const previewContainer = document.getElementById('preview-container');
@@ -181,10 +207,15 @@ function setupWebcamModal() {
       const devices = await navigator.mediaDevices.enumerateDevices();
       videoDevices = devices.filter(d => d.kind === 'videoinput');
 
+      const videoConstraint = videoDevices.length > 0 && videoDevices[currentCameraIndex]
+        ? { deviceId: { exact: videoDevices[currentCameraIndex].deviceId } }
+        : { facingMode: { ideal: 'environment' } };
+
       const constraints = {
-        video: videoDevices.length > 0 && videoDevices[currentCameraIndex]
-          ? { deviceId: { exact: videoDevices[currentCameraIndex].deviceId } }
-          : { facingMode: 'environment' }
+        video: Object.assign({
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }, videoConstraint)
       };
 
       if (webcamStream) {

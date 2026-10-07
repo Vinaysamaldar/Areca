@@ -89,8 +89,42 @@ function initMobileMenu() {
   const mobileMenu = document.getElementById('mobile-menu');
 
   if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+    const icon = menuBtn.querySelector('i');
+    
+    function toggleMobileMenu(show) {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      const shouldOpen = typeof show === 'boolean' ? show : isHidden;
+      
+      if (shouldOpen) {
+        mobileMenu.classList.remove('hidden');
+        if (icon) {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-xmark');
+        }
+      } else {
+        mobileMenu.classList.add('hidden');
+        if (icon) {
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+        }
+      }
+    }
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+
+    // Close on navigation click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => toggleMobileMenu(false));
+    });
+
+    // Close when tapping outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        toggleMobileMenu(false);
+      }
     });
   }
 }

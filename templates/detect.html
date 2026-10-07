@@ -24,8 +24,9 @@
     <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
       
       <!-- Drag & Drop Area -->
-      <div id="dropzone" class="border-2 border-dashed border-emerald-300 dark:border-emerald-800/80 hover:border-emerald-500 rounded-2xl p-8 text-center cursor-pointer transition-all bg-emerald-50/30 dark:bg-emerald-950/20 group">
+      <div id="dropzone" class="border-2 border-dashed border-emerald-300 dark:border-emerald-800/80 hover:border-emerald-500 rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all bg-emerald-50/30 dark:bg-emerald-950/20 group">
         <input type="file" id="file-input" class="hidden" accept="image/jpeg,image/png,image/jpg,image/webp">
+        <input type="file" id="camera-file-input" class="hidden" accept="image/*" capture="environment">
         
         <!-- Prompt when empty -->
         <div id="dropzone-prompt" class="space-y-4">
@@ -33,24 +34,24 @@
             <i class="fa-solid fa-cloud-arrow-up"></i>
           </div>
           <div>
-            <p class="text-base font-bold text-zinc-800 dark:text-zinc-200" data-en="Click to upload or drag & drop image here" data-kn="ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ಇಲ್ಲಿ ಎಳೆದು ತನ್ನಿ">
-              Click to upload or drag & drop image here
+            <p class="text-base font-bold text-zinc-800 dark:text-zinc-200" data-en="Tap to take photo or choose an image" data-kn="ಫೋಟೋ ತೆಗೆಯಲು ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ">
+              Tap to take photo or choose an image
             </p>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1" data-en="Supported formats: JPG, JPEG, PNG, WEBP (Max: 5 MB)" data-kn="ಬೆಂಬಲಿತ ಮಾದರಿಗಳು: JPG, JPEG, PNG, WEBP (ಗರಿಷ್ಠ: 5 MB)">
-              Supported formats: JPG, JPEG, PNG, WEBP (Max: 5 MB)
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1" data-en="Works on Mobile Camera, Gallery & Drag-and-Drop (Max: 5 MB)" data-kn="ಮೊಬೈಲ್ ಕ್ಯಾಮೆರಾ, ಗ್ಯಾಲರಿ ಮತ್ತು ಕಂಪ್ಯೂಟರ್ ಬೆಂಬಲವಿದೆ (ಗರಿಷ್ಠ: 5 MB)">
+              Works on Mobile Camera, Gallery & Drag-and-Drop (Max: 5 MB)
             </p>
           </div>
           <div class="flex items-center justify-center space-x-3 pt-2">
-            <span class="inline-flex items-center space-x-1.5 text-xs text-zinc-500 font-medium">
-              <i class="fa-solid fa-camera text-emerald-500"></i>
-              <span data-en="Camera capture available" data-kn="ಕ್ಯಾಮೆರಾ ಬೆಂಬಲವಿದೆ">Camera capture available</span>
+            <span class="inline-flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+              <i class="fa-solid fa-camera"></i>
+              <span data-en="Mobile Camera Supported" data-kn="ಮೊಬೈಲ್ ಕ್ಯಾಮೆರಾ ಬೆಂಬಲವಿದೆ">Mobile Camera Supported</span>
             </span>
           </div>
         </div>
 
         <!-- Live Preview Container -->
         <div id="preview-container" class="hidden space-y-4">
-          <div class="relative w-48 sm:w-64 h-48 sm:h-64 mx-auto rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-md">
+          <div class="relative w-44 sm:w-64 h-44 sm:h-64 mx-auto rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-md">
             <img id="preview-image" src="" alt="Selected Preview" class="w-full h-full object-cover">
             <button id="remove-preview-btn" type="button" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 shadow transition-colors" title="Remove image">
               <i class="fa-solid fa-xmark"></i>
@@ -70,16 +71,32 @@
         <span id="upload-error-text">Validation error</span>
       </div>
 
-      <!-- Action Buttons (Analyze & Webcam) -->
-      <div class="flex flex-col sm:flex-row items-center gap-4">
-        <button id="open-webcam-btn" type="button" class="w-full sm:w-1/3 inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold px-5 py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 transition-colors">
-          <i class="fa-solid fa-camera text-emerald-600"></i>
-          <span data-en="Open Webcam" data-kn="ಕ್ಯಾಮೆರಾ ತೆರೆಯಿರಿ">Open Webcam</span>
-        </button>
+      <!-- Multi-Device Action Buttons (Camera / Gallery / Webcam / Analyze) -->
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <!-- Mobile Native Camera Button -->
+          <button id="mobile-cam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow transition-all active:scale-95 text-xs sm:text-sm">
+            <i class="fa-solid fa-camera"></i>
+            <span data-en="Take Photo (Camera)" data-kn="ಕ್ಯಾಮರಾ ಫೋಟೋ">Take Photo (Camera)</span>
+          </button>
 
-        <button id="analyze-btn" type="button" disabled class="w-full sm:w-2/3 inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all opacity-50 cursor-not-allowed">
+          <!-- Choose from Gallery / Files -->
+          <button id="choose-file-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors text-xs sm:text-sm">
+            <i class="fa-solid fa-images text-emerald-600"></i>
+            <span data-en="Choose Gallery" data-kn="ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆ">Choose Gallery</span>
+          </button>
+
+          <!-- Laptop / PC Webcam Stream -->
+          <button id="open-webcam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors text-xs sm:text-sm">
+            <i class="fa-solid fa-video text-blue-600"></i>
+            <span data-en="Live Stream" data-kn="ಲೈವ್ ಕ್ಯಾಮೆರಾ">Live Stream</span>
+          </button>
+        </div>
+
+        <!-- Big Analyze Disease CTA Button -->
+        <button id="analyze-btn" type="button" disabled class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-4 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all opacity-50 cursor-not-allowed text-base">
           <i class="fa-solid fa-microscope text-lg"></i>
-          <span data-en="Analyze Disease" data-kn="ರೋಗ ಪರೀಕ್ಷಿಸಿ">Analyze Disease</span>
+          <span data-en="Analyze Disease Now" data-kn="ಈಗಲೇ ರೋಗ ಪರೀಕ್ಷಿಸಿ">Analyze Disease Now</span>
         </button>
       </div>
 
@@ -88,26 +105,27 @@
         <div class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3" data-en="Or test with pre-loaded samples:" data-kn="ಅಥವಾ ಮಾದರಿ ಚಿತ್ರಗಳನ್ನು ಪರೀಕ್ಷಿಸಿ:">
           Or test with pre-loaded samples:
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 transition-colors" data-img="{{ url_for('static', filename='images/koleroga.svg') }}" data-name="sample_koleroga.svg">
+        <div class="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/koleroga.svg') }}" data-name="sample_koleroga.svg">
             🍇 Koleroga
           </button>
-          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 transition-colors" data-img="{{ url_for('static', filename='images/yellow_leaf.svg') }}" data-name="sample_yellow_leaf.svg">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/yellow_leaf.svg') }}" data-name="sample_yellow_leaf.svg">
             🍂 Yellow Leaf
           </button>
-          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 transition-colors" data-img="{{ url_for('static', filename='images/bud_rot.svg') }}" data-name="sample_bud_rot.svg">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/bud_rot.svg') }}" data-name="sample_bud_rot.svg">
             🌱 Bud Rot
           </button>
-          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 transition-colors" data-img="{{ url_for('static', filename='images/stem_bleeding.svg') }}" data-name="sample_stem_bleeding.svg">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/stem_bleeding.svg') }}" data-name="sample_stem_bleeding.svg">
             🪵 Stem Bleeding
           </button>
-          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 transition-colors" data-img="{{ url_for('static', filename='images/leaf_spot.svg') }}" data-name="sample_leaf_spot.svg">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/leaf_spot.svg') }}" data-name="sample_leaf_spot.svg">
             🍃 Leaf Spot
           </button>
-          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 transition-colors" data-img="{{ url_for('static', filename='images/healthy.svg') }}" data-name="sample_healthy.svg">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/healthy.svg') }}" data-name="sample_healthy.svg">
             🌴 Healthy
           </button>
         </div>
+      </div>
       </div>
 
     </div>
