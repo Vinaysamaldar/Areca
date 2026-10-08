@@ -41,6 +41,9 @@ database.init_db()
 # --- WEB PAGE ROUTES ---
 
 @app.route('/')
+@app.route('/api/index.py')
+@app.route('/api/index')
+@app.route('/api')
 def home():
     """Renders the Home page."""
     stats = database.get_statistics()

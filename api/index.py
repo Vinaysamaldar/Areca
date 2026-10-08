@@ -2,7 +2,6 @@ import sys
 import os
 import traceback
 
-# Append project root directory to Python module search path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.dirname(current_dir)
 
@@ -10,10 +9,39 @@ for path in [root_dir, current_dir]:
     if path not in sys.path:
         sys.path.insert(0, path)
 
+class VercelPathFixMiddleware:
+    """
+    Handles Vercel internal rewrites.
+    When Vercel rewrites requests to /api/index.py, this middleware inspects
+    Vercel's original path headers (x-matched-path, x-forwarded-uri, etc.)
+    and restores PATH_INFO so Flask routes match accurately.
+    """
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        path_info = environ.get('PATH_INFO', '')
+        if path_info in ('/api/index.py', '/api/index', '/api'):
+            matched = (
+                environ.get('HTTP_X_MATCHED_PATH') or
+                environ.get('HTTP_X_FORWARDED_URI') or
+                environ.get('HTTP_X_VERCEL_MATCHED_PATH') or
+                environ.get('HTTP_X_REWRITE_URL') or
+                environ.get('HTTP_X_ORIGINAL_URL') or
+                '/'
+            )
+            # If the matched path is not the internal script name, use it
+            if matched not in ('/api/index.py', '/api/index', '/api'):
+                if '?' in matched:
+                    matched = matched.split('?', 1)[0]
+                environ['PATH_INFO'] = matched
+            else:
+                environ['PATH_INFO'] = '/'
+        return self.wsgi_app(environ, start_response)
+
 try:
     from app import app
-    # Export Flask instance for Vercel WSGI
-    app = app
+    app.wsgi_app = VercelPathFixMiddleware(app.wsgi_app)
 except Exception as e:
     from flask import Flask
     app = Flask(__name__)
