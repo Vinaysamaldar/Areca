@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Solutions & Seasonal Spray Calendar | ArecaAI{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Header Banner -->
+  <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
+    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span data-en="Horticultural Advisory & Crop Calendar" data-kn="ತೋಟಗಾರಿಕಾ ಮಾಹಿತಿ ಮತ್ತು ಬೆಳೆ ಕ್ಯಾಲೆಂಡರ್">Horticultural Advisory & Crop Calendar</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white" data-en="Arecanut Crop Care & Spray Calendar" data-kn="ಅಡಿಕೆ ಬೆಳೆ ಸಂರಕ್ಷಣೆ ಮತ್ತು ಸಿಂಪಡಣೆ ಕ್ಯಾಲೆಂಡರ್">
+      Arecanut Crop Care & Spray Calendar
+    </h1>
+    <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400" data-en="Month-by-month prophylactic schedule and curative treatments for all major diseases across leaf, nut, stem, and root parts." data-kn="ಎಲೆ, ಅಡಿಕೆ ಕಾಯಿ, ಕಾಂಡ ಮತ್ತು ಬೇರಿನ ರೋಗಗಳಿಗೆ ಕಾಲೋಚಿತ ಸಿಂಪಡಣೆ ಮತ್ತು ಚಿಕಿತ್ಸಾ ವಿಧಾನಗಳು.">
+      Month-by-month prophylactic schedule and curative treatments for all major diseases across leaf, nut, stem, and root parts.
+    </p>
+  </div>
+
+  <!-- SECTION 1: 4-SEASON AGRONOMIC SPRAY CALENDAR -->
+  <section class="mb-14">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-900/60 flex items-center justify-center text-emerald-700 dark:text-emerald-300 text-lg">
+          <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white" data-en="Annual Plantation Spray Calendar" data-kn="ವಾರ್ಷಿಕ ಸಿಂಪಡಣೆ ಮತ್ತು ನಿರ್ವಹಣಾ ಕ್ಯಾಲೆಂಡರ್">
+            Annual Plantation Spray Calendar
+          </h2>
+          <p class="text-xs text-zinc-500" data-en="Timely prophylactic operations to preempt monsoonal rot and stress" data-kn="ಮುಂಗಾರು ಮತ್ತು ರೋಗ ಹರಡುವ ಮುನ್ನ ಕೈಗೊಳ್ಳಬೇಕಾದ ಕ್ರಮಗಳು">
+            Timely prophylactic operations to preempt monsoonal rot and stress
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Grid (4 Seasons) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      
+      <!-- Season 1: Pre-Monsoon -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-lg space-y-3 relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-amber-500"></div>
+        <div>
+          <div class="flex items-center justify-between text-xs text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider mb-1">
+            <span>May - June</span>
+            <span class="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80">Critical</span>
+          </div>
+          <h3 class="text-base font-extrabold text-zinc-900 dark:text-white" data-en="Pre-Monsoon Preparation" data-kn="ಮುಂಗಾರು ಪೂರ್ವ ಸಿದ್ಧತೆ">
+            Pre-Monsoon Preparation
+          </h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 mb-3" data-en="Preventive barrier against Koleroga (Mahali) rot spores before heavy showers begin." data-kn="ಮಳೆ ಆರಂಭಕ್ಕೂ ಮುನ್ನ ಕೊಳೆರೋಗ ತಡೆಗಟ್ಟಲು ಬೋರ್ಡೋ ದ್ರಾವಣ ಸಿಂಪಡಣೆ.">
+            Preventive barrier against Koleroga (Mahali) rot spores before heavy showers begin.
+          </p>
+          <ul class="text-xs space-y-2 text-zinc-600 dark:text-zinc-300">
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>1% Bordeaux Mixture Spray:</b> Spray all bunches and crowns thoroughly. Add rosin soap/sticker.</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Drainage Cleansing:</b> Clear plantation drainage channels to prevent root-zone water stagnation.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 p-2.5 rounded-xl mt-3">
+          Target: Nut Koleroga & Bud Rot
+        </div>
+      </div>
+
+      <!-- Season 2: Monsoon Peak -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-lg space-y-3 relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-blue-600"></div>
+        <div>
+          <div class="flex items-center justify-between text-xs text-blue-700 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">
+            <span>July - August</span>
+            <span class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80">Monsoon</span>
+          </div>
+          <h3 class="text-base font-extrabold text-zinc-900 dark:text-white" data-en="Southwest Monsoon Peak" data-kn="ಮುಂಗಾರು ಮಳೆಯ ಶಿಖರಾವಸ್ಥೆ">
+            Southwest Monsoon Peak
+          </h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 mb-3" data-en="Maintain fungicide shield during continuous cloudy days and high relative humidity." data-kn="ನಿರಂತರ ಮಳೆಯ ಅವಧಿಯಲ್ಲಿ ಎರಡನೇ ಸಿಂಪಡಣೆ ಮತ್ತು ನೈರ್ಮಲ್ಯ ಕಾಪಾಡುವುದು.">
+            Maintain fungicide shield during continuous cloudy days and high relative humidity.
+          </p>
+          <ul class="text-xs space-y-2 text-zinc-600 dark:text-zinc-300">
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Second Spray:</b> 40-45 days after 1st spray during a break in rain.</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Fallen Nut Destruction:</b> Collect and bury dropped rotten nuts in deep trenches to halt spore drift.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="text-[11px] font-semibold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 p-2.5 rounded-xl mt-3">
+          Target: Koleroga & Secondary Rot
+        </div>
+      </div>
+
+      <!-- Season 3: Post-Monsoon -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-lg space-y-3 relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-emerald-600"></div>
+        <div>
+          <div class="flex items-center justify-between text-xs text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1">
+            <span>Sept - November</span>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80">Recovery</span>
+          </div>
+          <h3 class="text-base font-extrabold text-zinc-900 dark:text-white" data-en="Post-Monsoon & Trunk Care" data-kn="ಮುಂಗಾರು ನಂತರದ ಕಾಂಡದ ಆರೈಕೆ">
+            Post-Monsoon & Trunk Care
+          </h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 mb-3" data-en="Root zone nutrition replenishment, basal stem check, and Yellow Leaf foliar drenching." data-kn="ಬುಡಕ್ಕೆ ಗೊಬ್ಬರ ಹಾಕುವುದು ಮತ್ತು ಕಾಂಡ ಸ್ರಾವ ನಿಯಂತ್ರಣ.">
+            Root zone nutrition replenishment, basal stem check, and Yellow Leaf foliar drenching.
+          </p>
+          <ul class="text-xs space-y-2 text-zinc-600 dark:text-zinc-300">
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Trunk Lesion Dressing:</b> Chisel infected bark for Stem Bleeding; apply Bordeaux paste or hot coal tar.</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Bio-Agent Drenching:</b> Basin application of <i>Trichoderma</i> enriched neem cake + FYM.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 p-2.5 rounded-xl mt-3">
+          Target: Stem Bleeding & Anabe Foot Rot
+        </div>
+      </div>
+
+      <!-- Season 4: Summer -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-lg space-y-3 relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-orange-500"></div>
+        <div>
+          <div class="flex items-center justify-between text-xs text-orange-700 dark:text-orange-400 font-bold uppercase tracking-wider mb-1">
+            <span>Dec - April</span>
+            <span class="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/80">Summer</span>
+          </div>
+          <h3 class="text-base font-extrabold text-zinc-900 dark:text-white" data-en="Summer Moisture & Root Health" data-kn="ಬೇಸಿಗೆ ತೇವಾಂಶ ಮತ್ತು ಬೇರಿನ ಆರೋಗ್ಯ">
+            Summer Moisture & Root Health
+          </h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 mb-3" data-en="Prevent sun scorching of the trunk and eliminate root grubs during dry weather." data-kn="ಕಾಂಡಕ್ಕೆ ಸುಣ್ಣ ಹಚ್ಚುವುದು ಮತ್ತು ಬೇರು ಹುಳು ನಿಯಂತ್ರಣ.">
+            Prevent sun scorching of the trunk and eliminate root grubs during dry weather.
+          </p>
+          <ul class="text-xs space-y-2 text-zinc-600 dark:text-zinc-300">
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Trunk White-Washing:</b> Paint southwest exposed trunks with lime to reflect intense solar radiation.</span>
+            </li>
+            <li class="flex items-start gap-1.5">
+              <i class="fa-solid fa-check text-emerald-600 mt-0.5"></i>
+              <span><b>Basin Mulching:</b> Spread green or dry mulch across the 1-meter palm radius to conserve soil moisture.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="text-[11px] font-semibold text-orange-700 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 p-2.5 rounded-xl mt-3">
+          Target: Sun Scorch, Nut Split & Root Grub
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: DISEASE ADVISORY DIRECTORY -->
+  <section class="space-y-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+      <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white" data-en="Therapeutic Advisory Directory" data-kn="ಸಂಪೂರ್ಣ ರೋಗ ಪರಿಹಾರ ಕೈಪಿಡಿ">
+          Therapeutic Advisory Directory
+        </h2>
+        <p class="text-xs text-zinc-500" data-en="Organic remedies, chemical fungicides, and prevention protocols for each disease class" data-kn="ರೋಗವಾರು ಸಾವಯವ ಮತ್ತು ರಾಸಾಯನಿಕ ಚಿಕಿತ್ಸಾ ವಿವರಗಳು">
+          Organic remedies, chemical fungicides, and prevention protocols for each disease class
+        </p>
+      </div>
+
+      <!-- Part Filter Buttons -->
+      <div class="flex flex-wrap gap-1.5 text-xs font-bold" id="solutions-filter-group">
+        <button type="button" class="sol-filter-btn active bg-emerald-600 text-white px-3 py-1.5 rounded-xl shadow-sm" data-filter="all">All Parts</button>
+        <button type="button" class="sol-filter-btn bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-3 py-1.5 rounded-xl" data-filter="nut">🥥 Nut</button>
+        <button type="button" class="sol-filter-btn bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-3 py-1.5 rounded-xl" data-filter="leaf">🍃 Leaf</button>
+        <button type="button" class="sol-filter-btn bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-3 py-1.5 rounded-xl" data-filter="stem">🪵 Stem</button>
+        <button type="button" class="sol-filter-btn bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-3 py-1.5 rounded-xl" data-filter="root">🌱 Root</button>
+      </div>
+    </div>
+
+    <!-- Disease Cards Container -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="solutions-cards-container">
+      
+      {% for name, dis in diseases.items() %}
+      <div class="disease-card bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-4" data-part="{{ dis.part or 'leaf' }}">
+        
+        <!-- Header -->
+        <div class="flex items-start justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+                {{ (dis.part or 'Leaf')|capitalize }}
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border {{ dis.severity_badge or 'bg-amber-100 text-amber-800' }}">
+                {{ dis.severity or 'Moderate' }}
+              </span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-extrabold text-zinc-900 dark:text-white mt-1.5">
+              {{ dis.name or name }}
+            </h3>
+            <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 font-kannada">
+              {{ dis.name_kn or '' }}
+            </p>
+          </div>
+        </div>
+
+        <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          {{ dis.description or '' }}
+        </p>
+
+        <!-- Symptoms -->
+        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 text-xs space-y-1">
+          <div class="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+            <i class="fa-solid fa-stethoscope text-emerald-600"></i> Symptoms:
+          </div>
+          <p class="text-zinc-600 dark:text-zinc-400">{{ dis.symptoms or 'Visual necrotic or chlorotic lesions.' }}</p>
+        </div>
+
+        <!-- Treatment: Organic & Chemical Side by Side -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <!-- Organic -->
+          <div class="bg-emerald-50/60 dark:bg-emerald-950/20 p-3 rounded-2xl border border-emerald-200 dark:border-emerald-800/60 space-y-1">
+            <div class="font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-1">
+              <i class="fa-solid fa-seedling text-emerald-600"></i> Organic / Bio-Control:
+            </div>
+            <p class="text-zinc-700 dark:text-zinc-300">{{ dis.organic_treatment or 'Apply enriched Trichoderma & neem cake.' }}</p>
+          </div>
+
+          <!-- Chemical -->
+          <div class="bg-amber-50/60 dark:bg-amber-950/20 p-3 rounded-2xl border border-amber-200 dark:border-amber-800/60 space-y-1">
+            <div class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1">
+              <i class="fa-solid fa-flask-vial text-amber-600"></i> Chemical Spray:
+            </div>
+            <p class="text-zinc-700 dark:text-zinc-300">{{ dis.chemical_treatment or 'Spray 1% Bordeaux mixture.' }}</p>
+          </div>
+        </div>
+
+        <!-- Prevention & Expert Consultation -->
+        <div class="text-xs space-y-2 pt-1 border-t border-zinc-100 dark:border-zinc-800">
+          <div>
+            <span class="font-bold text-zinc-700 dark:text-zinc-300">Prevention:</span>
+            <span class="text-zinc-500 dark:text-zinc-400 ml-1">{{ dis.prevention or 'Maintain sanitation and drainage.' }}</span>
+          </div>
+          {% if dis.when_to_consult_expert %}
+          <div class="text-[11px] text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 p-2.5 rounded-xl">
+            <i class="fa-solid fa-circle-info mr-1"></i>
+            <b>When to consult KVK:</b> {{ dis.when_to_consult_expert }}
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+      {% endfor %}
+
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const filterBtns = document.querySelectorAll('.sol-filter-btn');
+  const cards = document.querySelectorAll('.disease-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm', 'active');
+        b.classList.add('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-700', 'dark:text-zinc-300');
+      });
+      btn.classList.remove('bg-zinc-100', 'dark:bg-zinc-800', 'text-zinc-700', 'dark:text-zinc-300');
+      btn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm', 'active');
+
+      const filter = btn.getAttribute('data-filter');
+      cards.forEach(card => {
+        const part = card.getAttribute('data-part') || 'leaf';
+        if (filter === 'all' || part.toLowerCase() === filter.toLowerCase()) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

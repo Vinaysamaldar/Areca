@@ -71,26 +71,32 @@
         </a>
 
         <!-- Desktop Navigation Links -->
-        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
-          <a href="{{ url_for('home') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5">
+          <a href="{{ url_for('home') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
             Home
           </a>
-          <a href="{{ url_for('detect_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Detect Disease" data-kn="ರೋಗ ಪತ್ತೆ">
-            Detect Disease
+          <a href="{{ url_for('detect_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Part Upload" data-kn="ಭಾಗವಾರು ಸ್ಕ್ಯಾನ್">
+            Part Upload
           </a>
-          <a href="{{ url_for('mobile_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center space-x-1.5 {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}">
-            <i class="fa-solid fa-download text-xs text-emerald-600"></i>
-            <span data-en="Download App" data-kn="ಆಪ್ ಡೌನ್‌ಲೋಡ್">Download App</span>
-            <span class="bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold">APK</span>
+          <a href="{{ url_for('live_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors flex items-center space-x-1 {% if active_page == 'live' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <span data-en="Live Scan" data-kn="ಲೈವ್ ಸ್ಕ್ಯಾನ್">Live Scan</span>
           </a>
-          <a href="{{ url_for('diseases_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">
-            Disease Info
+          <a href="{{ url_for('solutions_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'solutions' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Solutions & Calendar" data-kn="ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್">
+            Solutions & Calendar
           </a>
-          <a href="{{ url_for('history_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
+          <a href="{{ url_for('analytics_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'analytics' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Analytics" data-kn="ವಿಶ್ಲೇಷಣೆ">
+            Analytics
+          </a>
+          <a href="{{ url_for('diseases_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Diseases" data-kn="ರೋಗಗಳು">
+            Diseases
+          </a>
+          <a href="{{ url_for('history_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
             History
           </a>
-          <a href="{{ url_for('about_page') }}" class="px-3 py-2 rounded-lg text-sm font-semibold transition-colors {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">
-            About Project
+          <a href="{{ url_for('mobile_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors flex items-center space-x-1 {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}">
+            <i class="fa-solid fa-download text-xs text-emerald-600"></i>
+            <span data-en="App" data-kn="ಆಪ್">App</span>
           </a>
         </nav>
 
@@ -114,9 +120,9 @@
           </button>
 
           <!-- Detect CTA Button (Desktop) -->
-          <a href="{{ url_for('detect_page') }}" class="hidden sm:inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
-            <i class="fa-solid fa-camera"></i>
-            <span data-en="Scan Now" data-kn="ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Scan Now</span>
+          <a href="{{ url_for('live_page') }}" class="hidden sm:inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs lg:text-sm font-semibold px-3.5 py-2 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
+            <i class="fa-solid fa-video"></i>
+            <span data-en="Live Scan" data-kn="ಲೈವ್ ಸ್ಕ್ಯಾನ್">Live Scan</span>
           </a>
 
           <!-- Mobile Hamburger Menu Button -->
@@ -129,27 +135,39 @@
 
       <!-- Mobile Dropdown Menu -->
       <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-zinc-200 dark:border-zinc-800 space-y-1.5">
-        <a href="{{ url_for('home') }}" class="flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-base font-semibold {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
+        <a href="{{ url_for('home') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
           <i class="fa-solid fa-house w-6 text-center text-emerald-600"></i>
           <span>Home</span>
         </a>
-        <a href="{{ url_for('detect_page') }}" class="flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-base font-bold bg-emerald-600 text-white shadow-md shadow-emerald-600/20" data-en="Detect Disease (Scan)" data-kn="ರೋಗ ಪತ್ತೆ (ಸ್ಕ್ಯಾನ್)">
-          <i class="fa-solid fa-camera w-6 text-center"></i>
-          <span>Detect Disease (Scan)</span>
+        <a href="{{ url_for('live_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 text-white shadow-md shadow-emerald-600/20" data-en="Live Camera Scan" data-kn="ಲೈವ್ ಕ್ಯಾಮೆರಾ ಸ್ಕ್ಯಾನ್">
+          <i class="fa-solid fa-video w-6 text-center"></i>
+          <span>Live Camera Scan</span>
         </a>
-        <a href="{{ url_for('mobile_page') }}" class="flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-base font-semibold {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}">
+        <a href="{{ url_for('detect_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Part-Wise Upload & Multi-Scan" data-kn="ಭಾಗವಾರು ಸ್ಕ್ಯಾನ್">
+          <i class="fa-solid fa-cloud-arrow-up w-6 text-center text-emerald-600"></i>
+          <span>Part-Wise Upload & Multi-Scan</span>
+        </a>
+        <a href="{{ url_for('solutions_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'solutions' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Solutions & Spray Calendar" data-kn="ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್">
+          <i class="fa-solid fa-calendar-days w-6 text-center text-emerald-600"></i>
+          <span>Solutions & Spray Calendar</span>
+        </a>
+        <a href="{{ url_for('analytics_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'analytics' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Analytics & Model Stats" data-kn="ವಿಶ್ಲೇಷಣೆ">
+          <i class="fa-solid fa-chart-pie w-6 text-center text-emerald-600"></i>
+          <span>Analytics & Model Stats</span>
+        </a>
+        <a href="{{ url_for('mobile_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}">
           <i class="fa-solid fa-download w-6 text-center text-emerald-600"></i>
           <span data-en="Download Android App (APK)" data-kn="ಆಂಡ್ರಾಯ್ಡ್ ಆಪ್ ಡೌನ್‌ಲೋಡ್">Download Android App (APK)</span>
         </a>
-        <a href="{{ url_for('diseases_page') }}" class="flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-base font-semibold {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">
+        <a href="{{ url_for('diseases_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">
           <i class="fa-solid fa-book-medical w-6 text-center text-emerald-600"></i>
           <span>Disease Info</span>
         </a>
-        <a href="{{ url_for('history_page') }}" class="flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-base font-semibold {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
+        <a href="{{ url_for('history_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
           <i class="fa-solid fa-clock-rotate-left w-6 text-center text-emerald-600"></i>
           <span>History</span>
         </a>
-        <a href="{{ url_for('about_page') }}" class="flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-base font-semibold {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">
+        <a href="{{ url_for('about_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">
           <i class="fa-solid fa-graduation-cap w-6 text-center text-emerald-600"></i>
           <span>About Project</span>
         </a>

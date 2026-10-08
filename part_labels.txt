@@ -1,0 +1,5 @@
+leaf
+stem
+root
+nut
+not_arecanut

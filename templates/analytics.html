@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics & Model Performance Dashboard | ArecaAI{% endblock %}
+
+{% block head_extra %}
+<!-- Chart.js 4.4 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+  <!-- Header Banner -->
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+    <div>
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Telemetry & Pathological Metrics</span>
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white">
+        Analytics & Model Performance
+      </h1>
+      <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+        Real-time plantation scan trends, anatomical breakdowns, and trained MobileNetV2 evaluation benchmarks.
+      </p>
+    </div>
+
+    <!-- Export CSV Action -->
+    <div class="flex items-center space-x-3">
+      <a href="/export_csv" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
+        <i class="fa-solid fa-file-csv text-base"></i>
+        <span>Export CSV History</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SUMMARY METRIC CARDS -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    
+    <!-- Card 1: Total Scans -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+        <span>Total Field Scans</span>
+        <i class="fa-solid fa-camera text-emerald-600"></i>
+      </div>
+      <div id="stat-total-scans" class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">
+        {{ stats.total_scans if stats else 0 }}
+      </div>
+      <p class="text-[11px] text-zinc-400 mt-1">Recorded in SQLite database</p>
+    </div>
+
+    <!-- Card 2: Healthy Percentage -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+        <span>Healthy Ratio</span>
+        <i class="fa-solid fa-heart-pulse text-green-500"></i>
+      </div>
+      <div id="stat-healthy-pct" class="text-2xl sm:text-3xl font-extrabold text-emerald-600">
+        {{ stats.healthy_pct if stats else 0.0 }}%
+      </div>
+      <p class="text-[11px] text-zinc-400 mt-1">Non-diseased palm ratio</p>
+    </div>
+
+    <!-- Card 3: Most Common Disease -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+        <span>Prevalent Disease</span>
+        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+      </div>
+      <div id="stat-top-disease" class="text-base sm:text-lg font-extrabold text-zinc-900 dark:text-white truncate">
+        {{ stats.most_frequent_disease if stats else 'None' }}
+      </div>
+      <p class="text-[11px] text-zinc-400 mt-1">Highest infection frequency</p>
+    </div>
+
+    <!-- Card 4: Average Confidence -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+        <span>Avg Confidence</span>
+        <i class="fa-solid fa-bullseye text-blue-500"></i>
+      </div>
+      <div id="stat-avg-conf" class="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-400">
+        {{ stats.avg_confidence if stats else 0.0 }}%
+      </div>
+      <p class="text-[11px] text-zinc-400 mt-1">Across all inference batches</p>
+    </div>
+
+  </div>
+
+  <!-- SECTION TABS (Analytics vs Model Performance vs Dataset Analysis) -->
+  <div class="flex border-b border-zinc-200 dark:border-zinc-800 space-x-4">
+    <button id="tab-btn-live" type="button" class="tab-btn active pb-3 px-2 text-sm font-bold border-b-2 border-emerald-600 text-emerald-600 dark:text-emerald-400">
+      <i class="fa-solid fa-chart-pie mr-1.5"></i> Live Scan Analytics
+    </button>
+    <button id="tab-btn-model" type="button" class="tab-btn pb-3 px-2 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
+      <i class="fa-solid fa-brain mr-1.5"></i> Model Performance
+    </button>
+    <button id="tab-btn-dataset" type="button" class="tab-btn pb-3 px-2 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
+      <i class="fa-solid fa-database mr-1.5"></i> Dataset Analysis
+    </button>
+  </div>
+
+  <!-- TAB 1: LIVE SCAN ANALYTICS (CHART.JS) -->
+  <div id="tab-content-live" class="space-y-6">
+    
+    <!-- Filter Toolbar -->
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-wrap items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-3 text-xs">
+        <div class="flex items-center space-x-2">
+          <span class="font-bold text-zinc-600 dark:text-zinc-400">Date Range:</span>
+          <input type="date" id="filter-start-date" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-zinc-800 dark:text-zinc-200">
+          <span>to</span>
+          <input type="date" id="filter-end-date" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-zinc-800 dark:text-zinc-200">
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <span class="font-bold text-zinc-600 dark:text-zinc-400">Plant Part:</span>
+          <select id="filter-part" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-1.5 text-zinc-800 dark:text-zinc-200 font-semibold">
+            <option value="all">All Parts</option>
+            <option value="leaf">Leaf</option>
+            <option value="nut">Nut</option>
+            <option value="stem">Stem</option>
+            <option value="root">Root</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="btn-apply-filter" type="button" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">
+          Apply Filters
+        </button>
+        <button id="btn-reset-filter" type="button" class="bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold px-3 py-2 rounded-xl transition-all">
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- 6 Chart.js Grids -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- Chart 1: Disease Distribution (Donut) -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Disease Distribution</h3>
+        <div class="h-64 relative flex items-center justify-center">
+          <canvas id="chartDiseaseDist"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Scans by Plant Part (Bar) -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Scans by Plant Part</h3>
+        <div class="h-64 relative flex items-center justify-center">
+          <canvas id="chartPartDist"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 3: Scans Over Time Trend (Line) -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Scans Timeline Trend</h3>
+        <div class="h-64 relative flex items-center justify-center">
+          <canvas id="chartTimeline"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Average Confidence per Disease (Horizontal Bar) -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Avg Confidence per Disease</h3>
+        <div class="h-64 relative flex items-center justify-center">
+          <canvas id="chartConfidence"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 5: Healthy vs Diseased (Doughnut) -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Healthy vs Diseased Ratio</h3>
+        <div class="h-64 relative flex items-center justify-center">
+          <canvas id="chartHealthyRatio"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 6: Severity Breakdown (Pie) -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Severity Level Breakdown</h3>
+        <div class="h-64 relative flex items-center justify-center">
+          <canvas id="chartSeverity"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TAB 2: MODEL PERFORMANCE (TRAINING BENCHMARKS) -->
+  <div id="tab-content-model" class="hidden space-y-8">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+      <div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">MobileNetV2 Deep Learning Performance</h3>
+        <p class="text-xs text-zinc-500 mt-0.5">Two-Stage Transfer Learning: Base Freeze (10 epochs) + Fine-Tuning top 30 layers (15 epochs, lr=1e-5).</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Accuracy & Loss Curves -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-zinc-500">1. Training & Validation Curves</h4>
+          <img src="/static/analysis/accuracy_loss_curves.png" onerror="this.src='/analysis/accuracy_loss_curves.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+
+        <!-- Per-Class Accuracy -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-zinc-500">2. Per-Class Validation Accuracy (%)</h4>
+          <img src="/static/analysis/per_class_accuracy.png" onerror="this.src='/analysis/per_class_accuracy.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+
+        <!-- Part Confusion Matrix (Model A) -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-zinc-500">3. Part Classifier Confusion Matrix (Model A)</h4>
+          <img src="/static/analysis/confusion_matrix_part.png" onerror="this.src='/analysis/confusion_matrix_part.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+
+        <!-- Disease Confusion Matrix (Model B) -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-zinc-500">4. Disease Classifier Confusion Matrix (Model B)</h4>
+          <img src="/static/analysis/confusion_matrix_disease.png" onerror="this.src='/analysis/confusion_matrix_disease.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: DATASET ANALYSIS -->
+  <div id="tab-content-dataset" class="hidden space-y-8">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+      <div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">Dataset Distribution & Anatomical Representation</h3>
+        <p class="text-xs text-zinc-500 mt-0.5">Tejpaviraj Arecanut Dataset + Field Extension Samples (Kaggle slug: tejpaviraj/arecanut).</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Class Distribution -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-zinc-500">1. Images per Disease & Health Class</h4>
+          <img src="/static/analysis/class_distribution.png" onerror="this.src='/analysis/class_distribution.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+
+        <!-- Part Distribution -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase text-zinc-500">2. Dataset Breakdown by Plant Part</h4>
+          <img src="/static/analysis/part_distribution.png" onerror="this.src='/analysis/part_distribution.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+
+        <!-- Part Pie Chart -->
+        <div class="space-y-2 lg:col-span-2 max-w-xl mx-auto">
+          <h4 class="text-xs font-bold uppercase text-zinc-500 text-center">3. Plant Part Proportions in Training Set</h4>
+          <img src="/static/analysis/part_pie_chart.png" onerror="this.src='/analysis/part_pie_chart.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/js/analytics.js" onerror="this.onerror=null; this.src='{{ url_for('static', filename='js/analytics.js') }}';"></script>
+{% endblock %}

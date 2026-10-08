@@ -1,0 +1,10 @@
+Healthy_Leaf
+Healthy_Nut
+Healthy_Root
+Healthy_Stem
+Leaf_BudRot
+Leaf_Spot
+Leaf_YellowLeafDisease
+Nut_Koleroga
+Stem_Bleeding
+Stem_Cracking

@@ -1,101 +1,142 @@
 /**
- * Disease Detection Logic
- * Drag & drop, webcam capture, validation, API submission, and result presentation
+ * ArecaAI Disease Detection & Multi-Part Tree Scan Logic
+ * Supports:
+ * - Part-wise selector (Auto, Leaf, Nut, Stem, Root)
+ * - Multi-Part simultaneous scan (Leaf + Nut + Stem + Root)
+ * - Direct download of ReportLab PDF diagnostic reports
+ * - Responsive bilingual English & Kannada UI
  */
 
 let selectedFile = null;
+let selectedPart = 'auto';
 let currentPredictionData = null;
-let webcamStream = null;
-let currentCameraIndex = 0;
-let videoDevices = [];
+let activeScanMode = 'single'; // 'single' or 'multi'
+
+// Multi-part slots data
+const multiPartFiles = {
+  leaf: null,
+  nut: null,
+  stem: null,
+  root: null
+};
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupPartTabs();
+  setupModeSwitch();
   setupFileUpload();
-  setupWebcamModal();
+  setupMultiScanSlots();
   setupAnalyzeAction();
-  setupSampleImages();
+  setupMultiAnalyzeAction();
 
-  // Listen to language switch to update result texts dynamically
-  window.addEventListener('languageChanged', (e) => {
+  window.addEventListener('languageChanged', () => {
     if (currentPredictionData) {
       renderResult(currentPredictionData);
     }
   });
+
+  const scanAgainBtn = document.getElementById('scan-again-btn');
+  if (scanAgainBtn) {
+    scanAgainBtn.addEventListener('click', () => {
+      clearSelection();
+      document.getElementById('result-section').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 });
 
-// --- 1. FILE UPLOAD & DRAG/DROP ---
+// --- 1. PART TABS SELECTOR ---
+function setupPartTabs() {
+  const tabs = document.querySelectorAll('.part-tab-btn');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600', 'shadow-sm', 'active');
+        t.classList.add('bg-zinc-50', 'dark:bg-zinc-800', 'text-zinc-700', 'dark:text-zinc-300', 'border-zinc-200', 'dark:border-zinc-700');
+      });
+      tab.classList.remove('bg-zinc-50', 'dark:bg-zinc-800', 'text-zinc-700', 'dark:text-zinc-300', 'border-zinc-200', 'dark:border-zinc-700');
+      tab.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600', 'shadow-sm', 'active');
+      selectedPart = tab.getAttribute('data-part') || 'auto';
+    });
+  });
+}
+
+// --- 2. MODE SWITCHER (SINGLE VS MULTI-PART) ---
+function setupModeSwitch() {
+  const btnSingle = document.getElementById('mode-single-btn');
+  const btnMulti = document.getElementById('mode-multi-btn');
+  const containerSingle = document.getElementById('single-scan-container');
+  const containerMulti = document.getElementById('multi-scan-container');
+  const resSingle = document.getElementById('result-section');
+  const resMulti = document.getElementById('multi-result-section');
+
+  if (!btnSingle || !btnMulti) return;
+
+  btnSingle.addEventListener('click', () => {
+    activeScanMode = 'single';
+    btnSingle.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-zinc-900 text-emerald-700 dark:text-emerald-400 shadow-sm transition-all flex items-center justify-center gap-2";
+    btnMulti.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:white transition-all flex items-center justify-center gap-2";
+    
+    containerSingle.classList.remove('hidden');
+    containerMulti.classList.add('hidden');
+    resMulti.classList.add('hidden');
+  });
+
+  btnMulti.addEventListener('click', () => {
+    activeScanMode = 'multi';
+    btnMulti.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-zinc-900 text-emerald-700 dark:text-emerald-400 shadow-sm transition-all flex items-center justify-center gap-2";
+    btnSingle.className = "flex-1 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:white transition-all flex items-center justify-center gap-2";
+
+    containerSingle.classList.add('hidden');
+    containerMulti.classList.remove('hidden');
+    resSingle.classList.add('hidden');
+  });
+}
+
+// --- 3. SINGLE FILE UPLOAD ---
 function setupFileUpload() {
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('file-input');
-  const previewContainer = document.getElementById('preview-container');
-  const previewImage = document.getElementById('preview-image');
-  const previewFilename = document.getElementById('preview-filename');
-  const previewFilesize = document.getElementById('preview-filesize');
+  const cameraInput = document.getElementById('camera-file-input');
+  const mobileCamBtn = document.getElementById('mobile-cam-btn');
   const removeBtn = document.getElementById('remove-preview-btn');
-  const analyzeBtn = document.getElementById('analyze-btn');
 
   if (!dropzone || !fileInput) return;
 
-  // Dropzone click
   dropzone.addEventListener('click', () => fileInput.click());
 
-  // Drag over / leave
-  ['dragenter', 'dragover'].forEach(eventName => {
-    dropzone.addEventListener(eventName, (e) => {
+  ['dragenter', 'dragover'].forEach(eName => {
+    dropzone.addEventListener(eName, (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      dropzone.classList.add('dropzone-active');
+      dropzone.classList.add('border-emerald-500');
     });
   });
 
-  ['dragleave', 'drop'].forEach(eventName => {
-    dropzone.addEventListener(eventName, (e) => {
+  ['dragleave', 'drop'].forEach(eName => {
+    dropzone.addEventListener(eName, (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      dropzone.classList.remove('dropzone-active');
+      dropzone.classList.remove('border-emerald-500');
     });
   });
 
-  // Handle drop
   dropzone.addEventListener('drop', (e) => {
     const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFileSelected(files[0]);
-    }
+    if (files.length > 0) handleFileSelected(files[0]);
   });
 
-  // File input change
   fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) {
-      handleFileSelected(e.target.files[0]);
-    }
+    if (e.target.files.length > 0) handleFileSelected(e.target.files[0]);
   });
 
-  // Mobile camera button and native file capture
-  const mobileCamBtn = document.getElementById('mobile-cam-btn');
-  const chooseFileBtn = document.getElementById('choose-file-btn');
-  const cameraFileInput = document.getElementById('camera-file-input');
-
-  if (mobileCamBtn && cameraFileInput) {
+  if (mobileCamBtn && cameraInput) {
     mobileCamBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      cameraFileInput.click();
+      cameraInput.click();
     });
-    cameraFileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFileSelected(e.target.files[0]);
-      }
+    cameraInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) handleFileSelected(e.target.files[0]);
     });
   }
 
-  if (chooseFileBtn && fileInput) {
-    chooseFileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      fileInput.click();
-    });
-  }
-
-  // Remove preview
   if (removeBtn) {
     removeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -106,7 +147,6 @@ function setupFileUpload() {
 
 function handleFileSelected(file) {
   const errorAlert = document.getElementById('upload-error-alert');
-  const errorText = document.getElementById('upload-error-text');
   const previewContainer = document.getElementById('preview-container');
   const dropzonePrompt = document.getElementById('dropzone-prompt');
   const previewImage = document.getElementById('preview-image');
@@ -116,23 +156,18 @@ function handleFileSelected(file) {
 
   errorAlert.classList.add('hidden');
 
-  // Format validation
-  const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-  if (!validTypes.includes(file.type)) {
-    showUploadError("Invalid file type! Please upload a JPG, PNG, or WEBP image.");
+  if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
+    showUploadError("Invalid file type! Please upload JPG, PNG, or WEBP.");
     return;
   }
 
-  // Size validation: 5 MB = 5 * 1024 * 1024 bytes
-  const maxSizeBytes = 5 * 1024 * 1024;
-  if (file.size > maxSizeBytes) {
-    showUploadError("File is too large! Maximum allowed image size is 5 MB.");
+  if (file.size > 10 * 1024 * 1024) {
+    showUploadError("Image is too large! Maximum allowed size is 10 MB.");
     return;
   }
 
   selectedFile = file;
 
-  // Render preview
   const reader = new FileReader();
   reader.onload = (e) => {
     previewImage.src = e.target.result;
@@ -150,9 +185,7 @@ function handleFileSelected(file) {
 function clearSelection() {
   selectedFile = null;
   const fileInput = document.getElementById('file-input');
-  const cameraFileInput = document.getElementById('camera-file-input');
   if (fileInput) fileInput.value = '';
-  if (cameraFileInput) cameraFileInput.value = '';
 
   const dropzonePrompt = document.getElementById('dropzone-prompt');
   const previewContainer = document.getElementById('preview-container');
@@ -177,141 +210,64 @@ function showUploadError(msg) {
   }
 }
 
-// --- 2. WEBCAM CAPTURE MODAL ---
-function setupWebcamModal() {
-  const openWebcamBtn = document.getElementById('open-webcam-btn');
-  const webcamModal = document.getElementById('webcam-modal');
-  const closeWebcamBtn = document.getElementById('close-webcam-btn');
-  const capturePhotoBtn = document.getElementById('capture-photo-btn');
-  const retakePhotoBtn = document.getElementById('retake-photo-btn');
-  const usePhotoBtn = document.getElementById('use-photo-btn');
-  const switchCameraBtn = document.getElementById('switch-camera-btn');
-  const video = document.getElementById('webcam-video');
-  const canvas = document.getElementById('webcam-canvas');
-  let capturedBlob = null;
+// --- 4. MULTI-PART SLOTS HANDLING ---
+function setupMultiScanSlots() {
+  const slots = document.querySelectorAll('.multi-part-slot');
+  const analyzeMultiBtn = document.getElementById('analyze-multi-btn');
 
-  if (!openWebcamBtn || !webcamModal) return;
+  slots.forEach(slot => {
+    const part = slot.getAttribute('data-part');
+    const input = slot.querySelector('.multi-file-input');
+    const preview = slot.querySelector('.slot-preview');
+    const previewImg = preview.querySelector('img');
+    const prompt = slot.querySelector('.slot-prompt');
+    const removeBtn = slot.querySelector('.slot-remove');
 
-  openWebcamBtn.addEventListener('click', async () => {
-    webcamModal.classList.remove('hidden');
-    await startCamera();
-  });
+    slot.addEventListener('click', (e) => {
+      if (e.target === removeBtn) return;
+      input.click();
+    });
 
-  closeWebcamBtn.addEventListener('click', () => {
-    stopCamera();
-    webcamModal.classList.add('hidden');
-  });
-
-  async function startCamera() {
-    try {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      videoDevices = devices.filter(d => d.kind === 'videoinput');
-
-      const videoConstraint = videoDevices.length > 0 && videoDevices[currentCameraIndex]
-        ? { deviceId: { exact: videoDevices[currentCameraIndex].deviceId } }
-        : { facingMode: { ideal: 'environment' } };
-
-      const constraints = {
-        video: Object.assign({
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        }, videoConstraint)
-      };
-
-      if (webcamStream) {
-        webcamStream.getTracks().forEach(t => t.stop());
-      }
-
-      webcamStream = await navigator.mediaDevices.getUserMedia(constraints);
-      video.srcObject = webcamStream;
-      video.classList.remove('hidden');
-      canvas.classList.add('hidden');
-
-      capturePhotoBtn.classList.remove('hidden');
-      retakePhotoBtn.classList.add('hidden');
-      usePhotoBtn.classList.add('hidden');
-    } catch (err) {
-      console.error("Camera access error:", err);
-      alert("Could not access camera. Please check camera permissions or upload an image file directly.");
-      webcamModal.classList.add('hidden');
-    }
-  }
-
-  function stopCamera() {
-    if (webcamStream) {
-      webcamStream.getTracks().forEach(track => track.stop());
-      webcamStream = null;
-    }
-  }
-
-  // Switch front/back camera
-  if (switchCameraBtn) {
-    switchCameraBtn.addEventListener('click', async () => {
-      if (videoDevices.length > 1) {
-        currentCameraIndex = (currentCameraIndex + 1) % videoDevices.length;
-        await startCamera();
+    input.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        multiPartFiles[part] = file;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          previewImg.src = ev.target.result;
+          preview.classList.remove('hidden');
+          prompt.classList.add('hidden');
+          slot.classList.add('border-emerald-500', 'bg-emerald-50/20');
+          checkMultiAnalyzeReady();
+        };
+        reader.readAsDataURL(file);
       }
     });
-  }
 
-  // Capture photo from video feed
-  capturePhotoBtn.addEventListener('click', () => {
-    const ctx = canvas.getContext('2d');
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    video.classList.add('hidden');
-    canvas.classList.remove('hidden');
-
-    capturePhotoBtn.classList.add('hidden');
-    retakePhotoBtn.classList.remove('hidden');
-    usePhotoBtn.classList.remove('hidden');
-
-    canvas.toBlob((blob) => {
-      capturedBlob = blob;
-    }, 'image/jpeg', 0.95);
-  });
-
-  // Retake photo
-  retakePhotoBtn.addEventListener('click', () => {
-    video.classList.remove('hidden');
-    canvas.classList.add('hidden');
-    capturePhotoBtn.classList.remove('hidden');
-    retakePhotoBtn.classList.add('hidden');
-    usePhotoBtn.classList.add('hidden');
-  });
-
-  // Use captured photo
-  usePhotoBtn.addEventListener('click', () => {
-    if (capturedBlob) {
-      const file = new File([capturedBlob], `areca_webcam_${Date.now()}.jpg`, { type: 'image/jpeg' });
-      handleFileSelected(file);
-      stopCamera();
-      webcamModal.classList.add('hidden');
-    }
-  });
-}
-
-// --- 3. SAMPLE IMAGES HELPER ---
-function setupSampleImages() {
-  document.querySelectorAll('.sample-leaf-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const sampleUrl = btn.getAttribute('data-img');
-      const sampleName = btn.getAttribute('data-name') || 'sample_leaf.jpg';
-      try {
-        const resp = await fetch(sampleUrl);
-        const blob = await resp.blob();
-        const file = new File([blob], sampleName, { type: blob.type || 'image/jpeg' });
-        handleFileSelected(file);
-      } catch (err) {
-        console.warn("Could not load sample image:", err);
-      }
+    removeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      multiPartFiles[part] = null;
+      input.value = '';
+      preview.classList.add('hidden');
+      prompt.classList.remove('hidden');
+      slot.classList.remove('border-emerald-500', 'bg-emerald-50/20');
+      checkMultiAnalyzeReady();
     });
   });
+
+  function checkMultiAnalyzeReady() {
+    const hasAny = Object.values(multiPartFiles).some(f => f !== null);
+    if (hasAny) {
+      analyzeMultiBtn.removeAttribute('disabled');
+      analyzeMultiBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    } else {
+      analyzeMultiBtn.setAttribute('disabled', 'true');
+      analyzeMultiBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    }
+  }
 }
 
-// --- 4. ANALYZE ACTION & PREDICTION SUBMISSION ---
+// --- 5. ANALYZE SINGLE SCAN ---
 function setupAnalyzeAction() {
   const analyzeBtn = document.getElementById('analyze-btn');
   const loadingOverlay = document.getElementById('loading-overlay');
@@ -325,43 +281,44 @@ function setupAnalyzeAction() {
       return;
     }
 
-    // Show loading spinner
     loadingOverlay.classList.remove('hidden');
-    const statusSteps = [
+    const steps = [
       "Preprocessing image (Resizing 224x224, Normalizing)...",
-      "Extracting convolutional feature representations...",
-      "Evaluating MobileNetV2 Softmax activations...",
-      "Retrieving agronomic treatment advisory..."
+      "Model A: Identifying plant part (Leaf, Stem, Root, Nut)...",
+      "Model B: Classifying pathological condition...",
+      "Generating diagnostic report & prescription..."
     ];
-    let stepIndex = 0;
+    let stepIdx = 0;
     const interval = setInterval(() => {
-      stepIndex = (stepIndex + 1) % statusSteps.length;
-      if (loadingStatusText) loadingStatusText.textContent = statusSteps[stepIndex];
+      stepIdx = (stepIdx + 1) % steps.length;
+      if (loadingStatusText) loadingStatusText.textContent = steps[stepIdx];
     }, 450);
 
     const formData = new FormData();
     formData.append('image', selectedFile);
+    formData.append('part', selectedPart);
 
     try {
-      const response = await fetch('/predict', {
+      let response = await fetch('/predict', {
         method: 'POST',
         body: formData
       });
 
       clearInterval(interval);
-      const data = await response.json();
+      loadingOverlay.classList.add('hidden');
 
-      if (!response.ok || !data.success) {
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (!data.success) {
         throw new Error(data.error || "Prediction request failed.");
       }
 
       currentPredictionData = data;
-      loadingOverlay.classList.add('hidden');
-
-      // Render Result section
       renderResult(data);
 
-      // Smooth scroll to result
       const resultSection = document.getElementById('result-section');
       if (resultSection) {
         resultSection.classList.remove('hidden');
@@ -376,119 +333,177 @@ function setupAnalyzeAction() {
   });
 }
 
-// --- 5. RENDER RESULT DETAILS ---
+// --- 6. ANALYZE MULTI-PART PALM SCAN ---
+function setupMultiAnalyzeAction() {
+  const analyzeMultiBtn = document.getElementById('analyze-multi-btn');
+  const loadingOverlay = document.getElementById('loading-overlay');
+  const multiResultSection = document.getElementById('multi-result-section');
+  const multiScansGrid = document.getElementById('multi-scans-grid');
+  const multiOverallStatus = document.getElementById('multi-overall-status');
+  const downloadMultiPdfBtn = document.getElementById('download-multi-pdf-btn');
+
+  if (!analyzeMultiBtn) return;
+
+  analyzeMultiBtn.addEventListener('click', async () => {
+    loadingOverlay.classList.remove('hidden');
+    
+    const formData = new FormData();
+    for (const [part, file] of Object.entries(multiPartFiles)) {
+      if (file) {
+        formData.append('images', file);
+        formData.append(`part_${file.name}`, part);
+      }
+    }
+
+    try {
+      const response = await fetch('/predict', {
+        method: 'POST',
+        body: formData
+      });
+
+      loadingOverlay.classList.add('hidden');
+      if (!response.ok) throw new Error("Multi-part scan failed.");
+
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Evaluation failed");
+
+      const scans = data.scans || (data.prediction_id ? [data] : []);
+      multiOverallStatus.textContent = data.overall_health || "Palm Assessment Complete";
+      
+      // Render cards
+      multiScansGrid.innerHTML = '';
+      scans.forEach(scan => {
+        const card = document.createElement('div');
+        card.className = "bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 space-y-3";
+        card.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <img src="${scan.image_url}" class="w-16 h-16 rounded-xl object-cover border border-emerald-500">
+            <div>
+              <span class="text-xs font-bold uppercase text-emerald-600">${scan.part.toUpperCase()}</span>
+              <h4 class="font-extrabold text-sm sm:text-base text-zinc-900 dark:text-white">${scan.disease}</h4>
+              <p class="text-xs text-zinc-500 font-kannada">${scan.disease_kn || ''}</p>
+            </div>
+          </div>
+          <div class="flex justify-between items-center text-xs pt-1 border-t border-zinc-200 dark:border-zinc-700">
+            <span class="font-semibold text-zinc-600 dark:text-zinc-400">Confidence: <b>${scan.confidence}%</b></span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold ${scan.details?.severity_badge || 'bg-emerald-100 text-emerald-800'}">${scan.details?.severity || 'Moderate'}</span>
+          </div>
+          <a href="/report/${scan.prediction_id}" target="_blank" class="block text-center text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-white dark:bg-zinc-900 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-50">
+            <i class="fa-solid fa-file-pdf mr-1"></i> Part Diagnostic PDF
+          </a>
+        `;
+        multiScansGrid.appendChild(card);
+      });
+
+      // Hook Multi PDF button
+      downloadMultiPdfBtn.onclick = async () => {
+        try {
+          const repResp = await fetch('/report/multipart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ scans })
+          });
+          const blob = await repResp.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = "ArecaAI_Comprehensive_Palm_Report.pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } catch (e) {
+          alert("Could not generate integrated PDF: " + e.message);
+        }
+      };
+
+      multiResultSection.classList.remove('hidden');
+      multiResultSection.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err) {
+      loadingOverlay.classList.add('hidden');
+      alert(`Multi-scan failed: ${err.message}`);
+    }
+  });
+}
+
+// --- 7. RENDER SINGLE RESULT ---
 function renderResult(data) {
   const lang = localStorage.getItem('areca_lang') || 'en';
   const isKn = lang === 'kn';
+  const details = data.details || {};
 
-  // Disease Title
+  // Part Badge
+  const partBadge = document.getElementById('res-part-badge');
+  if (partBadge) {
+    const partName = isKn ? (data.part_kn || data.part) : (data.part || 'Leaf');
+    partBadge.textContent = (partName || 'Leaf').toUpperCase();
+  }
+
+  // Titles
   const titleEl = document.getElementById('res-disease-name');
-  if (titleEl) {
-    titleEl.textContent = isKn ? (data.disease_kn || data.disease) : data.disease;
-  }
-
-  // Kannada Subtitle if English is active, or English if Kannada active
   const subTitleEl = document.getElementById('res-disease-sub');
-  if (subTitleEl) {
-    subTitleEl.textContent = isKn ? data.disease : (data.disease_kn || '');
-  }
+  if (titleEl) titleEl.textContent = isKn ? (data.disease_kn || data.disease) : data.disease;
+  if (subTitleEl) subTitleEl.textContent = isKn ? data.disease : (data.disease_kn || '');
 
-  // Confidence & Progress Bar
+  // Confidence
   const confEl = document.getElementById('res-confidence-text');
   const confBar = document.getElementById('res-confidence-bar');
-  const conf = data.confidence;
-
-  if (confEl) confEl.textContent = `${conf}%`;
+  if (confEl) confEl.textContent = `${data.confidence}%`;
   if (confBar) {
-    confBar.style.width = `${Math.min(100, conf)}%`;
-    confBar.className = "h-4 rounded-full transition-all duration-1000 " + 
-      (conf >= 80 ? "bg-emerald-500" : conf >= 60 ? "bg-amber-500" : "bg-red-500");
+    confBar.style.width = `${Math.min(100, data.confidence)}%`;
+    confBar.className = "h-2.5 rounded-full transition-all duration-1000 " + 
+      (data.confidence >= 80 ? "bg-emerald-500" : data.confidence >= 60 ? "bg-amber-500" : "bg-red-500");
   }
 
-  // Result Image
+  // Image
   const resImg = document.getElementById('res-image');
-  if (resImg) {
-    resImg.src = data.image_url;
-  }
+  if (resImg) resImg.src = data.image_url;
 
   // Pathogen & Severity
   const pathogenEl = document.getElementById('res-pathogen');
   const severityEl = document.getElementById('res-severity');
-  const details = data.details || {};
-
-  if (pathogenEl) {
-    pathogenEl.textContent = isKn ? (details.pathogen_kn || details.pathogen || 'N/A') : (details.pathogen || 'N/A');
-  }
+  if (pathogenEl) pathogenEl.textContent = isKn ? (details.pathogen_kn || details.pathogen || 'N/A') : (details.pathogen || 'N/A');
   if (severityEl) {
     severityEl.textContent = details.severity || 'Moderate';
     severityEl.className = "px-3 py-1 rounded-full text-xs font-bold border " + (details.severity_badge || "bg-yellow-100 text-yellow-800");
   }
 
-  // Low Confidence Alert (< 60%)
-  const lowConfAlert = document.getElementById('low-confidence-alert');
-  const lowConfMsg = document.getElementById('low-confidence-message');
-  if (lowConfAlert) {
-    if (data.low_confidence) {
-      lowConfAlert.classList.remove('hidden');
-      if (lowConfMsg) {
-        lowConfMsg.textContent = isKn 
-          ? (data.warning_message_kn || "ಖಚಿತವಾಗಿ ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ (<60% ನಿಖರತೆ). ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.")
-          : (data.warning_message || "Unable to identify (<60% confidence), please upload a clearer image.");
+  // Direct ReportLab PDF link
+  const pdfBtn = document.getElementById('download-pdf-btn');
+  if (pdfBtn && data.prediction_id) {
+    pdfBtn.href = `/report/${data.prediction_id}`;
+  }
+
+  // Low confidence banner
+  const lowAlert = document.getElementById('low-confidence-alert');
+  const lowMsg = document.getElementById('low-confidence-message');
+  if (lowAlert) {
+    if (data.low_confidence || data.part === 'not_arecanut') {
+      lowAlert.classList.remove('hidden');
+      if (lowMsg) {
+        lowMsg.textContent = isKn
+          ? (data.warning_message_kn || "ಅಡಿಕೆ ಭಾಗ ಪತ್ತೆಯಾಗಿಲ್ಲ, ದಯವಿಟ್ಟು ಹತ್ತಿರದಿಂದ ಸ್ಪಷ್ಟ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.")
+          : (data.warning_message || "No arecanut part detected, move closer or improve lighting");
       }
     } else {
-      lowConfAlert.classList.add('hidden');
+      lowAlert.classList.add('hidden');
     }
   }
 
-  // Render Probabilities breakdown
-  renderProbabilities(data.probabilities || {});
-
-  // Render Diagnostic Tabs (Symptoms, Causes, Organic, Chemical, Prevention)
-  renderList('res-symptoms-list', isKn ? details.symptoms_kn : details.symptoms);
-  renderList('res-causes-list', isKn ? details.causes_kn : details.causes);
-  renderList('res-organic-list', isKn ? details.organic_treatment_kn : details.organic_treatment);
-  renderList('res-chemical-list', isKn ? details.chemical_treatment_kn : details.chemical_treatment);
-  renderList('res-prevention-list', isKn ? details.prevention_kn : details.prevention);
+  // Text advisory sections
+  setText('res-symptoms-text', isKn ? details.symptoms_kn : details.symptoms);
+  setText('res-organic-text', isKn ? details.organic_treatment_kn : details.organic_treatment);
+  setText('res-chemical-text', isKn ? details.chemical_treatment_kn : details.chemical_treatment);
+  setText('res-prevention-text', isKn ? details.prevention_kn : details.prevention);
+  setText('res-expert-text', isKn ? details.when_to_consult_expert_kn : details.when_to_consult_expert);
 }
 
-function renderList(elementId, items) {
-  const container = document.getElementById(elementId);
-  if (!container) return;
-  container.innerHTML = '';
-
-  if (!items || items.length === 0) {
-    container.innerHTML = '<li class="text-zinc-500 italic">No specific recommendations needed.</li>';
-    return;
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (Array.isArray(val)) {
+    el.innerHTML = val.map(v => `• ${v}`).join('<br/>');
+  } else {
+    el.textContent = val || 'Not applicable for this health status.';
   }
-
-  items.forEach(item => {
-    const li = document.createElement('li');
-    li.className = "flex items-start space-x-2 text-sm text-zinc-700 dark:text-zinc-300";
-    li.innerHTML = `
-      <span class="text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">•</span>
-      <span>${item}</span>
-    `;
-    container.appendChild(li);
-  });
-}
-
-function renderProbabilities(probabilities) {
-  const container = document.getElementById('res-probabilities-list');
-  if (!container) return;
-  container.innerHTML = '';
-
-  Object.entries(probabilities).forEach(([cls, prob]) => {
-    const row = document.createElement('div');
-    row.className = "space-y-1";
-    row.innerHTML = `
-      <div class="flex justify-between text-xs text-zinc-600 dark:text-zinc-400">
-        <span class="font-medium">${cls}</span>
-        <span class="font-bold">${prob}%</span>
-      </div>
-      <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
-        <div class="h-full bg-emerald-600 dark:bg-emerald-500 rounded-full" style="width: ${prob}%"></div>
-      </div>
-    `;
-    container.appendChild(row);
-  });
 }

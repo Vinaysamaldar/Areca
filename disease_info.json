@@ -1,404 +1,553 @@
 {
+  "parts": ["leaf", "stem", "root", "nut", "not_arecanut"],
   "classes": [
-    "Healthy",
-    "Koleroga (Fruit Rot)",
-    "Yellow Leaf Disease",
-    "Bud Rot",
-    "Stem Bleeding",
-    "Leaf Spot"
+    "Nut_Koleroga",
+    "Leaf_YellowLeafDisease",
+    "Stem_Bleeding",
+    "Leaf_BudRot",
+    "Leaf_Spot",
+    "Stem_Cracking",
+    "Healthy_Leaf",
+    "Healthy_Nut",
+    "Healthy_Stem",
+    "Healthy_Root"
   ],
-  "diseases": {
-    "Healthy": {
-      "id": "healthy",
-      "name": "Healthy Arecanut Palm",
-      "name_kn": "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ ಮರ",
-      "pathogen": "None (Plant is healthy)",
-      "pathogen_kn": "ಯಾವುದೇ ರೋಗಾಣು ಇಲ್ಲ (ಸಸ್ಯ ಆರೋಗ್ಯಕರವಾಗಿದೆ)",
-      "part_affected": "None",
-      "part_affected_kn": "ಯಾವುದೂ ಇಲ್ಲ",
-      "severity": "Normal",
-      "severity_badge": "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/40 dark:text-green-300",
-      "description": "The arecanut palm foliage, trunk, and bunch show normal green pigmentation, vigorous frond development, and no visible lesions, yellowing, or weeping fluid.",
-      "description_kn": "ಅಡಿಕೆ ಮರದ ಗರಿಗಳು, ಕಾಂಡ ಮತ್ತು ಗೊನೆಗಳು ಸಮೃದ್ಧ ಹಸಿರು ಬಣ್ಣವನ್ನು ಹೊಂದಿದ್ದು ಯಾವುದೇ ರೋಗದ ಲಕ್ಷಣಗಳು ಕಂಡುಬಂದಿಲ್ಲ.",
-      "symptoms": [
-        "Vibrant dark green fronds and regular canopy crown",
-        "Firm green developing nuts without water-soaked rot",
-        "Smooth, sturdy trunk without fissures or rust-colored exudate",
-        "Active apical bud growth and healthy floral spathes"
+  "seasonal_calendar": [
+    {
+      "season": "Pre-Monsoon (May - June)",
+      "season_kn": "ಮುಂಗಾರು ಪೂರ್ವ (ಮೇ - ಜೂನ್)",
+      "actions": [
+        "Clean plantation basins and construct drainage trenches (depth 50-75 cm)",
+        "First preventive spray of 1% Bordeaux mixture on bunches for Koleroga prevention",
+        "Cover developing arecanut bunches with polythene bags (200 gauge, bunch bagging/Kotte)",
+        "Apply Trichoderma harzianum enriched neem cake around the root base"
       ],
-      "symptoms_kn": [
-        "ಹಚ್ಚ ಹಸಿರಾದ ಆರೋಗ್ಯಕರ ಗರಿಗಳು ಹಾಗೂ ಸಮತೋಲಿತ ಕಿರೀಟ",
-        "ಕಾಯಿಗಳು ಗಟ್ಟಿಯಾಗಿದ್ದು ಯಾವುದೇ ಕಪ್ಪು ಅಥವಾ ಕೊಳೆ ಮಚ್ಚೆಗಳಿಲ್ಲ",
-        "ಗಟ್ಟಿಯಾದ ಕಾಂಡ ಹಾಗೂ ಯಾವುದೇ ದ್ರವ ಸೋರುವಿಕೆ ಇಲ್ಲ",
-        "ಉತ್ತಮ ಬೆಳವಣಿಗೆಯ ಸುಳಿ ಮತ್ತು ಹೂವಿನ ಸಿಂಗಾರ"
-      ],
-      "causes": [
-        "Optimal irrigation, soil aeration, and balanced NPK fertilizer management",
-        "Good plantation sanitation and drainage"
-      ],
-      "causes_kn": [
-        "ಉತ್ತಮ ನೀರಾವರಿ, ಬಸಿಗಾಲುವೆ ಮತ್ತು ಸಮತೋಲಿತ ಪೋಷಕಾಂಶಗಳ ನಿರ್ವಹಣೆ",
-        "ತೋಟದಲ್ಲಿ ಉತ್ತಮ ಸ್ವಚ್ಛತೆ ಮತ್ತು ಗಾಳಿ ಬೆಳಕಿನ ಸಂಚಾರ"
-      ],
-      "organic_treatment": [
-        "Apply well-decomposed FYM (Farm Yard Manure) @ 12-15 kg per palm annually",
-        "Apply green manure or vermicompost with bio-fertilizers (Azospirillum & Phosphobacteria)",
-        "Maintain cover crops like Mimosa invisa or sunn hemp to enrich organic matter"
-      ],
-      "organic_treatment_kn": [
-        "ಪ್ರತಿ ಮರಕ್ಕೆ ವಾರ್ಷಿಕ 12-15 ಕೆ.ಜಿ ಚೆನ್ನಾಗಿ ಕೊಳೆತ ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ ನೀಡಿ",
-        "ಎರೆಹುಳು ಗೊಬ್ಬರ ಮತ್ತು ಜೈವಿಕ ಗೊಬ್ಬರಗಳಾದ ಅಜೋಸ್ಪಿರಿಲಂ ಬಳಕೆ ಮಾಡಿ",
-        "ತೋಟದಲ್ಲಿ ಹಸಿರೆಲೆ ಗೊಬ್ಬರ ಅಥವಾ ಹೊದಿಕೆ ಬೆಳೆಗಳನ್ನು ಬೆಳೆಸಿ"
-      ],
-      "chemical_treatment": [
-        "Follow general balanced schedule: 100g N, 40g P2O5, 140g K2O per bearing palm per year in split doses (pre-monsoon & post-monsoon)"
-      ],
-      "chemical_treatment_kn": [
-        "ಶಿಫಾರಸು ಮಾಡಿದ ಎನ್.ಪಿ.ಕೆ (100:40:140 ಗ್ರಾಂ) ರಾಸಾಯನಿಕ ಗೊಬ್ಬರವನ್ನು ಮಳೆಗಾಲಕ್ಕೆ ಮುಂಚೆ ಮತ್ತು ನಂತರ ಎರಡು ಕಂತುಗಳಲ್ಲಿ ನೀಡಿ"
-      ],
-      "prevention": [
-        "Maintain proper field drainage during heavy monsoons",
-        "Regularly scout canopy for early signs of pest or fungal infection",
-        "Mulch the base with dried fronds or organic matter during dry summers"
-      ],
-      "prevention_kn": [
-        "ಭಾರೀ ಮಳೆಯ ಸಮಯದಲ್ಲಿ ತೋಟದಲ್ಲಿ ನೀರು ನಿಲ್ಲದಂತೆ ಬಸಿಗಾಲುವೆಗಳನ್ನು ಸ್ವಚ್ಛವಾಗಿಡಿ",
-        "ನಿಯಮಿತವಾಗಿ ಮರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ರೋಗ-ಕೀಟಗಳ ಬಾಧೆಯನ್ನು ಮೊದಲೇ ಗುರುತಿಸಿ",
-        "ಬೇಸಿಗೆಯಲ್ಲಿ ಬುಡಕ್ಕೆ ಒಣಗಿದ ತರಗೆಲೆಗಳನ್ನು ಹೊದಿಕೆಯಾಗಿ ಹಾಕಿ ತೇವಾಂಶ ಕಾಪಾಡಿ"
+      "actions_kn": [
+        "ತೋಟದಲ್ಲಿ ಬಸಿಗಾಲುವೆಗಳನ್ನು (50-75 ಸೆಂ.ಮೀ ಆಳ) ನಿರ್ಮಿಸಿ ನೀರು ನಿಲ್ಲದಂತೆ ಮಾಡಿ",
+        "ಕೊಳೆರೋಗ ತಡೆಗಟ್ಟಲು ಗೊನೆಗಳಿಗೆ 1% ಬೋರ್ಡೋ ದ್ರಾವಣದ ಮೊದಲ ಮುನ್ನೆಚ್ಚರಿಕೆ ಸಿಂಪಡಣೆ",
+        "ಎಳೆ ಕಾಯಿಗಳ ಗೊನೆಗಳಿಗೆ ಪ್ಲಾಸ್ಟಿಕ್ ಚೀಲ (ಕೊಟ್ಟೆ) ಕಟ್ಟಿ ರಕ್ಷಿಸಿ",
+        "ಮರದ ಬುಡಕ್ಕೆ ಬೇವಿನ ಹಿಂಡಿಯೊಂದಿಗೆ ಟ್ರೈಕೋಡರ್ಮ ಜೈವಿಕ ಶಿಲೀಂಧ್ರನಾಶಕ ಹಾಕಿ"
       ]
     },
-    "Koleroga (Fruit Rot)": {
+    {
+      "season": "South-West Monsoon (July - August)",
+      "season_kn": "ಮುಂಗಾರು ಮಳೆಗಾಲ (ಜುಲೈ - ಆಗಸ್ಟ್)",
+      "actions": [
+        "Second spray of 1% Bordeaux mixture or Metalaxyl-Mancozeb (2g/L) during rain breaks",
+        "Inspect crown buds regularly for Bud Rot symptoms; apply fungicide sachets if detected",
+        "Collect and burn fallen rotting nuts immediately to curb spore spread"
+      ],
+      "actions_kn": [
+        "ಮಳೆ ಬಿಡುವು ನೀಡಿದಾಗ 1% ಬೋರ್ಡೋ ದ್ರಾವಣ ಅಥವಾ ಮೆಟಲಾಕ್ಸಿಲ್-ಮ್ಯಾಂಕೋಜೆಬ್ (2 ಗ್ರಾಂ/ಲೀ) ಎರಡನೇ ಸಿಂಪಡಣೆ",
+        "ಸುಳಿ ಕೊಳೆ ರೋಗದ ಲಕ್ಷಣಗಳಿಗಾಗಿ ಸುಳಿಗಳನ್ನು ಪರೀಕ್ಷಿಸಿ; ಶಿಲೀಂಧ್ರನಾಶಕ ಪೊಟ್ಟಣ ಇಡಿ",
+        "ಉದುರಿದ ಕೊಳೆತ ಕಾಯಿಗಳನ್ನು ತೋಟದಿಂದ ಆಯ್ದು ಸುಟ್ಟು ಹಾಕಿ"
+      ]
+    },
+    {
+      "season": "Post-Monsoon (September - November)",
+      "season_kn": "ಹಿಂಗಾರು ಕಾಲ (ಸೆಪ್ಟೆಂಬರ್ - ನವೆಂಬರ್)",
+      "actions": [
+        "Third protective spray of Copper Oxychloride (3g/L) or Bordeaux mixture if rains persist",
+        "Apply main annual fertilizer dose: 100g N, 40g P2O5, 140g K2O per bearing palm",
+        "Inspect trunks for stem bleeding; scrape lesions and swab with coal tar or Bordeaux paste",
+        "Spray Carbendazim (1g/L) for Leaf Spot disease control on new foliar flush"
+      ],
+      "actions_kn": [
+        "ಮಳೆ ಮುಂದುವರಿದರೆ ತಾಮ್ರದ ಆಕ್ಸಿಕ್ಲೋರೈಡ್ (3 ಗ್ರಾಂ/ಲೀ) ಅಥವಾ ಬೋರ್ಡೋ ದ್ರಾವಣದ ಮೂರನೇ ಸಿಂಪಡಣೆ",
+        "ಪ್ರತಿ ಮರಕ್ಕೆ ಶಿಫಾರಸು ಮಾಡಿದ ರಾಸಾಯನಿಕ ಗೊಬ್ಬರ (100:40:140 ಗ್ರಾಂ) ನೀಡಿ",
+        "ಕಾಂಡ ಸ್ರಾವ ಪರೀಕ್ಷಿಸಿ; ಗಾಯಗಳನ್ನು ಕೆತ್ತಿ ಬೋರ್ಡೋ ಪೇಸ್ಟ್ ಅಥವಾ ಕೋಲ್ಟಾರ್ ಲೇಪಿಸಿ",
+        "ಎಲೆ ಚುಕ್ಕೆ ರೋಗ ನಿಯಂತ್ರಣಕ್ಕೆ ಕಾರ್ಬೆಂಡಾಜಿಮ್ (1 ಗ್ರಾಂ/ಲೀ) ಸಿಂಪಡಿಸಿ"
+      ]
+    },
+    {
+      "season": "Summer & Dry Season (December - April)",
+      "season_kn": "ಬೇಸಿಗೆ ಕಾಲ (ಡಿಸೆಂಬರ್ - ಏಪ್ರಿಲ್)",
+      "actions": [
+        "White-wash palm trunks with lime (slaked lime 1kg in 5L water) to avoid sunscald/stem cracking",
+        "Provide drip or basin irrigation (150-200 litres per palm once every 4-5 days)",
+        "Mulch tree basins with dry leaves, coir pith, or green manure to conserve root moisture",
+        "Apply organic bio-fertilizers and micronutrient mixture (Zinc + Boron)"
+      ],
+      "actions_kn": [
+        "ಬಿಸಿಲಿನ ಹೊಡೆತ ಮತ್ತು ಕಾಂಡ ಬಿರುಕು ತಡೆಯಲು ಕಾಂಡಗಳಿಗೆ ಸುಣ್ಣ ಬಳಿಯಿರಿ",
+        "ಹನಿ ನೀರಾವರಿ ಅಥವಾ ಪಾತಿ ಮೂಲಕ 4-5 ದಿನಕ್ಕೊಮ್ಮೆ 150-200 ಲೀಟರ್ ನೀರು ನೀಡಿ",
+        "ತೇವಾಂಶ ಸಂರಕ್ಷಣೆಗೆ ಮರದ ಬುಡಕ್ಕೆ ತೆಂಗಿನ ನಾರು, ತರಗೆಲೆ ಅಥವಾ ಕಳೆ ಹೊದಿಕೆ (ಮಲ್ಚಿಂಗ್) ಮಾಡಿ",
+        "ಜಿಂಕ್ ಮತ್ತು ಬೋರಾನ್ ಲಘು ಪೋಷಕಾಂಶಗಳ ಮಿಶ್ರಣವನ್ನು ನೀಡಿ"
+      ]
+    }
+  ],
+  "diseases": {
+    "Nut_Koleroga": {
       "id": "koleroga",
       "name": "Koleroga / Mahali (Fruit Rot)",
       "name_kn": "ಕೊಳೆರೋಗ / ಮಹಾಲಿ (ಕಾಯಿ ಕೊಳೆ)",
-      "pathogen": "Phytophthora meadii (Fungal Oomycete)",
-      "pathogen_kn": "ಫೈಟೊಪ್ಥೋರಾ ಮಿಡಿಯೈ (ಶಿಲೀಂಧ್ರ)",
-      "part_affected": "Nuts, Fruit Stalks, Rachis",
-      "part_affected_kn": "ಅಡಿಕೆ ಕಾಯಿಗಳು, ಗೊನೆ ತೊಟ್ಟುಗಳು",
+      "part": "nut",
       "severity": "Critical",
       "severity_badge": "bg-red-100 text-red-800 border-red-300 dark:bg-red-900/40 dark:text-red-300",
-      "description": "Koleroga (Mahali) is the most destructive fungal disease of arecanut in heavy rainfall zones. Water-soaked lesions appear on the base of nuts, resulting in massive immature fruit shedding and white mycelial growth.",
-      "description_kn": "ಕೊಳೆರೋಗವು ಅಧಿಕ ಮಳೆ ಬೀಳುವ ಮಲೆನಾಡು ಹಾಗೂ ಕರಾವಳಿ ಭಾಗದಲ್ಲಿ ಅಡಿಕೆಗೆ ಬರುವ ಅತ್ಯಂತ ಮಾರಕ ರೋಗವಾಗಿದೆ. ಕಾಯಿಗಳ ತೊಟ್ಟಿನ ಮೇಲೆ ನೀರಿನಿಂದ ಕೂಡಿದ ಕಪ್ಪು ಮಚ್ಚೆಗಳು ಉಂಟಾಗಿ ಎಳೆ ಕಾಯಿಗಳು ಉದುರಿ ಬೀಳುತ್ತವೆ.",
+      "description": "Koleroga (Mahali) is the most destructive fungal disease of arecanut bunches in heavy monsoon zones. Dark water-soaked lesions appear on green nuts, triggering massive premature fruit shedding and white mycelial rot.",
+      "description_kn": "ಮುಂಗಾರು ಮಳೆಗಾಲದಲ್ಲಿ ಶಿಲೀಂಧ್ರದಿಂದ ಉಂಟಾಗುವ ಅತ್ಯಂತ ಮಾರಕ ಕಾಯಿ ಕೊಳೆ ರೋಗ. ಕಾಯಿಗಳ ತೊಟ್ಟಿನ ಮೇಲೆ ನೀರಿನಿಂದ ಕೂಡಿದ ಕಪ್ಪು ಮಚ್ಚೆಗಳು ಉಂಟಾಗಿ ಕಾಯಿಗಳು ಅಪಾರವಾಗಿ ಉದುರುತ್ತವೆ.",
       "symptoms": [
-        "Dark green water-soaked spots appear near the calyx (base) of young green nuts",
-        "Rapid rotting, nut darkening, and heavy shedding of immature arecanuts",
-        "Whitish cottony fungal mycelial felt covers dropped and hanging nuts",
-        "In advanced cases, rot extends to stalks, bunch rachillae, and leaves"
+        "Dark green water-soaked spots near the calyx/stalk of young green nuts",
+        "Heavy premature shedding of immature arecanuts",
+        "Whitish fungal mycelial felt covering dropped and hanging nuts",
+        "Rot spreads to fruit stalks (rachillae) causing bunch withering"
       ],
       "symptoms_kn": [
-        "ಎಳೆ ಕಾಯಿಗಳ ತೊಟ್ಟಿನ ಭಾಗದಲ್ಲಿ ನೀರಿನಲ್ಲಿ ನೆನೆದಂತ ಕಡು ಹಸಿರು ಅಥವಾ ಕಪ್ಪು ಮಚ್ಚೆಗಳು ಉಂಟಾಗುತ್ತವೆ",
-        "ಕಾಯಿಗಳು ಕೊಳೆತು ತೀವ್ರವಾಗಿ ಉದುರಲಾರಂಭಿಸುತ್ತವೆ",
-        "ಉದುರಿದ ಕಾಯಿಗಳ ಮೇಲೆ ಬಿಳಿ ಬಣ್ಣದ ಶಿಲೀಂಧ್ರದ ಬಲೆಯಂತಹ ರಚನೆ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ",
-        "ರೋಗ ಉಲ್ಬಣಗೊಂಡಾಗ ಗೊನೆಗಳ ತೊಟ್ಟು ಕೊಳೆತು ಒಣಗುತ್ತವೆ"
+        "ಎಳೆ ಕಾಯಿಗಳ ತೊಟ್ಟಿನ ಬಳಿ ನೀರಿನಲ್ಲಿ ನೆನೆದಂತಹ ಕಡು ಹಸಿರು ಅಥವಾ ಕಪ್ಪು ಮಚ್ಚೆಗಳು",
+        "ಎಳೆ ಅಡಿಕೆ ಕಾಯಿಗಳು ಅಪಾರ ಪ್ರಮಾಣದಲ್ಲಿ ಉದುರಿ ಬೀಳುವುದು",
+        "ಉದುರಿದ ಕಾಯಿಗಳ ಮೇಲೆ ಬಿಳಿ ಬಣ್ಣದ ಹತ್ತಿಯಂತಹ ಶಿಲೀಂಧ್ರದ ಬಲೆ",
+        "ಗೊನೆಯ ತೊಟ್ಟುಗಳು ಕೊಳೆತು ಒಣಗುವುದು"
       ],
       "causes": [
-        "Prolonged continuous rainfall, high relative humidity (>90%), and cloudy weather during monsoon (June-September)",
-        "Spreading of fungal sporangia by rain splashes and wind currents",
-        "Waterlogged plantations with dense canopy shade"
+        "Pathogen: Phytophthora meadii (fungal oomycete)",
+        "Continuous torrential monsoon rains with high relative humidity (>90%)",
+        "Stagnant water and poor plantation drainage"
       ],
       "causes_kn": [
-        "ಮಳೆಗಾಲದಲ್ಲಿ ನಿರಂತರ ಮಳೆ, ಅತಿಯಾದ ತೇವಾಂಶ (90% ಕ್ಕಿಂತ ಹೆಚ್ಚು) ಮತ್ತು ಮೋಡ ಕವಿದ ವಾತಾವರಣ",
-        "ಮಳೆಯ ಹನಿಗಳು ಮತ್ತು ಗಾಳಿಯ ಮೂಲಕ ಶಿಲೀಂಧ್ರದ ಬೀಜಕಗಳು ಹರಡುವುದು",
-        "ತೋಟದಲ್ಲಿ ನೀರು ನಿಲ್ಲುವುದು ಮತ್ತು ಸೂರ್ಯನ ಬೆಳಕು ಬೀಳದಿರುವುದು"
+        "ರೋಗಾಣು: ಫೈಟೊಪ್ಥೊರಾ ಮೀಡಿಯೈ ಶಿಲೀಂಧ್ರ",
+        "ಸತತ ಧಾರಾಕಾರ ಮಳೆ ಮತ್ತು ಹೆಚ್ಚಿನ ಗಾಳಿಯ ಆದ್ರ್ರತೆ (>90%)",
+        "ತೋಟದಲ್ಲಿ ನೀರು ನಿಲ್ಲುವುದು ಮತ್ತು ಕಳಪೆ ಬಸಿಗಾಲುವೆ"
       ],
       "organic_treatment": [
-        "Cover developing bunches with polythene covers (bunch bagging / Kotte kattuvudu) before South-West monsoon onset",
-        "Spray 1% freshly prepared Bordeaux mixture with natural sticking agent (resin or soap solution)",
-        "Apply bio-control agent Trichoderma harzianum @ 50g per palm enriched in neem cake around the root zone",
-        "Collect and burn all dropped, infected rotting nuts from the orchard floor"
+        "Tie polythene covers (200-300 gauge bunch bagging / Kotte) to bunches before monsoon onset",
+        "Spray 1% freshly prepared Bordeaux mixture with natural resin/soap sticker before rain onset",
+        "Soil application of Trichoderma harzianum (50g/palm) enriched in neem cake (2kg)",
+        "Promptly collect and burn all dropped, rotting nuts from orchard ground"
       ],
       "organic_treatment_kn": [
-        "ಮಳೆಗಾಲ ಆರಂಭವಾಗುವ ಮುನ್ನವೇ ಗೊನೆಗಳಿಗೆ ಪ್ಲಾಸ್ಟಿಕ್ ಚೀಲ (ಕೊಟ್ಟೆ) ಕಟ್ಟುವುದು ಅತ್ಯಂತ ಪರಿಣಾಮಕಾರಿ",
-        "1% ಬೋರ್ಡೋ ದ್ರಾವಣವನ್ನು ಜಿಗುಟು ದ್ರವದೊಂದಿಗೆ ಸೇರಿಸಿ ಮಳೆ ಪ್ರಾರಂಭವಾಗುವ ಮುನ್ನ ಸಿಂಪಡಿಸಿ",
-        "ಬೇವಿನ ಹಿಂಡಿಯೊಂದಿಗೆ ಟ್ರೈಕೋಡರ್ಮ ಹಾರ್ಜಿಯಾನಂ (50 ಗ್ರಾಂ/ಮರಕ್ಕೆ) ಬೆರೆಸಿ ಬುಡಕ್ಕೆ ಹಾಕಿ",
-        "ತೋಟದಲ್ಲಿ ಉದುರಿ ಬಿದ್ದ ಕೊಳೆತ ಕಾಯಿಗಳನ್ನು ಆಯ್ದು ಸುಟ್ಟು ನಾಶಪಡಿಸಿ"
+        "ಮಳೆಗಾಲ ಪ್ರಾರಂಭವಾಗುವ ಮುನ್ನವೇ ಗೊನೆಗಳಿಗೆ ಪ್ಲಾಸ್ಟಿಕ್ ಚೀಲ (ಕೊಟ್ಟೆ) ಕಟ್ಟುವುದು ಅತ್ಯಂತ ಪರಿಣಾಮಕಾರಿ",
+        "1% ಬೋರ್ಡೋ ದ್ರಾವಣವನ್ನು ಜಿಗುಟು ದ್ರವದೊಂದಿಗೆ ಬೆರೆಸಿ ಮಳೆ ಮುಂಚೆ ಸಿಂಪಡಿಸಿ",
+        "ಬೇವಿನ ಹಿಂಡಿಯೊಂದಿಗೆ ಟ್ರೈಕೋಡರ್ಮ ಹಾರ್ಜಿಯಾನಂ (50 ಗ್ರಾಂ/ಮರಕ್ಕೆ) ಬುಡಕ್ಕೆ ಹಾಕಿ",
+        "ಉದುರಿ ಬಿದ್ದ ಕೊಳೆತ ಕಾಯಿಗಳನ್ನು ಆಯ್ದು ಸುಟ್ಟು ನಾಶಪಡಿಸಿ"
       ],
       "chemical_treatment": [
-        "Prophylactic spray of 1% Bordeaux mixture before onset of monsoon (May-June)",
-        "Second spray 40-45 days later or after heavy monsoon break",
-        "If continuous rains prevent Bordeaux spraying, spray Metalaxyl-Mancozeb (Ridomil MZ 72 WP) @ 2g/litre of water or Fosetyl-Al @ 2g/litre with sticker"
+        "Metalaxyl 8% + Mancozeb 64% WP @ 2.0g / litre water spray directly on bunches",
+        "Fosetyl-Aluminium 80% WP @ 2.5g / litre water spray on nuts and canopy",
+        "Copper Oxychloride 50% WP @ 3.0g / litre water as an alternative copper fungicide"
       ],
       "chemical_treatment_kn": [
-        "ಮಳೆಗಾಲ ಆರಂಭಕ್ಕೆ ಮುಂಚೆ (ಮೇ-ಜೂನ್) 1% ಬೋರ್ಡೋ ದ್ರಾವಣವನ್ನು ಗೊನೆಗಳಿಗೆ ಸಂಪೂರ್ಣವಾಗಿ ಸಿಂಪಡಿಸಿ",
-        "ಮಳೆ ಬಿಡುವು ನೀಡಿದಾಗ 40-45 ದಿನಗಳ ನಂತರ ಎರಡನೇ ಸಿಂಪಡಣೆ ಮಾಡಿ",
-        "ತುರ್ತು ಸಂದರ್ಭದಲ್ಲಿ ಮೆಟಲಾಕ್ಸಿಲ್-ಮ್ಯಾಂಕೋಜೆಬ್ (ರಿಡೋಮಿಲ್ 2 ಗ್ರಾಂ/ಲೀಟರ್) ಅಥವಾ ಫೋಸೆಟೈಲ್-ಅಲ್ಯೂಮಿನಿಯಂ 2 ಗ್ರಾಂ/ಲೀಟರ್ ಸಿಂಪಡಿಸಿ"
+        "ಮೆಟಲಾಕ್ಸಿಲ್ 8% + ಮ್ಯಾಂಕೋಜೆಬ್ 64% WP @ 2.0 ಗ್ರಾಂ/ಲೀಟರ್ ನೀರಿಗೆ ಬೆರೆಸಿ ಗೊನೆಗಳಿಗೆ ಸಿಂಪಡಿಸಿ",
+        "ಫೊಸೆಟೈಲ್-ಅಲ್ಯೂಮಿನಿಯಂ 80% WP @ 2.5 ಗ್ರಾಂ/ಲೀಟರ್ ಸಿಂಪಡಿಸಿ",
+        "ತಾಮ್ರದ ಆಕ್ಸಿಕ್ಲೋರೈಡ್ (Copper Oxychloride 50% WP) @ 3.0 ಗ್ರಾಂ/ಲೀಟರ್ ಸಿಂಪಡಿಸಿ"
       ],
       "prevention": [
-        "Tie polythene covers (200-300 gauge) to bunches before heavy rains begin",
-        "Ensure deep cross-drainage channels to remove excess standing water",
-        "Thin out excessive intercrop shade to improve aeration"
+        "Construct deep drainage channels (50-75 cm) between rows to drain water",
+        "Ensure uniform tree spacing to allow sunlight penetration and air movement",
+        "Inspect crowns before monsoon and prune dried lower fronds"
       ],
       "prevention_kn": [
-        "ಮುಂಗಾರು ಮಳೆಗೆ ಮುನ್ನ ಗೊನೆಗಳಿಗೆ ಕೊಟ್ಟೆ ಕಟ್ಟಿ ರಕ್ಷಿಸಿ",
-        "ತೋಟದಲ್ಲಿ ಸರಾಗವಾಗಿ ನೀರು ಹರಿದುಹೋಗುವಂತೆ ಆಳವಾದ ಬಸಿಗಾಲುವೆಗಳನ್ನು ಮಾಡಿ",
-        "ತೋಟದಲ್ಲಿ ಗಾಳಿ ಮತ್ತು ಬಿಸಿಲು ಸರಾಗವಾಗಿ ಆಡುವಂತೆ ಅತಿಯಾದ ನೆರಳನ್ನು ನಿಯಂತ್ರಿಸಿ"
-      ]
+        "ತೋಟದಲ್ಲಿ ನೀರು ಹರಿದುಹೋಗುವಂತೆ ಸಾಲುಗಳ ನಡುವೆ ಆಳವಾದ ಬಸಿಗಾಲುವೆ ನಿರ್ಮಿಸಿ",
+        "ಬಿಸಿಲು ಮತ್ತು ಗಾಳಿ ಸರಾಗವಾಗಿ ಆಡುವಂತೆ ನೆರಳು ನಿಯಂತ್ರಿಸಿ",
+        "ಮಳೆಗಾಲಕ್ಕೆ ಮುನ್ನ ಮರದ ಒಣಗಿದ ಗರಿಗಳನ್ನು ಕತ್ತರಿಸಿ ಸ್ವಚ್ಛಗೊಳಿಸಿ"
+      ],
+      "when_to_consult": "Consult immediately if nut drop exceeds 10% within 48 hours or if protective spray is washed out by unexpected torrential downpours.",
+      "when_to_consult_kn": "ಮೊದಲ ಸಿಂಪಡಣೆಯ ನಂತರವೂ 48 ಗಂಟೆಗಳಲ್ಲಿ 10% ಕ್ಕಿಂತ ಹೆಚ್ಚು ಕಾಯಿಗಳು ಉದುರಿದರೆ ತಕ್ಷಣ ಹತ್ತಿರದ ಕೃಷಿ ವಿಜ್ಞಾನ ಕೇಂದ್ರ (KVK) ಸಂಪರ್ಕಿಸಿ."
     },
-    "Yellow Leaf Disease": {
+    "Leaf_YellowLeafDisease": {
       "id": "yellow_leaf",
       "name": "Yellow Leaf Disease (YLD)",
-      "name_kn": "ಹಳದಿ ಎಲೆ ರೋಗ",
-      "pathogen": "Phytoplasma (Transmitted by plant hoppers / Proutista moesta)",
-      "pathogen_kn": "ಫೈಟೊಪ್ಲಾಸ್ಮಾ (ಜಿಗಿಹುಳುಗಳ ಮೂಲಕ ಹರಡುತ್ತದೆ)",
-      "part_affected": "Foliage / Fronds, Roots, Kernel",
-      "part_affected_kn": "ಗರಿಗಳು, ಬೇರುಗಳು, ಅಡಿಕೆ ಕಾಳು",
+      "name_kn": "ಹಳದಿ ಎಲೆ ರೋಗ (ವೈ.ಎಲ್.ಡಿ)",
+      "part": "leaf",
       "severity": "Severe",
       "severity_badge": "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-900/40 dark:text-amber-300",
-      "description": "Yellow Leaf Disease causes characteristic progressive golden yellowing of inner whorl leaflets, narrowing of leaves, root necrosis, and spongy blackening of harvested kernels.",
-      "description_kn": "ಹಳದಿ ಎಲೆ ರೋಗವು ಅಡಿಕೆಯ ಗರಿಗಳಲ್ಲಿ ಹಳದಿ ಬಣ್ಣಕ್ಕೆ ತಿರುಗುವಿಕೆ, ಗರಿಗಳು ಸಣ್ಣದಾಗುವುದು, ಬೇರುಗಳು ಕೊಳೆಯುವುದು ಮತ್ತು ಅಡಿಕೆ ಕಾಳು ಕಪ್ಪಾಗುವುದಕ್ಕೆ ಕಾರಣವಾಗುವ ಗಂಭೀರ ರೋಗ.",
+      "description": "A destructive phytoplasma condition causing golden chlorosis starting from leaflet tips, root necrosis, crown choking, and hard, black spongy kernels.",
+      "description_kn": "ಗರಿಗಳ ತುದಿಯಿಂದ ಹಳದಿ ಬಣ್ಣಕ್ಕೆ ತಿರುಗುವಿಕೆ, ಗರಿಗಳು ಕುಗ್ಗಿ ಕಿರಿದಾಗುವುದು, ಬೇರುಗಳು ಕೊಳೆಯುವುದು ಮತ್ತು ಅಡಿಕೆ ಕಾಳು ಕಪ್ಪಾಗುವ ಗಂಭೀರ ರೋಗ.",
       "symptoms": [
-        "Characteristic golden yellowing starting from leaflet tips of the middle and outer whorl fronds",
-        "Dark brown necrotic patches along the margins of yellowed leaflets",
+        "Golden-yellow discolouration beginning at the tips of outer and middle whorl leaflets",
+        "Dark brown necrotic drying margins along yellowed leaves",
         "Crown reduction with smaller, bunched-together upright leaves",
-        "Kernel quality drops: kernels turn soft, black, and spongy with cracked surfaces"
+        "Kernels turn black, soft, spongy, and unmarketable with cracked surfaces"
       ],
       "symptoms_kn": [
-        "ನಡು ಹಂತದ ಗರಿಗಳ ತುದಿಯಿಂದ ಆರಂಭವಾಗಿ ಇಡೀ ಗರಿ ಹಳದಿ ಬಣ್ಣಕ್ಕೆ ತಿರುಗುತ್ತದೆ",
-        "ಹಳದಿಯಾದ ಎಲೆಗಳ ಅಂಚಿನಲ್ಲಿ ಕಂದು ಬಣ್ಣದ ಒಣಗಿದ ಗೆರೆಗಳು ಉಂಟಾಗುತ್ತವೆ",
-        "ಮರದ ಕಿರೀಟವು ಕುಗ್ಗಿ ಎಲೆಗಳು ಚಿಕ್ಕದಾಗುತ್ತವೆ",
+        "ನಡು ಹಂತದ ಗರಿಗಳ ತುದಿಯಿಂದ ಆರಂಭವಾಗಿ ಇಡೀ ಗರಿ ಹಳದಿ ಬಣ್ಣಕ್ಕೆ ತಿರುಗುವುದು",
+        "ಹಳದಿಯಾದ ಎಲೆಗಳ ಅಂಚಿನಲ್ಲಿ ಕಂದು ಬಣ್ಣದ ಒಣಗಿದ ಗೆರೆಗಳು",
+        "ಮರದ ಕಿರೀಟವು ಕುಗ್ಗಿ ಎಲೆಗಳು ಚಿಕ್ಕದಾಗುವುದು",
         "ಅಡಿಕೆ ಕಾಳು ಮೆತ್ತಗಾಗಿ ಕಪ್ಪಾಗುತ್ತದೆ ಮತ್ತು ತೂಕ ಕಡಿಮೆಯಾಗುತ್ತದೆ"
       ],
       "causes": [
-        "Phytoplasma bacteria-like micro-organism inhabiting phloem tissues",
-        "Vector transmission by plant hopper Proutista moesta and lace wing bugs",
-        "Poor root aeration, acidic soil with severe magnesium and zinc deficiencies"
+        "Pathogen: Phytoplasma organism inhabiting phloem sieve tubes",
+        "Transmitted by sucking insect vectors (plant hopper Proutista moesta)",
+        "Poor root aeration, high water table, or nutrient imbalances (Zn, B)"
       ],
       "causes_kn": [
-        "ಫೈಟೊಪ್ಲಾಸ್ಮಾ ಸೂಕ್ಷ್ಮಾಣು ಜೀವಿ ಮತ್ತು ರಸ ಹೀರುವ ಕೀಟಗಳು (ಜಿಗಿಹುಳುಗಳು)",
-        "ಮಣ್ಣಿನಲ್ಲಿ ಆಮ್ಲೀಯತೆ ಮತ್ತು ಲಘು ಪೋಷಕಾಂಶಗಳಾದ ಸತು ಹಾಗೂ ಮೆಗ್ನೀಷಿಯಂ ಕೊರತೆ",
-        "ಬೇರು ಭಾಗದಲ್ಲಿ ನೀರಿನ ನಿಶ್ಚಲತೆ"
+        "ರೋಗಾಣು: ಫೈಟೊಪ್ಲಾಸ್ಮಾ ಸೂಕ್ಷ್ಮಾಣು ಜೀವಿ",
+        "ಪ್ರೌಟಿಸ್ಟಾ ಮೊಯೆಸ್ಟಾ ಎಂಬ ಜಿಗಿಹುಳುಗಳ ಮೂಲಕ ಹರಡುತ್ತದೆ",
+        "ಬೇರುಗಳಲ್ಲಿ ಗಾಳಿಯ ಕೊರತೆ ಮತ್ತು ಲಘು ಪೋಷಕಾಂಶಗಳ ಅಸಮತೋಲನ"
       ],
       "organic_treatment": [
         "Apply enriched farmyard manure @ 25 kg/palm with Neem cake (2 kg) and Pongamia cake",
+        "Incorporate organic bio-agent Pseudomonas fluorescens @ 50g/palm in root zone",
         "Apply micronutrient mixture containing Zinc and Boron twice a year",
-        "Incorporate organic bio-agent Pseudomonas fluorescens @ 50g/palm in soil root zone",
-        "Intercrop with pepper, banana, and cocoa to improve microclimate and root zone microbiome"
+        "Intercrop with pepper, banana, and cocoa to improve microclimate and soil microbiome"
       ],
       "organic_treatment_kn": [
         "ಪ್ರತಿ ಮರಕ್ಕೆ 25 ಕೆ.ಜಿ ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ, 2 ಕೆ.ಜಿ ಬೇವಿನ ಹಿಂಡಿ ಮತ್ತು ಹೊಂಗೆ ಹಿಂಡಿ ನೀಡಿ",
+        "ಬುಡಕ್ಕೆ ಸೂಡೋಮೊನಾಸ್ ಫ್ಲೋರೊಸೆನ್ಸ್ (50 ಗ್ರಾಂ) ಜೈವಿಕ ಗೊಬ್ಬರ ಬೆರೆಸಿ",
         "ವರ್ಷಕ್ಕೆ ಎರಡು ಬಾರಿ ಸತು (ಜಿಂಕ್) ಮತ್ತು ಬೋರಾನ್ ಲಘು ಪೋಷಕಾಂಶಗಳನ್ನು ನೀಡಿ",
-        "ಬುಡಕ್ಕೆ ಸೂಡೋಮೊನಾಸ್ ಫ್ಲೋರೊಸೆನ್ಸ್ (50 ಗ್ರಾಂ) ಜೈವಿಕ ಗೊಬ್ಬರವನ್ನು ಬೆರೆಸಿ",
         "ತೋಟದಲ್ಲಿ ಬಾಳೆ, ಕಾಳುಮೆಣಸು ಮತ್ತು ಕೋಕೋ ಮಿಶ್ರಬೆಳೆಗಳನ್ನು ಬೆಳೆಸಿ"
       ],
       "chemical_treatment": [
-        "Apply balanced dosage: 100g N, 40g P, 140g K + 120g Magnesium Sulphate (MgSO4) per palm per year",
-        "Apply 1 kg Agricultural Lime / Dolomite per palm in alternate years to balance soil pH",
-        "Control insect vector (Proutista moesta) by spraying Dimethoate (Rogor) @ 1.5 ml/L or Imidacloprid @ 0.5 ml/L on crown foliage"
+        "Imidacloprid 17.8% SL @ 0.5 ml / litre water foliar spray to control insect vectors",
+        "Thiamethoxam 25% WG @ 0.3 g / litre water as vector management rotation",
+        "Soil root feeding: Tetracycline hydrochloride (500 ppm, 100 ml per palm under expert supervision)"
       ],
       "chemical_treatment_kn": [
-        "ಮರಕ್ಕೆ ಶಿಫಾರಸು ಮಾಡಿದ ರಸಗೊಬ್ಬರದೊಂದಿಗೆ 120 ಗ್ರಾಂ ಮೆಗ್ನೀಷಿಯಂ ಸಲ್ಫೇಟ್ ತಪ್ಪದೇ ನೀಡಿ",
-        "ಮಣ್ಣಿನ ಆಮ್ಲತೆ ಸರಿಪಡಿಸಲು ವರ್ಷ ಬಿಟ್ಟು ವರ್ಷ 1 ಕೆ.ಜಿ ಕೃಷಿ ಸುಣ್ಣ ಅಥವಾ ಡಾಲೋಮೈಟ್ ಹಾಕಿ",
-        "ರೋಗ ಹರಡುವ ರಸಹೀರುವ ಕೀಟಗಳ ನಿಯಂತ್ರಣಕ್ಕೆ ಇಮಿಡಾಕ್ಲೋಪ್ರಿಡ್ 0.5 ಮಿ.ಲೀ/ಲೀಟರ್ ನೀರಿಗೆ ಬೆರೆಸಿ ಸಿಂಪಡಿಸಿ"
+        "ಜಿಗಿಹುಳುಗಳ ನಿಯಂತ್ರಣಕ್ಕೆ ಇಮಿಡಾಕ್ಲೋಪ್ರಿಡ್ 17.8% SL @ 0.5 ಮಿ.ಲೀ/ಲೀಟರ್ ನೀರಿಗೆ ಬೆರೆಸಿ ಸಿಂಪಡಿಸಿ",
+        "ಥಿಯಾಮೆಥೊಕ್ಸಮ್ 25% WG @ 0.3 ಗ್ರಾಂ/ಲೀಟರ್ ಸಿಂಪಡಿಸಿ",
+        "ತಜ್ಞರ ಮಾರ್ಗದರ್ಶನದಲ್ಲಿ ಟೆಟ್ರಾಸೈಕ್ಲಿನ್ ಹೈಡ್ರೋಕ್ಲೋರೈಡ್ ಬೇರಿನ ಮೂಲಕ ನೀಡುವುದು"
       ],
       "prevention": [
         "Plant tolerant cultivars like 'Mangala', 'South Kanara', or resistant regional selections",
-        "Never collect planting seed nuts from YLD-affected gardens",
-        "Ensure deep trenches (1 meter deep) to isolate affected blocks from healthy gardens"
+        "Never source seedlings or seed nuts from YLD-infected orchards",
+        "Excavate isolation trenches (1 m deep) between diseased and healthy blocks"
       ],
       "prevention_kn": [
         "ರೋಗ ನಿರೋಧಕ ಉತ್ತಮ ತಳಿಗಳಾದ ಮಂಗಳ ಅಥವಾ ಸ್ಥಳೀಯ ದೃಢ ಸಸಿಗಳನ್ನು ನೆಡಿ",
         "ರೋಗಪೀಡಿತ ತೋಟಗಳಿಂದ ಬೀಜದ ಅಡಿಕೆಯನ್ನು ಎಂದಿಗೂ ತರಬೇಡಿ",
         "ರೋಗಪೀಡಿತ ಪ್ರದೇಶದಿಂದ ರೋಗ ಹರಡದಂತೆ ತಡೆ ಬಸಿಗಾಲುವೆಗಳನ್ನು ನಿರ್ಮಿಸಿ"
-      ]
+      ],
+      "when_to_consult": "When newly emerging inner whorl leaves show stunted upright growth and kernels turn dark and spongy.",
+      "when_to_consult_kn": "ಹೊಸ ಸುಳಿ ಗರಿಗಳು ಸಣ್ಣದಾಗಿ ಕಿರೀಟ ಕುಗ್ಗಿದಾಗ ಮತ್ತು ಕಾಯಿಗಳು ಕಪ್ಪಾದಾಗ ತೋಟಗಾರಿಕಾ ತಜ್ಞರನ್ನು ಭೇಟಿ ಮಾಡಿ."
     },
-    "Bud Rot": {
-      "id": "bud_rot",
-      "name": "Bud Rot (Kollu / Suli Kole)",
-      "name_kn": "ಸುಳಿ ಕೊಳೆ ರೋಗ",
-      "pathogen": "Phytophthora meadii / Phytophthora palmivora",
-      "pathogen_kn": "ಫೈಟೊಪ್ಥೋರಾ ಮಿಡಿಯೈ / ಪಾಲ್ಮಿವೋರಾ (ಶಿಲೀಂಧ್ರ)",
-      "part_affected": "Apical Growing Bud / Central Spindle Leaf",
-      "part_affected_kn": "ಮರದ ಸುಳಿ / ತುತ್ತತುದಿಯ ಮೊಗ್ಗು",
-      "severity": "Critical",
-      "severity_badge": "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-900/40 dark:text-rose-300",
-      "description": "Bud Rot is a fatal disease targeting the growing apical shoot of the palm. If the single terminal bud rots away, the palm cannot generate new fronds and inevitably dies.",
-      "description_kn": "ಸುಳಿ ಕೊಳೆ ರೋಗವು ಅಡಿಕೆ ಮರದ ಸುಳಿಯ ಮೇಲೆ ಆಕ್ರಮಣ ಮಾಡುವ ಅತ್ಯಂತ ಅಪಾಯಕಾರಿ ರೋಗವಾಗಿದೆ. ಸುಳಿ ಕೊಳೆತು ಹೋದರೆ ಮರವು ಹೊಸ ಗರಿಗಳನ್ನು ಬಿಡದೆ ಸತ್ತುಹೋಗುತ್ತದೆ.",
-      "symptoms": [
-        "Central spindle leaf loses turgidity, yellows, wilts, and droops",
-        "Spindle base rots and pulls out effortlessly with a foul, putrid odor",
-        "Rot quickly spreads down to inner tender heart leaves and growing bud apex",
-        "Gradual outer frond dropping leaving only a bare decapitated trunk"
-      ],
-      "symptoms_kn": [
-        "ಮರದ ಮಧ್ಯಭಾಗದ ಸುಳಿ ಎಲೆ ಹಳದಿಯಾಗಿ ಬಾಡಿ ಜೋತುಬೀಳುತ್ತದೆ",
-        "ಸುಳಿಯನ್ನು ಕೈಯಿಂದ ಎಳೆದರೆ ದುರ್ವಾಸನೆಯೊಂದಿಗೆ ಸುಲಭವಾಗಿ ಕಳಚಿ ಬರುತ್ತದೆ",
-        "ಕೊಳೆತವು ಮರದ ತಿರುಳಿಗೆ ಹರಡಿ ಸುಳಿ ಸಂಪೂರ್ಣ ಕೊಳೆಯುತ್ತದೆ",
-        "ಗರಿಗಳೆಲ್ಲಾ ಉದುರಿ ಕೇವಲ ಕಾಂಡ ಮಾತ್ರ ಉಳಿದು ಮರ ಸಾಯುತ್ತದೆ"
-      ],
-      "causes": [
-        "Continuous high rainfall with moisture trapped in the crown axils",
-        "Wounds or insect punctures allowing fungal zoospores of Phytophthora to enter",
-        "Spread from surrounding infected fruit rot bunches during monsoon storms"
-      ],
-      "causes_kn": [
-        "ಮಳೆಗಾಲದಲ್ಲಿ ಸುಳಿಯ ಭಾಗದಲ್ಲಿ ನಿರಂತರ ನೀರು ನಿಲ್ಲುವುದು",
-        "ಕೀಟಗಳು ಅಥವಾ ಗಾಯಗಳ ಮೂಲಕ ಶಿಲೀಂಧ್ರ ಒಳಪ್ರವೇಶಿಸುವುದು",
-        "ಕೊಳೆರೋಗ ಬಾಧಿತ ಗೊನೆಗಳಿಂದ ಶಿಲೀಂಧ್ರವು ಸುಳಿಗೆ ಹರಡುವುದು"
-      ],
-      "organic_treatment": [
-        "In early stages, remove rotten spindle tissue thoroughly with a clean sterile knife",
-        "Smear the exposed bud wound with 10% Bordeaux paste or Copper Oxychloride paste",
-        "Protect the operated bud with an inverted earthern pot or polythene cap from rain",
-        "Drench crown with biocontrol Trichoderma viride culture suspension (10g/L)"
-      ],
-      "organic_treatment_kn": [
-        "ಆರಂಭಿಕ ಹಂತದಲ್ಲಿ ಕೊಳೆತ ಭಾಗವನ್ನು ಹರಿತವಾದ ಚಾಕುವಿನಿಂದ ಸ್ವಚ್ಛಗೊಳಿಸಿ",
-        "ಗಾಯದ ಭಾಗಕ್ಕೆ 10% ಬೋರ್ಡೋ ಪೇಸ್ಟ್ ಅಥವಾ ತಾಮ್ರದ ಪೇಸ್ಟ್ ಹಚ್ಚಿ",
-        "ಮಳೆ ನೀರು ಬೀಳದಂತೆ ಸುಳಿಗೆ ಪಾಲಿಥಿನ್ ಕವರ್ ಅಥವಾ ಮಡಕೆ ಮುಚ್ಚಿ ರಕ್ಷಿಸಿ",
-        "ಟ್ರೈಕೋಡರ್ಮ ಶಿಲೀಂಧ್ರನಾಶಕವನ್ನು ಸುಳಿಗೆ ಸಿಂಪಡಿಸಿ"
-      ],
-      "chemical_treatment": [
-        "Place 2-3 fungicide sachets containing Copper Oxychloride (2g) or Mancozeb (2g) wrapped in perforated cloth inside the crown axils before monsoon",
-        "Crown drenching with Metalaxyl MZ @ 2.5 g/L or Bordeaux mixture 1% immediately when early symptoms appear"
-      ],
-      "chemical_treatment_kn": [
-        "ಮಳೆಗಾಲದ ಮುನ್ನ ಮರದ ಸುಳಿಯ ಕವಲಿನಲ್ಲಿ 2 ಗ್ರಾಂ ಮ್ಯಾಂಕೋಜೆಬ್ ಅಥವಾ ಕಾಪರ್ ಆಕ್ಸಿಕ್ಲೋರೈಡ್ ಇರುವ ಸಣ್ಣ ಪೊಟ್ಟಣಗಳನ್ನು ಇಡಿ",
-        "ರೋಗದ ಲಕ್ಷಣ ಕಂಡ ಕೂಡಲೇ ಮೆಟಲಾಕ್ಸಿಲ್ (2.5 ಗ್ರಾಂ/ಲೀಟರ್) ಅಥವಾ 1% ಬೋರ್ಡೋ ದ್ರಾವಣವನ್ನು ಸುಳಿಗೆ ಚೆನ್ನಾಗಿ ಸುರಿಯಿರಿ"
-      ],
-      "prevention": [
-        "Scout the tree crowns frequently during monsoon season",
-        "Cut and burn completely dead palms to eradicate source of inoculum",
-        "Ensure prophylactic bunch spraying also reaches the crown leaf axils"
-      ],
-      "prevention_kn": [
-        "ಮಳೆಗಾಲದಲ್ಲಿ ಮರಗಳ ಸುಳಿಯನ್ನು ಆಗಾಗ ಗಮನಿಸಿ",
-        "ಪೂರ್ತಿ ಸತ್ತುಹೋದ ಮರಗಳನ್ನು ಕಡಿದು ಸುಟ್ಟು ಹಾಕಿ, ರೋಗ ಹರಡುವುದನ್ನು ತಡೆಯಿರಿ",
-        "ಕೊಳೆರೋಗಕ್ಕೆ ಔಷಧಿ ಸಿಂಪಡಿಸುವಾಗ ಸುಳಿಯ ಭಾಗಕ್ಕೂ ಬೀಳುವಂತೆ ಸಿಂಪಡಿಸಿ"
-      ]
-    },
-    "Stem Bleeding": {
+    "Stem_Bleeding": {
       "id": "stem_bleeding",
-      "name": "Stem Bleeding (Kanda Srava Roga)",
+      "name": "Stem Bleeding Disease",
       "name_kn": "ಕಾಂಡ ಸ್ರಾವ ರೋಗ",
-      "pathogen": "Thielaviopsis paradoxa (Ceratocystis paradoxa)",
-      "pathogen_kn": "ಥಿಯೆಲಾವಿಯೊಪ್ಸಿಸ್ ಪ್ಯಾರಡಾಕ್ಸಾ (ಶಿಲೀಂಧ್ರ)",
-      "part_affected": "Trunk / Stem, Cortical Tissues",
-      "part_affected_kn": "ಕಾಂಡ ಮತ್ತು ತೊಗಟೆ",
+      "part": "stem",
       "severity": "High",
       "severity_badge": "bg-orange-100 text-orange-800 border-orange-300 dark:bg-orange-900/40 dark:text-orange-300",
-      "description": "Stem Bleeding manifests as dark brown or rusty exudate oozing through bark fissures on the lower trunk. Internally, tissues turn black, soften, and decay, causing structural instability.",
-      "description_kn": "ಕಾಂಡ ಸ್ರಾವ ರೋಗದಲ್ಲಿ ಅಡಿಕೆ ಮರದ ಕಾಂಡದ ಬಿರುಕುಗಳಿಂದ ಕಂದು ಅಥವಾ ತುಕ್ಕು ಬಣ್ಣದ ಅಂಟು ದ್ರವ ಸೋರುತ್ತದೆ. ಒಳಭಾಗದ ಕಾಂಡವು ಕೊಳೆತು ಮರ ದುರ್ಬಲಗೊಳ್ಳುತ್ತದೆ.",
+      "description": "Characterized by dark reddish-brown viscous fluid oozing from longitudinal cracks on the lower stem bark. Internal vascular tissues decay, weakening the trunk structure.",
+      "description_kn": "ಅಡಿಕೆ ಮರದ ಕಾಂಡದ ಬಿರುಕುಗಳಿಂದ ಕಡು ಕೆಂಪು-ಕಂದು ಬಣ್ಣದ ದ್ರವ ಜಿನುಗುವುದು. ಒಳಭಾಗದ ಕಾಂಡ ಕೊಳೆತು ಮರ ದುರ್ಬಲಗೊಳ್ಳುತ್ತದೆ.",
       "symptoms": [
-        "Exudation of dark reddish-brown liquid through cracks in the trunk bark (usually 2-8 feet from ground level)",
-        "Exudate dries into brittle, black crusts on the stem surface",
-        "Underneath the bark, fibrous tissue turns dark yellow, brown, and hollow",
-        "Tapering trunk diameter and gradual reduction in bunch size and yield"
+        "Rust to dark brown viscous liquid exudation from trunk fissures",
+        "Cracks on lower 2 to 3 meters of the stem that enlarge and coalesce",
+        "Bark peeling away revealing black fibrous decaying inner tissue",
+        "Yellowing and size reduction of the crown canopy in chronic cases"
       ],
       "symptoms_kn": [
-        "ಮರದ ಕಾಂಡದ ಬಿರುಕುಗಳಿಂದ ಕೆಂಪು-ಕಂದು ಬಣ್ಣದ ದ್ರವ ಜಿನುಗಲಾರಂಭಿಸುತ್ತದೆ",
-        "ದ್ರವವು ಒಣಗಿದಾಗ ಕಪ್ಪು ಬಣ್ಣದ ಗಟ್ಟಿಯಾದ ಕಲೆಯಾಗಿ ಪರಿವರ್ತನೆಗೊಳ್ಳುತ್ತದೆ",
-        "ತೊಗಟೆಯನ್ನು ಕೆತ್ತಿ ನೋಡಿದಾಗ ಒಳಭಾಗದ ನಾರು ಕಂದು ಬಣ್ಣಕ್ಕೆ ತಿರುಗಿ ಕೊಳೆತಿರುತ್ತದೆ",
-        "ಮರದ ಕಾಂಡ ಸಪೂರವಾಗಿ ಕಿರೀಟ ಕಿರಿದಾಗುತ್ತದೆ ಹಾಗೂ ಇಳುವರಿ ಕುಸಿಯುತ್ತದೆ"
+        "ಕಾಂಡದ ಬಿರುಕುಗಳಿಂದ ತುಕ್ಕು ಬಣ್ಣದ ಕಂದು ದ್ರವ ಒಸರುವುದು",
+        "ಕಾಂಡದ ಕೆಳಭಾಗದ 2-3 ಮೀಟರ್ ಎತ್ತರದಲ್ಲಿ ಉದ್ದನೆಯ ಬಿರುಕುಗಳು",
+        "ತೊಗಟೆ ಕಿತ್ತುಬಂದು ಒಳಗಿನ ಕಪ್ಪು ನಾರಿನಂತ ಅಂಗಾಂಶ ಕೊಳೆಯುವುದು",
+        "ರೋಗ ತೀವ್ರವಾದಾಗ ಮರದ ಕಿರೀಟ ಚಿಕ್ಕದಾಗುವುದು"
       ],
       "causes": [
-        "Infection through mechanical wounds, sun scorch cracks, or trunk boring insect injuries",
-        "Heavy waterlogging followed by severe drought stress",
-        "Imbalanced nitrogenous fertilizer and poor drainage"
+        "Pathogen: Thielaviopsis paradoxa (Ceratocystis paradoxa fungus)",
+        "Mechanical damage to bark from weeding tools or harvesters",
+        "Severe sunscald on south-western exposed stem faces"
       ],
       "causes_kn": [
-        "ಕಾಂಡಕ್ಕೆ ಬಿದ್ದ ಗಾಯಗಳು, ಬಿಸಿಲಿನ ಝಳದಿಂದ ಉಂಟಾದ ಬಿರುಕುಗಳ ಮೂಲಕ ಶಿಲೀಂಧ್ರ ಪ್ರವೇಶ",
-        "ತೋಟದಲ್ಲಿ ನೀರು ನಿಲ್ಲುವುದು ಮತ್ತು ನಂತರ ತೀವ್ರ ಬರ ಉಂಟಾಗುವುದು",
-        "ಸಾರಜನಕ ಗೊಬ್ಬರದ ಅತಿಯಾದ ಬಳಕೆ ಮತ್ತು ಬಸಿಗಾಲುವೆ ಕೊರತೆ"
+        "ರೋಗಾಣು: ಥಿಯೆಲಾವಿಯೊಪ್ಸಿಸ್ ಪ್ಯಾರಡಾಕ್ಸಾ ಶಿಲೀಂಧ್ರ",
+        "ಕಳೆ ಕೀಳುವಾಗ ಅಥವಾ ಅಡಿಕೆ ಇಳಿಸುವಾಗ ಕಾಂಡಕ್ಕೆ ಉಂಟಾಗುವ ಗಾಯಗಳು",
+        "ದಕ್ಷಿಣ-ಪಶ್ಚಿಮ ದಿಕ್ಕಿನ ಕಾಂಡಕ್ಕೆ ತೀವ್ರ ಬಿಸಿಲಿನ ಹೊಡೆತ"
       ],
       "organic_treatment": [
-        "Chisel out infected bark tissue cleanly until healthy white/yellow tissue is reached",
-        "Apply Coal Tar or Bordeaux Paste (1:1 copper sulfate and lime in water) thoroughly over the scraped wound",
-        "Apply Trichoderma viride culture (50g) mixed with 5 kg neem cake to the root zone annually",
-        "Paint trunk up to 2 meters with white lime solution (slaked lime) to prevent sun scalding"
+        "Chisel out infected bark down to healthy wood and paint with coal tar or Bordeaux paste",
+        "Apply Trichoderma viride paste (50g in water with starch binder) over scraped wounds",
+        "Apply neem cake (5 kg per palm) in basin soil around affected palms"
       ],
       "organic_treatment_kn": [
-        "ಚಾಕುವಿನಿಂದ ಕೊಳೆತ ತೊಗಟೆಯನ್ನು ಕೆತ್ತಿ ತೆಗೆದು ಗಾಯವನ್ನು ಸ್ವಚ್ಛಗೊಳಿಸಿ",
-        "ಕೆತ್ತಿದ ಗಾಯಕ್ಕೆ ಬೋರ್ಡೋ ಪೇಸ್ಟ್ ಅಥವಾ ಕೋಲ್ಟಾರ್ ಹಚ್ಚಿ ರಕ್ಷಿಸಿ",
-        "5 ಕೆ.ಜಿ ಬೇವಿನ ಹಿಂಡಿಯೊಂದಿಗೆ ಟ್ರೈಕೋಡರ್ಮ (50 ಗ್ರಾಂ) ಬೆರೆಸಿ ಬುಡಕ್ಕೆ ಹಾಕಿ",
-        "ಬಿಸಿಲಿನ ಝಳ ತಪ್ಪಿಸಲು ಕಾಂಡಕ್ಕೆ 2 ಮೀಟರ್ ಎತ್ತರದವರೆಗೆ ಕೃಷಿ ಸುಣ್ಣ ಬಳಿಯಿರಿ"
+        "ಉಳಿ ಬಳಸಿ ಕೊಳೆತ ಭಾಗವನ್ನು ಕೆತ್ತಿ ಸ್ವಚ್ಛಗೊಳಿಸಿ ಬೋರ್ಡೋ ಪೇಸ್ಟ್ ಅಥವಾ ಕೋಲ್ಟಾರ್ ಹಚ್ಚಿ",
+        "ಗಾಯದ ಮೇಲೆ ಟ್ರೈಕೋಡರ್ಮ ವಿರಿಡೆ ಪೇಸ್ಟ್ ಲೇಪನ ಮಾಡಿ",
+        "ಮರದ ಬುಡಕ್ಕೆ 5 ಕೆ.ಜಿ ಬೇವಿನ ಹಿಂಡಿ ಹಾಕಿ"
       ],
       "chemical_treatment": [
-        "Root feeding with Carbendazim (Bavistin) 2g or Hexaconazole 2ml dissolved in 100ml water per tree",
-        "Trunk swab application with Carbendazim 0.2% or Calixin (Tridemorph) 2%",
-        "Apply balanced NPK with potassium and magnesium to strengthen vascular fiber"
+        "Calixin (Tridemorph) 80% EC @ 5 ml in 100 ml water as stem wound swabbing",
+        "Propiconazole 25% EC @ 2 ml / litre water spray or root feeding (2 ml in 100 ml water)",
+        "Carbendazim 50% WP @ 2.0 g / litre water paste on chiselled areas"
       ],
       "chemical_treatment_kn": [
-        "ಕಾರ್ಬೆಂಡಾಜಿಮ್ (ಬಾವಿಸ್ಟಿನ್) 2 ಗ್ರಾಂ ಅಥವಾ ಹೆಕ್ಸಾಕೊನಾಜೋಲ್ 2 ಮಿ.ಲೀ ಅನ್ನು 100 ಮಿ.ಲೀ ನೀರಿನಲ್ಲಿ ಬೆರೆಸಿ ಬೇರಿನ ಮೂಲಕ (ರೂಟ್ ಫೀಡಿಂಗ್) ನೀಡಿ",
-        "ಗಾಯಕ್ಕೆ ಕಾರ್ಬೆಂಡಾಜಿಮ್ ಪೇಸ್ಟ್ ಹಚ್ಚಿ",
-        "ಪೊಟ್ಯಾಷ್ ಮತ್ತು ಸೂಕ್ಷ್ಮ ಪೋಷಕಾಂಶ ನೀಡಿ ಮರದ ಶಕ್ತಿ ಹೆಚ್ಚಿಸಿ"
+        "ಕ್ಯಾಲಿಕ್ಸಿನ್ (ಟ್ರೈಡೆಮಾರ್ಫ್) @ 5 ಮಿ.ಲೀ/100 ಮಿ.ಲೀ ನೀರಿಗೆ ಬೆರೆಸಿ ಗಾಯಗಳಿಗೆ ಲೇಪಿಸಿ",
+        "ಪ್ರೊಪಿಕೊನಜೋಲ್ 25% EC @ 2 ಮಿ.ಲೀ/ಲೀಟರ್ ನೀರಿಗೆ ಬೆರೆಸಿ ಅಥವಾ ಬೇರಿನ ಮೂಲಕ ನೀಡಿ",
+        "ಕಾರ್ಬೆಂಡಾಜಿಮ್ 50% WP @ 2.0 ಗ್ರಾಂ/ಲೀಟರ್ ಪೇಸ್ಟ್ ಹಚ್ಚಿ"
       ],
       "prevention": [
-        "Avoid any injury or implements damaging palm trunks during weeding or intercultural operations",
-        "Provide shade for young palms exposed to harsh South-West afternoon sun",
-        "Maintain deep drainage trenches to avoid root choking"
+        "Avoid wounding palm trunks during tractor tilling or intercultivation",
+        "White-wash south-western side of trunks with slaked lime before summer",
+        "Maintain adequate irrigation during summer dry spells"
       ],
       "prevention_kn": [
-        "ಕಳೆ ಕೀಳುವಾಗ ಅಥವಾ ಕೆಲಸ ಮಾಡುವಾಗ ಮರದ ಕಾಂಡಕ್ಕೆ ಪೆಟ್ಟು ಬೀಳದಂತೆ ಎಚ್ಚರವಹಿಸಿ",
-        "ಪಶ್ಚಿಮದ ಬಿಸಿಲಿನಿಂದ ಕಾಂಡ ಬಿರುಕು ಬಿಡದಂತೆ ಸುಣ್ಣ ಬಳಿಯಿರಿ ಅಥವಾ ರಕ್ಷಿಸಿ",
-        "ತೋಟದಲ್ಲಿ ನೀರು ನಿಲ್ಲದಂತೆ ಸದಾ ಜಾಗ್ರತೆ ವಹಿಸಿ"
-      ]
+        "ತೋಟದಲ್ಲಿ ಉಳುಮೆ ಮಾಡುವಾಗ ಕಾಂಡಕ್ಕೆ ಗಾಯವಾಗದಂತೆ ಎಚ್ಚರವಹಿಸಿ",
+        "ಬೇಸಿಗೆ ಮುನ್ನ ಬಿಸಿಲಿನಿಂದ ರಕ್ಷಿಸಲು ಕಾಂಡಕ್ಕೆ ಸುಣ್ಣ ಬಳಿಯಿರಿ",
+        "ಬೇಸಿಗೆಯಲ್ಲಿ ಸಕಾಲಿಕ ನೀರಾವರಿ ಒದಗಿಸಿ"
+      ],
+      "when_to_consult": "If oozing fissures encircle more than 50% of trunk circumference or extend higher than 3 metres up the stem.",
+      "when_to_consult_kn": "ಸ್ರಾವವು ಕಾಂಡದ ಸುತ್ತಲಿನ ಅರ್ಧಕ್ಕಿಂತ ಹೆಚ್ಚು ಭಾಗವನ್ನು ಆವರಿಸಿದರೆ ತಕ್ಷಣ ತಜ್ಞರನ್ನು ಸಂಪರ್ಕಿಸಿ."
     },
-    "Leaf Spot": {
+    "Leaf_BudRot": {
+      "id": "bud_rot",
+      "name": "Bud Rot / Spindle Rot",
+      "name_kn": "ಸುಳಿ ಕೊಳೆ ರೋಗ",
+      "part": "leaf",
+      "severity": "Critical",
+      "severity_badge": "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-900/40 dark:text-rose-300",
+      "description": "A lethal infection attacking the growing apical meristem and central spindle leaf. The growing point turns into a foul-smelling soft rot, killing the palm if not treated early.",
+      "description_kn": "ಮರದ ಬೆಳೆಯುವ ತುದಿ ಮತ್ತು ಸುಳಿ ಗರಿಗೆ ತಗಲುವ ಮಾರಕ ರೋಗ. ಬೆಳೆಯುವ ಸುಳಿ ಕೊಳೆತು ದುರ್ವಾಸನೆ ಬೀರುತ್ತದೆ, ಸಕಾಲದಲ್ಲಿ ಚಿಕಿತ್ಸೆ ನೀಡದಿದ್ದರೆ ಮರ ಸಾಯುತ್ತದೆ.",
+      "symptoms": [
+        "Central spindle leaf turns yellow, wilts, and droops",
+        "Spindle pulls out effortlessly upon gentle tug with decaying foul-smelling base",
+        "Inner fronds detach successively while outer leaves remain temporarily green",
+        "Complete crown death if the apical growing tip rots completely"
+      ],
+      "symptoms_kn": [
+        "ಮರದ ಮಧ್ಯದ ಸುಳಿ ಗರಿ ಹಳದಿಯಾಗಿ ಒಣಗಿ ಜೋತುಬೀಳುವುದು",
+        "ಸುಳಿಯನ್ನು ಮೆಲ್ಲನೆ ಎಳೆದಾಗ ಕೊಳೆತ ಬುಡದೊಂದಿಗೆ ಸುಲಭವಾಗಿ ಕಿತ್ತುಬರುವುದು",
+        "ಸುಳಿಯ ಬುಡದಲ್ಲಿ ಕೊಳೆತು ಅಸಹ್ಯ ದುರ್ವಾಸನೆ ಬೀರುವುದು",
+        "ಕ್ರಮೇಣ ಇಡೀ ಕಿರೀಟ ಸತ್ತು ಮರ ನಾಶವಾಗುವುದು"
+      ],
+      "causes": [
+        "Pathogen: Phytophthora meadii (invading through crown during wet weather)",
+        "Water stagnation in leaf axils during prolonged heavy monsoon rains",
+        "Low night temperatures paired with high morning humidity"
+      ],
+      "causes_kn": [
+        "ರೋಗಾಣು: ಫೈಟೊಪ್ಥೊರಾ ಮೀಡಿಯೈ ಶಿಲೀಂಧ್ರ",
+        "ಮಳೆಗಾಲದಲ್ಲಿ ಸುಳಿಯ ಕವಲಿನಲ್ಲಿ ನೀರು ನಿಲ್ಲುವುದು",
+        "ರಾತ್ರಿಯ ಕಡಿಮೆ ತಾಪಮಾನ ಮತ್ತು ತೇವಯುತ ವಾತಾವರಣ"
+      ],
+      "organic_treatment": [
+        "Clean out all rotten, decayed tissues completely with a sterile knife",
+        "Apply thick Bordeaux paste (1:1 ratio) directly over the exposed growing bud point",
+        "Fasten a protective polythene cone or cap over the crown to prevent rainwater entry",
+        "Destroy and burn excised infected spindle tissues"
+      ],
+      "organic_treatment_kn": [
+        "ಚಾಕುವಿನಿಂದ ಕೊಳೆತ ಭಾಗವನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಕೆತ್ತಿ ಸ್ವಚ್ಛಗೊಳಿಸಿ",
+        "ಬೆಳೆಯುವ ಮೊಗ್ಗಿನ ಮೇಲೆ ಗಟ್ಟಿಯಾದ ಬೋರ್ಡೋ ಪೇಸ್ಟ್ ಲೇಪಿಸಿ",
+        "ಮಳೆ ನೀರು ಬೀಳದಂತೆ ಪ್ಲಾಸ್ಟಿಕ್ ಟೋಪಿಯನ್ನು ಕಿರೀಟಕ್ಕೆ ಹೊದಿಸಿ",
+        "ತೆಗೆದ ಕೊಳೆತ ಭಾಗಗಳನ್ನು ಸುಟ್ಟು ಹಾಕಿ"
+      ],
+      "chemical_treatment": [
+        "Place perforated fungicide sachet: Mancozeb 75% WP (5g) or Copper Oxychloride into crown whorl",
+        "Fosetyl-Al 80% WP @ 2.5 g / litre water crown drenching",
+        "Metalaxyl-Mancozeb @ 2.0 g / litre water crown pour (500 ml solution per palm)"
+      ],
+      "chemical_treatment_kn": [
+        "ಸುಳಿಯ ಮಧ್ಯಭಾಗಕ್ಕೆ 5 ಗ್ರಾಂ ಮ್ಯಾಂಕೋಜೆಬ್ ಅಥವಾ ತಾಮ್ರದ ಆಕ್ಸಿಕ್ಲೋರೈಡ್ ಪೊಟ್ಟಣ ಇಡುವುದು",
+        "ಫೊಸೆಟೈಲ್-ಅಲ್ಯೂಮಿನಿಯಂ @ 2.5 ಗ್ರಾಂ/ಲೀಟರ್ ಕಿರೀಟಕ್ಕೆ ಸುರಿಯುವುದು",
+        "ಮೆಟಲಾಕ್ಸಿಲ್-ಮ್ಯಾಂಕೋಜೆಬ್ @ 2.0 ಗ್ರಾಂ/ಲೀಟರ್ ದ್ರಾವಣವನ್ನು ಸುಳಿಯ ಬುಡಕ್ಕೆ ಹಾಕಿ"
+      ],
+      "prevention": [
+        "Prophylactic pre-monsoon crown spraying with 1% Bordeaux mixture",
+        "Sanitize climbing and harvesting equipment with spirit between trees",
+        "Thin out excessive top shade in dense plantations"
+      ],
+      "prevention_kn": [
+        "ಮಳೆಗಾಲಕ್ಕೆ ಮುಂಚೆ ಕಿರೀಟಕ್ಕೆ 1% ಬೋರ್ಡೋ ದ್ರಾವಣ ಸಿಂಪಡಿಸಿ",
+        "ಅಡಿಕೆ ಇಳಿಸುವ ಉಪಕರಣಗಳನ್ನು ಸ್ಯಾನಿಟೈಸ್ ಮಾಡಿ",
+        "ತೋಟದಲ್ಲಿ ನೆರಳು ಹೆಚ್ಚಾಗದಂತೆ ನಿಯಂತ್ರಿಸಿ"
+      ],
+      "when_to_consult": "Whenever the central spindle pulls out cleanly with rotting base or foul odour.",
+      "when_to_consult_kn": "ಸುಳಿ ಗರಿಯು ಕೊಳೆತು ದುರ್ವಾಸನೆಯೊಂದಿಗೆ ಕಿತ್ತುಬಂದ ತಕ್ಷಣ ತೋಟಗಾರಿಕಾ ಇಲಾಖೆಯನ್ನು ಸಂಪರ್ಕಿಸಿ."
+    },
+    "Leaf_Spot": {
       "id": "leaf_spot",
-      "name": "Leaf Spot / Blight",
+      "name": "Leaf Spot / Foliar Blight",
       "name_kn": "ಎಲೆ ಚುಕ್ಕೆ ರೋಗ",
-      "pathogen": "Colletotrichum gloeosporioides / Phyllosticta arecae",
-      "pathogen_kn": "ಕೊಲೆಟೊಟ್ರೈಕಮ್ ಗ್ಲೋಯೊಸ್ಪೊರಿಯಾಯ್ಡ್ಸ್ (ಶಿಲೀಂಧ್ರ)",
-      "part_affected": "Leaflets, Fronds, Seedling Canopy",
-      "part_affected_kn": "ಎಲೆಗಳು, ಗರಿಗಳು, ಸಸಿಮಡಿಗಳು",
+      "part": "leaf",
       "severity": "Moderate",
       "severity_badge": "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/40 dark:text-yellow-300",
-      "description": "Leaf Spot starts as small brown specks on leaves that enlarge into irregular spots with dark borders and ashen centers. In severe cases, spots coalesce causing widespread foliar blight and drying.",
-      "description_kn": "ಎಲೆ ಚುಕ್ಕೆ ರೋಗದಲ್ಲಿ ಎಲೆಗಳ ಮೇಲೆ ಸಣ್ಣ ಕಂದು ಬಣ್ಣದ ಚುಕ್ಕೆಗಳು ಕಾಣಿಸಿಕೊಂಡು, ನಂತರ ದೊಡ್ಡದಾಗಿ ಎಲೆಗಳು ಒಣಗಿ ಕರಕಲಾಗುತ್ತವೆ. ಸಸಿಮಡಿಗಳಲ್ಲಿ ಮತ್ತು ಎಳೆಯ ಮರಗಳಲ್ಲಿ ಈ ರೋಗ ಹೆಚ್ಚು ಕಂಡುಬರುತ್ತದೆ.",
+      "description": "Foliar disease producing discrete circular or oval brown necrotic spots encircled by bright chlorotic halos. In heavy infections, lesions coalesce causing leaf blight.",
+      "description_kn": "ಗರಿಗಳ ಮೇಲೆ ಸಣ್ಣ ಕಂದು ಬಣ್ಣದ ಚುಕ್ಕೆಗಳು ಉಂಟಾಗಿ, ನಂತರ ಹರಡಿ ಇಡೀ ಗರಿ ಒಣಗುವ ರೋಗ.",
       "symptoms": [
-        "Tiny yellowish-brown spots appearing on leaf surfaces with chlorotic halos",
-        "Enlargement into circular or irregular necrotic spots with greyish ash centers and prominent dark margins",
-        "Multiple spots coalesce into large burnt/scorched patches causing premature leaflet withering",
-        "Severely affected fronds dry up prematurely and break off"
+        "Small oval brown necrotic spots with yellowish halos on leaflet surface",
+        "Spots coalesce into irregular dry patches giving a scorched blighted look",
+        "Shot-hole appearance in older leaves as dead tissue falls out",
+        "Premature drying and defoliation of lower fronds"
       ],
       "symptoms_kn": [
-        "ಎಲೆಗಳ ಮೇಲೆ ಸಣ್ಣ ಹಳದಿ ಅಥವಾ ಕಂದು ಬಣ್ಣದ ಚುಕ್ಕೆಗಳು ಮೂಡುತ್ತವೆ",
-        "ಚುಕ್ಕೆಗಳು ದೊಡ್ಡದಾಗಿ ಮಧ್ಯದಲ್ಲಿ ಬೂದಿ ಬಣ್ಣ ಹಾಗೂ ಅಂಚಿನಲ್ಲಿ ಕಡು ಕಂದು ಬಣ್ಣ ಪಡೆದುಕೊಳ್ಳುತ್ತವೆ",
-        "ಹಲವಾರು ಚುಕ್ಕೆಗಳು ಒಟ್ಟಾಗಿ ಎಲೆಯು ಸುಟ್ಟಂತೆ ಕರಕಲಾಗುತ್ತದೆ",
-        "ಬಾಧಿತ ಎಲೆಗಳು ಒಣಗಿ ಅಕಾಲಿಕವಾಗಿ ಮುರಿದು ಬೀಳುತ್ತವೆ"
+        "ಎಲೆಗಳ ಮೇಲೆ ಹಳದಿ ಅಂಚಿನ ಕಂದು ಬಣ್ಣದ ಚುಕ್ಕೆಗಳು",
+        "ಚುಕ್ಕೆಗಳು ಒಂದಕ್ಕೊಂದು ಸೇರಿ ಗರಿಗಳು ಒಣಗಿ ಕಪ್ಪಾಗುವುದು",
+        "ಹಳೆಯ ಗರಿಗಳಲ್ಲಿ ತೂತುಗಳು ಬೀಳುವುದು",
+        "ಕೆಳಗಿನ ಗರಿಗಳು ಬೇಗನೆ ಒಣಗಿ ಉದುರುವುದು"
       ],
       "causes": [
-        "High humidity, intermittent rain showers, and warm temperatures",
-        "Nutrient stress, especially potassium deficiency, weakening leaf epidermis",
-        "Overcrowding and low sunlight in nurseries and young plantations"
+        "Pathogens: Colletotrichum gloeosporioides, Curvularia lunata, or Phomopsis sp.",
+        "Prolonged overcast conditions followed by bright sunny days",
+        "Splashing rainwater or sprinkler droplets carrying fungal conidia"
       ],
       "causes_kn": [
-        "ಅಧಿಕ ತೇವಾಂಶ, ಆಗಾಗ ಬೀಳುವ ತುಂತುರು ಮಳೆ ಮತ್ತು ಉಷ್ಣತೆ",
-        "ಪೋಷಕಾಂಶಗಳ, ವಿಶೇಷವಾಗಿ ಪೊಟ್ಯಾಷ್ ಕೊರತೆ",
-        "ಸಸಿಮಡಿಯಲ್ಲಿ ಅತಿಯಾದ ದಟ್ಟಣೆ ಮತ್ತು ಸೂರ್ಯನ ಬೆಳಕಿನ ಕೊರತೆ"
+        "ರೋಗಾಣು: ಕೊಲೆಟೊಟ್ರಿಕಮ್ ಗ್ಲೋಯೊಸ್ಪೊರಿಯೊಯ್ಡೆಸ್ ಶಿಲೀಂಧ್ರ",
+        "ಮಳೆ ಮತ್ತು ಬಿಸಿಲಿನ ಏರುಪೇರು",
+        "ನೀರಿನ ಹನಿಗಳ ಮೂಲಕ ಶಿಲೀಂಧ್ರಾಣುಗಳು ಹರಡುವುದು"
       ],
       "organic_treatment": [
-        "Spray 1% Bordeaux mixture or Copper Hydroxide (2g/L) on both surfaces of foliage",
-        "Foliar application of Neem Seed Kernel Extract (NSKE 5%) or Panchagavya (3%)",
-        "Prune and burn severely blighted lower fronds to arrest spore spread",
-        "Apply bio-fungicide Bacillus subtilis or Trichoderma spray (5g/L)"
+        "Prune and destroy severely infected dry lower fronds",
+        "Foliar spray with 5% Neem Seed Kernel Extract (NSKE) or Neem oil (3 ml/L)",
+        "Spray Panchagavya (3% solution) or cow urine (10%) to strengthen foliar cuticles"
       ],
       "organic_treatment_kn": [
-        "1% ಬೋರ್ಡೋ ದ್ರಾವಣವನ್ನು ಎಲೆಗಳ ಎರಡೂ ಬದಿಗಳಿಗೆ ಸಿಂಪಡಿಸಿ",
-        "ಬೇವಿನ ಬೀಜದ ಕಷಾಯ (5%) ಅಥವಾ ಪಂಚಗವ್ಯ (3%) ಸಿಂಪಡಿಸಿ",
-        "ಹೆಚ್ಚು ರೋಗಪೀಡಿತ ಒಣಗಿದ ಗರಿಗಳನ್ನು ಕತ್ತರಿಸಿ ಸುಟ್ಟು ಹಾಕಿ",
-        "ಬ್ಯಾಸಿಲಸ್ ಸಬ್ಟಿಲಿಸ್ ಅಥವಾ ಟ್ರೈಕೋಡರ್ಮ ಜೈವಿಕ ದ್ರಾವಣ ಸಿಂಪಡಿಸಿ"
+        "ಹೆಚ್ಚು ರೋಗಪೀಡಿತ ಕೆಳಗಿನ ಗರಿಗಳನ್ನು ಕತ್ತರಿಸಿ ಸುಟ್ಟುಹಾಕಿ",
+        "5% ಬೇವಿನ ಬೀಜದ ಕಷಾಯ ಅಥವಾ ಬೇವಿನ ಎಣ್ಣೆ (3 ಮಿ.ಲೀ/ಲೀ) ಸಿಂಪಡಿಸಿ",
+        "3% ಪಂಚಗವ್ಯ ಅಥವಾ 10% ಗೋಮೂತ್ರ ದ್ರಾವಣ ಸಿಂಪಡಿಸಿ"
       ],
       "chemical_treatment": [
-        "Foliar spray with Mancozeb 75 WP (Dithane M-45) @ 2.5g/L or Hexaconazole 5 EC @ 1ml/L",
-        "Alternative spray with Propiconazole (Tilt 25 EC) @ 1ml/L or Difenoconazole @ 1ml/L with wetting agent",
-        "Repeat spray at 20-25 days interval if wet, humid weather persists"
+        "Mancozeb 75% WP @ 2.5 g / litre water thoroughly covering both leaf surfaces",
+        "Carbendazim 12% + Mancozeb 63% WP (Saaf) @ 2.0 g / litre water",
+        "Azoxystrobin 23% SC @ 1.0 ml / litre water for systemic protection"
       ],
       "chemical_treatment_kn": [
-        "ಮ್ಯಾಂಕೋಜೆಬ್ (2.5 ಗ್ರಾಂ/ಲೀಟರ್) ಅಥವಾ ಹೆಕ್ಸಾಕೊನಾಜೋಲ್ (1 ಮಿ.ಲೀ/ಲೀಟರ್) ಸಿಂಪಡಿಸಿ",
-        "ಪರ್ಯಾಯವಾಗಿ ಪ್ರೊಪಿಕೊನಾಜೋಲ್ (1 ಮಿ.ಲೀ/ಲೀಟರ್) ಗಮ್ ಬೆರೆಸಿ ಸಿಂಪಡಿಸಿ",
-        "ಮಳೆ ಮತ್ತು ತೇವಾಂಶ ಮುಂದುವರಿದರೆ 20-25 ದಿನಗಳ ನಂತರ ಪುನಃ ಸಿಂಪಡಿಸಿ"
+        "ಮ್ಯಾಂಕೋಜೆಬ್ 75% WP @ 2.5 ಗ್ರಾಂ/ಲೀಟರ್ ನೀರಿಗೆ ಬೆರೆಸಿ ಎಲೆಯ ಎರಡೂ ಬದಿಗಳಿಗೆ ಸಿಂಪಡಿಸಿ",
+        "ಕಾರ್ಬೆಂಡಾಜಿಮ್ + ಮ್ಯಾಂಕೋಜೆಬ್ (Saaf) @ 2.0 ಗ್ರಾಂ/ಲೀಟರ್ ಸಿಂಪಡಿಸಿ",
+        "ಅಜೋಕ್ಸಿಸ್ಟ್ರೋಬಿನ್ 23% SC @ 1.0 ಮಿ.ಲೀ/ಲೀಟರ್ ಸಿಂಪಡಿಸಿ"
       ],
       "prevention": [
-        "Ensure adequate spacing between palms and nursery bags for sunshine and air movement",
-        "Provide recommended potash fertilizers (140g MOP/palm/year) to boost leaf cuticle resilience",
-        "Avoid overhead sprinkler irrigation late in the evening to reduce leaf wetness duration"
+        "Maintain balanced potassium (Potash) and boron nutrition to enhance leaf toughness",
+        "Avoid overhead sprinkler irrigation that keeps leaves continuously wet",
+        "Promote good soil drainage in the nursery and plantation"
       ],
       "prevention_kn": [
-        "ಸಸಿಗಳ ನಡುವೆ ಸಾಕಷ್ಟು ಅಂತರವಿರಿಸಿ ಗಾಳಿ-ಬೆಳಕು ಬೀಳುವಂತೆ ಮಾಡಿ",
-        "ಸಮರ್ಪಕ ಪ್ರಮಾಣದಲ್ಲಿ ಪೊಟ್ಯಾಷ್ ಗೊಬ್ಬರ ನೀಡಿ ಎಲೆಗಳ ರೋಗ ನಿರೋಧಕತೆ ಹೆಚ್ಚಿಸಿ",
-        "ಸಂಜೆಯ ಸಮಯದಲ್ಲಿ ಸ್ಪ್ರಿಂಕ್ಲರ್ ಮೂಲಕ ನೀರು ಹಾಯಿಸುವುದನ್ನು ತಪ್ಪಿಸಿ"
-      ]
+        "ಪೊಟ್ಯಾಶ್ ಮತ್ತು ಬೋರಾನ್ ಲಘು ಪೋಷಕಾಂಶಗಳ ಸಮತೋಲನ ಕಾಪಾಡಿ",
+        "ಗರಿಗಳು ಸದಾ ತೇವವಾಗಿರದಂತೆ ತುಂತುರು ನೀರಾವರಿ ನಿಯಂತ್ರಿಸಿ",
+        "ತೋಟದಲ್ಲಿ ನೀರು ನಿಲ್ಲದಂತೆ ನೋಡಿಕೊಳ್ಳಿ"
+      ],
+      "when_to_consult": "When spots rapidly engulf more than 40% of the upper active canopy leaves in young bearing palms.",
+      "when_to_consult_kn": "ಮೇಲಿನ ಹೊಚ್ಚಹೊಸ ಗರಿಗಳಿಗೂ ರೋಗ ವೇಗವಾಗಿ ಹಬ್ಬಿದರೆ ತಜ್ಞರನ್ನು ಸಂಪರ್ಕಿಸಿ."
+    },
+    "Stem_Cracking": {
+      "id": "stem_cracking",
+      "name": "Stem Cracking / Sunscald",
+      "name_kn": "ಕಾಂಡ ಬಿರುಕು / ಬಿಸಿಲಿನ ಹೊಡೆತ",
+      "part": "stem",
+      "severity": "Moderate",
+      "severity_badge": "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/40 dark:text-yellow-300",
+      "description": "Longitudinal vertical fissures along the outer stem bark caused by acute sun radiation, sudden moisture fluctuations, or mechanical tension.",
+      "description_kn": "ತೀವ್ರ ಬಿಸಿಲು ಮತ್ತು ತೇವಾಂಶದ ಏರುಪೇರಿನಿಂದ ಅಡಿಕೆ ಮರದ ಕಾಂಡದಲ್ಲಿ ಉದ್ದನೆಯ ಬಿರುಕುಗಳು ಉಂಟಾಗುವುದು.",
+      "symptoms": [
+        "Deep vertical fissures on south-western exposed stem faces",
+        "Dry split bark without dark oozing viscous liquid",
+        "Weakened stem susceptible to secondary fungal infection or strong wind snaps"
+      ],
+      "symptoms_kn": [
+        "ಕಾಂಡದ ದಕ್ಷಿಣ-ಪಶ್ಚಿಮ ದಿಕ್ಕಿನಲ್ಲಿ ಉದ್ದನೆಯ ಆಳವಾದ ಬಿರುಕುಗಳು",
+        "ಯಾವುದೇ ದ್ರವ ಸ್ರಾವವಿಲ್ಲದ ಒಣ ಬಿರುಕು",
+        "ಮರ ದುರ್ಬಲಗೊಂಡು ಬಿರುಗಾಳಿಗೆ ಮುರಿಯುವ ಸಾಧ್ಯತೆ"
+      ],
+      "causes": [
+        "Direct harsh sunlight (sunscald) on unshaded western trunk exposures",
+        "Alternate periods of severe soil drying followed by heavy irrigation/rains",
+        "Boron deficiency in soil"
+      ],
+      "causes_kn": [
+        "ಕಾಂಡಕ್ಕೆ ನೇರ ಬಿಸಿಲಿನ ತಾಪ (ಬಿಸಿಲಿನ ಹೊಡೆತ)",
+        "ದೀರ್ಘಕಾಲದ ಬರಗಾಲದ ನಂತರ ಹಠಾತ್ ಭಾರಿ ನೀರಾವರಿ",
+        "ಮಣ್ಣಿನಲ್ಲಿ ಬೋರಾನ್ ಪೋಷಕಾಂಶದ ಕೊರತೆ"
+      ],
+      "organic_treatment": [
+        "Tie arecanut leaf sheaths or coir matting on the south-western side of trunks",
+        "Coat the cracked area with cow-dung and clay paste or Bordeaux paste",
+        "Maintain heavy organic mulching in palm basins"
+      ],
+      "organic_treatment_kn": [
+        "ಬಿಸಿಲಿನ ಕಡೆ ಅಡಿಕೆ ಹಾಳೆ ಅಥವಾ ತೆಂಗಿನ ನಾರಿನ ಚಾಪೆ ಕಟ್ಟಿ ರಕ್ಷಿಸಿ",
+        "ಬಿರುಕುಗಳಿಗೆ ಸಗಣಿ-ಜೇಡಿಮಣ್ಣಿನ ಲೇಪನ ಅಥವಾ ಬೋರ್ಡೋ ಪೇಸ್ಟ್ ಹಚ್ಚಿ",
+        "ಮರದ ಬುಡದಲ್ಲಿ ಹಸಿರೆಲೆ ಹೊದಿಕೆ (ಮಲ್ಚಿಂಗ್) ಮಾಡಿ"
+      ],
+      "chemical_treatment": [
+        "White-wash trunks with lime solution (1 kg slaked lime in 5 L water + 50g copper sulphate)",
+        "Soil application of Borax @ 25g per palm annually"
+      ],
+      "chemical_treatment_kn": [
+        "ಕಾಂಡಗಳಿಗೆ ಸುಣ್ಣದ ದ್ರಾವಣ (1 ಕೆ.ಜಿ ಸುಣ್ಣ + 50 ಗ್ರಾಂ ಮೈಲುತುತ್ತು / 5 ಲೀಟರ್ ನೀರಿಗೆ) ಬಳಿಯಿರಿ",
+        "ವರ್ಷಕ್ಕೆ 25 ಗ್ರಾಂ ಬೊರಾಕ್ಸ್ ಲಘು ಪೋಷಕಾಂಶ ನೀಡಿ"
+      ],
+      "prevention": [
+        "Plant border windbreak trees (like silver oak or cassia) on western boundaries",
+        "Adopt consistent drip irrigation schedules to avoid moisture stress"
+      ],
+      "prevention_kn": [
+        "ಪಶ್ಚಿಮ ದಿಕ್ಕಿನ ಗಡಿಯಲ್ಲಿ ಗಾಳಿ ತಡೆ ಮತ್ತು ನೆರಳು ಗಿಡಗಳನ್ನು ಬೆಳೆಸಿ",
+        "ನಿಯಮಿತ ಹನಿ ನೀರಾವರಿ ಪಾಲಿಸಿ"
+      ],
+      "when_to_consult": "If cracks exceed 5 cm in depth or begin weeping discoloured fluid.",
+      "when_to_consult_kn": "ಬಿರುಕುಗಳು ತುಂಬಾ ಆಳವಾಗಿದ್ದರೆ ಅಥವಾ ದ್ರವ ಒಸರಲು ಆರಂಭಿಸಿದರೆ ತಜ್ಞರನ್ನು ಭೇಟಿ ಮಾಡಿ."
+    },
+    "Healthy_Leaf": {
+      "id": "healthy_leaf",
+      "name": "Healthy Arecanut Frond",
+      "name_kn": "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ ಗರಿ",
+      "part": "leaf",
+      "severity": "Normal",
+      "severity_badge": "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/40 dark:text-green-300",
+      "description": "Vibrant, green foliage with high chlorophyll density and normal vegetative vigour.",
+      "description_kn": "ಯಾವುದೇ ರೋಗದ ಲಕ್ಷಣಗಳಿಲ್ಲದ ದೃಢವಾದ ಹಸಿರು ಗರಿಗಳು.",
+      "symptoms": ["Normal deep green fronds", "Zero necrotic lesions", "Active photosynthetic canopy"],
+      "symptoms_kn": ["ಆರೋಗ್ಯಕರ ಕಡು ಹಸಿರು ಬಣ್ಣ", "ಯಾವುದೇ ಮಚ್ಚೆಗಳಿಲ್ಲದ ಗರಿ", "ಉತ್ತಮ ಬೆಳವಣಿಗೆ"],
+      "causes": ["Optimal crop nutrition, good aeration and disease-free environment"],
+      "causes_kn": ["ಉತ್ತಮ ಪೋಷಕಾಂಶ ಮತ್ತು ರೋಗಮುಕ್ತ ಪರಿಸರ"],
+      "organic_treatment": ["Maintain routine organic manure application and basin mulching"],
+      "organic_treatment_kn": ["ಸಾವಯವ ಗೊಬ್ಬರ ಮತ್ತು ತರಗೆಲೆ ಹೊದಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ"],
+      "chemical_treatment": ["No chemical fungicides required"],
+      "chemical_treatment_kn": ["ಯಾವುದೇ ರಾಸಾಯನಿಕ ಚಿಕಿತ್ಸೆ ಅಗತ್ಯವಿಲ್ಲ"],
+      "prevention": ["Continue regular agronomic surveillance"],
+      "prevention_kn": ["ನಿಯಮಿತ ಪೋಷಕಾಂಶ ನಿರ್ವಹಣೆ ಮುಂದುವರಿಸಿ"],
+      "when_to_consult": "Routine advice only.",
+      "when_to_consult_kn": "ಸಲಹೆ ಅಗತ್ಯವಿಲ್ಲ."
+    },
+    "Healthy_Nut": {
+      "id": "healthy_nut",
+      "name": "Healthy Arecanut Bunch",
+      "name_kn": "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ ಗೊನೆ",
+      "part": "nut",
+      "severity": "Normal",
+      "severity_badge": "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/40 dark:text-green-300",
+      "description": "Well-set, intact green nuts with tight calyx attachment and firm texture.",
+      "description_kn": "ದೃಢವಾಗಿ ಬೆಳೆಯುತ್ತಿರುವ ಆರೋಗ್ಯಕರ ಅಡಿಕೆ ಕಾಯಿಗಳು.",
+      "symptoms": ["Firm green nuts", "Intact calyx attachment", "Absence of water-soaking or rot"],
+      "symptoms_kn": ["ದೃಢವಾದ ಹಸಿರು ಕಾಯಿಗಳು", "ಕಾಯಿ ಉದುರುವಿಕೆ ಇಲ್ಲ"],
+      "causes": ["Optimal pollination and disease-free conditions"],
+      "causes_kn": ["ಉತ್ತಮ ಪರಾಗಸ್ಪರ್ಶ ಮತ್ತು ಫಲವತ್ತತೆ"],
+      "organic_treatment": ["Regular bunch mulching and irrigation"],
+      "organic_treatment_kn": ["ನಿಯಮಿತ ನೀರಾವರಿ ಪಾಲನೆ"],
+      "chemical_treatment": ["None required"],
+      "chemical_treatment_kn": ["ಯಾವುದೇ ಔಷಧಿ ಸಿಂಪಡಣೆ ಬೇಡ"],
+      "prevention": ["Pre-monsoon bunch tying for preventive protection"],
+      "prevention_kn": ["ಮುಂಗಾರು ಮಳೆಗೆ ಮುನ್ನ ಕೊಟ್ಟೆ ಕಟ್ಟಿ ರಕ್ಷಿಸಿ"],
+      "when_to_consult": "Not required.",
+      "when_to_consult_kn": "ಸಲಹೆ ಅಗತ್ಯವಿಲ್ಲ."
+    },
+    "Healthy_Stem": {
+      "id": "healthy_stem",
+      "name": "Healthy Arecanut Trunk",
+      "name_kn": "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ ಕಾಂಡ",
+      "part": "stem",
+      "severity": "Normal",
+      "severity_badge": "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/40 dark:text-green-300",
+      "description": "Smooth, solid trunk structure without fissures, rot, or weeping exudate.",
+      "description_kn": "ಯಾವುದೇ ಬಿರುಕು ಅಥವಾ ಸ್ರಾವವಿಲ್ಲದ ಗಟ್ಟಿಯಾದ ಮರದ ಕಾಂಡ.",
+      "symptoms": ["Solid trunk column", "Intact bark", "Absence of cracks or oozing fluid"],
+      "symptoms_kn": ["ಗಟ್ಟಿಯಾದ ಕಾಂಡ", "ಯಾವುದೇ ಬಿರುಕು ಅಥವಾ ದ್ರವ ಸೋರುವಿಕೆ ಇಲ್ಲ"],
+      "causes": ["Good agronomic care and lack of mechanical bark wounds"],
+      "causes_kn": ["ಕಾಂಡಕ್ಕೆ ಗಾಯವಾಗದಂತೆ ಉತ್ತಮ ನಿರ್ವಹಣೆ"],
+      "organic_treatment": ["Periodic trunk hygiene"],
+      "organic_treatment_kn": ["ಕಾಂಡದ ಸ್ವಚ್ಛತೆ"],
+      "chemical_treatment": ["None required"],
+      "chemical_treatment_kn": ["ಯಾವುದೇ ಔಷಧಿ ಬೇಡ"],
+      "prevention": ["Pre-summer lime whitewashing"],
+      "prevention_kn": ["ಬೇಸಿಗೆಗೆ ಮುನ್ನ ಸುಣ್ಣ ಬಳಿಯಿರಿ"],
+      "when_to_consult": "Not required.",
+      "when_to_consult_kn": "ಸಲಹೆ ಅಗತ್ಯವಿಲ್ಲ."
+    },
+    "Healthy_Root": {
+      "id": "healthy_root",
+      "name": "Healthy Root & Basin",
+      "name_kn": "ಆರೋಗ್ಯಕರ ಬೇರು ಮತ್ತು ಬುಡ",
+      "part": "root",
+      "severity": "Normal",
+      "severity_badge": "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/40 dark:text-green-300",
+      "description": "Vigorous root network with firm feeder roots, healthy root caps, and well-aerated basin soil.",
+      "description_kn": "ಉತ್ತಮ ಗಾಳಿಯಾಡುವ ಮಣ್ಣು ಮತ್ತು ದೃಢವಾದ ಆರೋಗ್ಯಕರ ಬೇರುಗಳ ಜಾಲ.",
+      "symptoms": ["Firm anchor and feeder roots", "Absence of black root rot", "Rich earthworm activity"],
+      "symptoms_kn": ["ದೃಢವಾದ ಬೇರುಗಳು", "ಬೇರು ಕೊಳೆಯುವಿಕೆ ಇಲ್ಲ"],
+      "causes": ["Adequate drainage, high organic carbon, and proper aeration"],
+      "causes_kn": ["ಉತ್ತಮ ಬಸಿಗಾಲುವೆ ಮತ್ತು ಸಾವಯವ ಅಂಶ"],
+      "organic_treatment": ["Apply enriched vermicompost and neem cake annually"],
+      "organic_treatment_kn": ["ಎರೆಹುಳು ಗೊಬ್ಬರ ಮತ್ತು ಬೇವಿನ ಹಿಂಡಿ ನೀಡಿ"],
+      "chemical_treatment": ["None required"],
+      "chemical_treatment_kn": ["ಯಾವುದೇ ಔಷಧಿ ಬೇಡ"],
+      "prevention": ["Maintain drainage channels during monsoon"],
+      "prevention_kn": ["ಮಳೆಗಾಲದಲ್ಲಿ ನೀರು ನಿಲ್ಲದಂತೆ ನೋಡಿಕೊಳ್ಳಿ"],
+      "when_to_consult": "Not required.",
+      "when_to_consult_kn": "ಸಲಹೆ ಅಗತ್ಯವಿಲ್ಲ."
     }
   }
 }
