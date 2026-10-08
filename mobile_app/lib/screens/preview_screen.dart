@@ -26,6 +26,7 @@ class PreviewScreen extends StatefulWidget {
 class _PreviewScreenState extends State<PreviewScreen> {
   late File _currentImage;
   bool _isAnalyzing = false;
+  String _selectedPart = 'auto'; // 'auto', 'leaf', 'nut', 'stem', 'root'
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -59,8 +60,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
         // Online REST API inference
         result = await ApiService.predictOnline(_currentImage, settings.apiUrl);
       } else {
-        // Offline On-Device TFLite inference
-        result = await TfliteService().classifyImage(_currentImage);
+        // Offline On-Device Dual-Stage TFLite inference with 5-stage DIP Pipeline
+        result = await TfliteService().classifyImage(_currentImage, selectedPart: _selectedPart);
       }
 
       // Lookup disease details
@@ -147,11 +148,36 @@ class _PreviewScreenState extends State<PreviewScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
+
+              // Plant Part Selector Chips
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lang == 'kn' ? "ಪರೀಕ್ಷಿಸಬೇಕಾದ ಭಾಗ (Plant Part):" : "Target Plant Part:",
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 6),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildPartChip('auto', lang == 'kn' ? 'ಆಟೋ (Auto)' : 'Auto'),
+                        _buildPartChip('leaf', lang == 'kn' ? '🍃 ಎಲೆ' : '🍃 Leaf'),
+                        _buildPartChip('nut', lang == 'kn' ? '🥥 ಕಾಯಿ' : '🥥 Nut'),
+                        _buildPartChip('stem', lang == 'kn' ? '🪵 ಕಾಂಡ' : '🪵 Stem'),
+                        _buildPartChip('root', lang == 'kn' ? '🌱 ಬೇರು' : '🌱 Root'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
 
               // Checklist Banner
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
                   color: isDark ? AppColors.darkCard : AppColors.surfaceLight,
                   borderRadius: BorderRadius.circular(14),
@@ -159,18 +185,18 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.check_circle_outline, color: AppColors.primary, size: 20),
-                    const SizedBox(width: 10),
+                    const Icon(Icons.check_circle_outline, color: AppColors.primary, size: 18),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         AppStrings.get('photo_quality_good', lang),
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
               // Action Buttons Row
               Row(
@@ -218,6 +244,26 @@ class _PreviewScreenState extends State<PreviewScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildPartChip(String key, String label) {
+    final isSelected = _selectedPart == key;
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: isSelected,
+        selectedColor: AppColors.primary,
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.white : Colors.black87,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          fontSize: 11,
+        ),
+        onSelected: (val) {
+          if (val) setState(() => _selectedPart = key);
+        },
       ),
     );
   }

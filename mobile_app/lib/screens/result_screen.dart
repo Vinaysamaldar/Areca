@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import '../models/disease.dart';
 import '../providers/app_settings_provider.dart';
 import '../services/tflite_service.dart';
+import '../services/pdf_report_service.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_strings.dart';
 
@@ -426,7 +427,28 @@ class ResultScreen extends StatelessWidget {
             ),
             const SizedBox(height: 28),
 
-            // Share & Done Buttons
+            // PDF Report & Share & Done Buttons
+            ElevatedButton.icon(
+              onPressed: () => PdfReportService.generateAndPrintReport(
+                imageFile: imageFile,
+                result: result,
+                diseaseInfo: d,
+                isKannada: isKn,
+              ),
+              icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
+              label: Text(
+                isKn ? "ಅಧಿಕೃತ ಪಿಡಿಎಫ್ ರೋಗ ವರದಿ ಡೌನ್‌ಲೋಡ್" : "Download Official PDF Diagnostic Report",
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green[800],
+                foregroundColor: Colors.white,
+                minimumSize: const Size.fromHeight(50),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+            ),
+            const SizedBox(height: 12),
+
             Row(
               children: [
                 Expanded(
@@ -435,7 +457,7 @@ class ResultScreen extends StatelessWidget {
                     icon: const Icon(Icons.share),
                     label: Text(AppStrings.get('share_report', lang)),
                     style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
                   ),
@@ -449,7 +471,7 @@ class ResultScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
                   ),

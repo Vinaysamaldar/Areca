@@ -18,13 +18,21 @@ dependencies:
   # State Management
   provider: ^6.1.2
 
-  # Machine Learning & Image Processing
+  # Machine Learning & Digital Image Processing (DIP)
   tflite_flutter: ^0.11.0
   image: ^4.2.0
 
-  # Device Hardware (Camera & Gallery)
+  # Live Camera Real-Time Streaming & Gallery
+  camera: ^0.10.6
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
+
+  # Analytics Charts
+  fl_chart: ^0.68.0
+
+  # PDF Report Generation & Printing
+  pdf: ^3.10.8
+  printing: ^5.12.0
 
   # Local Offline Database
   sqflite: ^2.3.3+1
@@ -45,5 +53,7 @@ flutter:
 
   assets:
     - assets/labels.txt
+    - assets/part_labels.txt
+    - assets/disease_labels.txt
     - assets/disease_info.json
     - assets/
