@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Information Guide | Arecanut Plant Pathology{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+
+  <!-- PAGE HEADER -->
+  <div class="text-center max-w-3xl mx-auto space-y-3">
+    <div class="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800">
+      <i class="fa-solid fa-book-open-reader"></i>
+      <span data-en="Agricultural Pathology Reference" data-kn="ಕೃಷಿ ರೋಗಶಾಸ್ತ್ರ ಉಲ್ಲೇಖ">Agricultural Pathology Reference</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white" data-en="Arecanut Disease & Advisory Catalog" data-kn="ಅಡಿಕೆ ರೋಗಗಳು ಮತ್ತು ಸಮಗ್ರ ಚಿಕಿತ್ಸಾ ಕೈಪಿಡಿ">
+      Arecanut Disease & Advisory Catalog
+    </h1>
+    <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400" data-en="Comprehensive field guide covering all 6 classes recognized by the deep learning model. Detailed symptoms, causal organisms, organic remedies, and chemical dosages." data-kn="ಡೀಪ್ ಲರ್ನಿಂಗ್ ಮಾದರಿ ಗುರುತಿಸುವ ಎಲ್ಲಾ 6 ಸ್ಥಿತಿಗಳ ವಿವರವಾದ ಮಾರ್ಗದರ್ಶಿ. ರೋಗದ ಲಕ್ಷಣಗಳು, ಕಾರಣಗಳು, ಸಾವಯವ ಪರಿಹಾರಗಳು ಮತ್ತು ರಾಸಾಯನಿಕ ಶಿಫಾರಸುಗಳು.">
+      Comprehensive field guide covering all 6 classes recognized by the deep learning model. Detailed symptoms, causal organisms, organic remedies, and chemical dosages.
+    </p>
+  </div>
+
+  <!-- QUICK-NAV HORIZONTAL JUMP BAR (Mobile swipeable & Desktop pill buttons) -->
+  <div class="sticky top-16 z-30 bg-zinc-50/90 dark:bg-zinc-950/90 backdrop-blur-md py-3 -mx-4 px-4 sm:mx-0 sm:px-0">
+    <div class="flex items-center space-x-2 overflow-x-auto no-scrollbar pb-1">
+      <span class="text-xs font-bold text-zinc-400 dark:text-zinc-500 shrink-0 hidden sm:inline mr-1">
+        <i class="fa-solid fa-compass mr-1"></i>Jump:
+      </span>
+      {% for disease_name, d in diseases.items() %}
+      <a href="#{{ d.id }}" class="shrink-0 inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 active:scale-95 transition-all">
+        <span>{{ d.name }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- DISEASE CARDS LIST -->
+  <div class="space-y-12">
+    {% for disease_name, d in diseases.items() %}
+    <div id="{{ d.id }}" class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden scroll-mt-24 transition-all hover:border-emerald-500/50">
+      
+      <!-- Top Row: Title, Badges, Illustration -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pb-8 border-b border-zinc-200 dark:border-zinc-800">
+        
+        <!-- Illustration -->
+        <div class="lg:col-span-4">
+          <div class="rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 aspect-video lg:aspect-square flex items-center justify-center">
+            <img src="/images/{{ d.id }}.svg" onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/' + d.id + '.svg') }}';" alt="{{ d.name }}" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        <!-- Info Header -->
+        <div class="lg:col-span-8 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-bold border {{ d.severity_badge }}">
+              Severity: {{ d.severity }}
+            </span>
+            <div class="text-xs text-zinc-500">
+              <span class="font-bold">Part Affected:</span> {{ d.part_affected }} <span class="font-kannada">({{ d.part_affected_kn }})</span>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">
+              {{ d.name }}
+            </h2>
+            <p class="text-base font-bold text-emerald-600 dark:text-emerald-400 font-kannada mt-0.5">
+              {{ d.name_kn }}
+            </p>
+          </div>
+
+          <p class="text-xs font-mono text-zinc-500">
+            <strong>Pathogen:</strong> <span class="italic">{{ d.pathogen }}</span> 
+            {% if d.pathogen_kn %}<span class="font-kannada font-normal">({{ d.pathogen_kn }})</span>{% endif %}
+          </p>
+
+          <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+            <span class="block mb-2">{{ d.description }}</span>
+            <span class="block text-emerald-800 dark:text-emerald-300 font-kannada text-xs">{{ d.description_kn }}</span>
+          </p>
+
+          <div class="pt-2">
+            <a href="{{ url_for('detect_page') }}" class="inline-flex items-center space-x-2 text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 px-4 py-2 rounded-xl border border-emerald-200 dark:border-emerald-800 transition-colors">
+              <i class="fa-solid fa-camera"></i>
+              <span data-en="Scan for this condition →" data-kn="ಈ ರೋಗವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ →">Scan for this condition →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Detailed Treatment & Symptoms Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+        
+        <!-- Symptoms -->
+        <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+          <h3 class="text-sm font-bold text-zinc-900 dark:text-white flex items-center space-x-2">
+            <i class="fa-solid fa-stethoscope text-emerald-600"></i>
+            <span data-en="Symptoms" data-kn="ರೋಗದ ಲಕ್ಷಣಗಳು">Symptoms</span>
+          </h3>
+          <ul class="space-y-2 text-xs text-zinc-600 dark:text-zinc-300">
+            {% for s in d.symptoms %}
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-600 font-bold">•</span>
+              <span>{{ s }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Organic Remedies -->
+        <div class="bg-emerald-50/40 dark:bg-emerald-950/20 rounded-2xl p-6 border border-emerald-200 dark:border-emerald-800/50 space-y-3">
+          <h3 class="text-sm font-bold text-emerald-900 dark:text-emerald-300 flex items-center space-x-2">
+            <i class="fa-solid fa-seedling text-emerald-600"></i>
+            <span data-en="Organic Management" data-kn="ಸಾವಯವ ನಿರ್ವಹಣೆ">Organic Management</span>
+          </h3>
+          <ul class="space-y-2 text-xs text-zinc-700 dark:text-zinc-300">
+            {% for org in d.organic_treatment %}
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-600 font-bold">•</span>
+              <span>{{ org }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Chemical Control -->
+        <div class="bg-amber-50/40 dark:bg-amber-950/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-800/50 space-y-3">
+          <h3 class="text-sm font-bold text-amber-900 dark:text-amber-300 flex items-center space-x-2">
+            <i class="fa-solid fa-flask text-amber-600"></i>
+            <span data-en="Chemical Fungicides" data-kn="ರಾಸಾಯನಿಕ ಔಷಧಿ">Chemical Fungicides</span>
+          </h3>
+          <ul class="space-y-2 text-xs text-zinc-700 dark:text-zinc-300">
+            {% for chem in d.chemical_treatment %}
+            <li class="flex items-start space-x-2">
+              <span class="text-amber-600 font-bold">•</span>
+              <span>{{ chem }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Prevention Footer Box -->
+      <div class="mt-6 p-4 rounded-2xl bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+        <div class="flex items-center space-x-2 text-zinc-700 dark:text-zinc-300">
+          <i class="fa-solid fa-shield-halved text-emerald-600 text-sm"></i>
+          <div>
+            <strong>Prevention Key:</strong> {{ d.prevention[0] if d.prevention else 'Maintain plantation drainage and sanitation.' }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

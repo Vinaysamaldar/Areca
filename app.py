@@ -9,10 +9,11 @@ from model_helper import model_manager
 
 # Application Configuration
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates') if os.path.exists(os.path.join(BASE_DIR, 'templates')) else os.path.join(BASE_DIR, 'api', 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'public', 'static') if os.path.exists(os.path.join(BASE_DIR, 'public', 'static')) else os.path.join(BASE_DIR, 'static')
 
 # Initialize Flask App
-app = Flask(__name__, static_folder=STATIC_DIR, static_url_path='/static')
+app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR, static_url_path='/static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'arecanut-dl-mini-project-secret-2026')
 
 # Vercel and serverless functions only have write permissions in /tmp

@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}Detect Disease | Detection of Diseases in Arecanut Plants{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- PAGE HEADER -->
+  <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
+    <div class="inline-flex items-center space-x-2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800">
+      <i class="fa-solid fa-leaf"></i>
+      <span data-en="AI Diagnostic Engine" data-kn="ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ ರೋಗ ಪತ್ತೆ ಯಂತ್ರ">AI Diagnostic Engine</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white" data-en="Arecanut Disease Detection" data-kn="ಅಡಿಕೆ ಮರದ ರೋಗ ಪತ್ತೆ">
+      Arecanut Disease Detection
+    </h1>
+    <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400" data-en="Upload a leaf, bunch, crown, or trunk photograph. Our MobileNetV2 deep learning model will analyze visual symptoms and output instant diagnostic prescriptions." data-kn="ಅಡಿಕೆ ಮರದ ಗರಿ, ಕಾಯಿ, ಸುಳಿ ಅಥವಾ ಕಾಂಡದ ಸ್ಪಷ್ಟ ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಅಥವಾ ಕ್ಯಾಮೆರಾದಿಂದ ತೆಗೆಯಿರಿ. ಡೀಪ್ ಲರ್ನಿಂಗ್ ತಂತ್ರಜ್ಞಾನವು ತಕ್ಷಣ ಪರಿಶೀಲಿಸಿ ಸೂಕ್ತ ಚಿಕಿತ್ಸೆಯನ್ನು ನೀಡುತ್ತದೆ.">
+      Upload a leaf, bunch, crown, or trunk photograph. Our MobileNetV2 deep learning model will analyze visual symptoms and output instant diagnostic prescriptions.
+    </p>
+  </div>
+
+  <!-- UPLOAD / INPUT CARD -->
+  <div class="max-w-3xl mx-auto mb-12">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+      
+      <!-- Drag & Drop Area -->
+      <div id="dropzone" class="border-2 border-dashed border-emerald-300 dark:border-emerald-800/80 hover:border-emerald-500 rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all bg-emerald-50/30 dark:bg-emerald-950/20 group">
+        <input type="file" id="file-input" class="hidden" accept="image/jpeg,image/png,image/jpg,image/webp">
+        <input type="file" id="camera-file-input" class="hidden" accept="image/*" capture="environment">
+        
+        <!-- Prompt when empty -->
+        <div id="dropzone-prompt" class="space-y-4">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-100 dark:bg-emerald-900/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform shadow-inner">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <div>
+            <p class="text-base font-bold text-zinc-800 dark:text-zinc-200" data-en="Tap to take photo or choose an image" data-kn="ಫೋಟೋ ತೆಗೆಯಲು ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ">
+              Tap to take photo or choose an image
+            </p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1" data-en="Works on Mobile Camera, Gallery & Drag-and-Drop (Max: 5 MB)" data-kn="ಮೊಬೈಲ್ ಕ್ಯಾಮೆರಾ, ಗ್ಯಾಲರಿ ಮತ್ತು ಕಂಪ್ಯೂಟರ್ ಬೆಂಬಲವಿದೆ (ಗರಿಷ್ಠ: 5 MB)">
+              Works on Mobile Camera, Gallery & Drag-and-Drop (Max: 5 MB)
+            </p>
+          </div>
+          <div class="flex items-center justify-center space-x-3 pt-2">
+            <span class="inline-flex items-center space-x-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+              <i class="fa-solid fa-camera"></i>
+              <span data-en="Mobile Camera Supported" data-kn="ಮೊಬೈಲ್ ಕ್ಯಾಮೆರಾ ಬೆಂಬಲವಿದೆ">Mobile Camera Supported</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Live Preview Container -->
+        <div id="preview-container" class="hidden space-y-4">
+          <div class="relative w-44 sm:w-64 h-44 sm:h-64 mx-auto rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-md">
+            <img id="preview-image" src="" alt="Selected Preview" class="w-full h-full object-cover">
+            <button id="remove-preview-btn" type="button" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 shadow transition-colors" title="Remove image">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="text-xs text-zinc-600 dark:text-zinc-400">
+            <span id="preview-filename" class="font-bold text-zinc-900 dark:text-zinc-200"></span> • 
+            <span id="preview-filesize"></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Error Alert -->
+      <div id="upload-error-alert" class="hidden p-4 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-red-800 dark:text-red-300 text-sm flex items-start space-x-3">
+        <i class="fa-solid fa-circle-exclamation text-red-500 mt-0.5 text-base"></i>
+        <span id="upload-error-text">Validation error</span>
+      </div>
+
+      <!-- Multi-Device Action Buttons (Camera / Gallery / Webcam / Analyze) -->
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <!-- Mobile Native Camera Button -->
+          <button id="mobile-cam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow transition-all active:scale-95 text-xs sm:text-sm">
+            <i class="fa-solid fa-camera"></i>
+            <span data-en="Take Photo (Camera)" data-kn="ಕ್ಯಾಮರಾ ಫೋಟೋ">Take Photo (Camera)</span>
+          </button>
+
+          <!-- Choose from Gallery / Files -->
+          <button id="choose-file-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors text-xs sm:text-sm">
+            <i class="fa-solid fa-images text-emerald-600"></i>
+            <span data-en="Choose Gallery" data-kn="ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆ">Choose Gallery</span>
+          </button>
+
+          <!-- Laptop / PC Webcam Stream -->
+          <button id="open-webcam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors text-xs sm:text-sm">
+            <i class="fa-solid fa-video text-blue-600"></i>
+            <span data-en="Live Stream" data-kn="ಲೈವ್ ಕ್ಯಾಮೆರಾ">Live Stream</span>
+          </button>
+        </div>
+
+        <!-- Big Analyze Disease CTA Button -->
+        <button id="analyze-btn" type="button" disabled class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-4 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all opacity-50 cursor-not-allowed text-base">
+          <i class="fa-solid fa-microscope text-lg"></i>
+          <span data-en="Analyze Disease Now" data-kn="ಈಗಲೇ ರೋಗ ಪರೀಕ್ಷಿಸಿ">Analyze Disease Now</span>
+        </button>
+      </div>
+
+      <!-- Quick Test Sample Leaf Buttons for Evaluator Convenience -->
+      <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800">
+        <div class="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-3" data-en="Or test with pre-loaded samples:" data-kn="ಅಥವಾ ಮಾದರಿ ಚಿತ್ರಗಳನ್ನು ಪರೀಕ್ಷಿಸಿ:">
+          Or test with pre-loaded samples:
+        </div>
+        <div class="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/koleroga.svg') }}" data-name="sample_koleroga.svg">
+            🍇 Koleroga
+          </button>
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/yellow_leaf.svg') }}" data-name="sample_yellow_leaf.svg">
+            🍂 Yellow Leaf
+          </button>
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/bud_rot.svg') }}" data-name="sample_bud_rot.svg">
+            🌱 Bud Rot
+          </button>
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/stem_bleeding.svg') }}" data-name="sample_stem_bleeding.svg">
+            🪵 Stem Bleeding
+          </button>
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/leaf_spot.svg') }}" data-name="sample_leaf_spot.svg">
+            🍃 Leaf Spot
+          </button>
+          <button type="button" class="sample-leaf-btn text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors shrink-0" data-img="{{ url_for('static', filename='images/healthy.svg') }}" data-name="sample_healthy.svg">
+            🌴 Healthy
+          </button>
+        </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOADING SPINNER OVERLAY -->
+  <div id="loading-overlay" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8 max-w-sm w-full text-center space-y-4 shadow-2xl border border-zinc-200 dark:border-zinc-800">
+      <div class="w-16 h-16 mx-auto relative flex items-center justify-center">
+        <div class="w-16 h-16 border-4 border-emerald-200 dark:border-emerald-900 border-t-emerald-600 rounded-full animate-spin"></div>
+        <i class="fa-solid fa-leaf text-emerald-600 absolute text-xl"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-extrabold text-zinc-900 dark:text-white" data-en="Analyzing Plant Pathology..." data-kn="ರೋಗ ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...">
+          Analyzing Plant Pathology...
+        </h3>
+        <p id="loading-status-text" class="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
+          Preprocessing image (Resizing 224x224)...
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEBCAM MODAL -->
+  <div id="webcam-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 space-y-4 p-6">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
+        <h3 class="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-camera text-emerald-600"></i>
+          <span data-en="Webcam / Device Camera" data-kn="ಸಾಧನದ ಕ್ಯಾಮೆರಾ">Webcam / Device Camera</span>
+        </h3>
+        <button id="close-webcam-btn" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="relative bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center">
+        <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover"></video>
+        <canvas id="webcam-canvas" class="hidden w-full h-full object-cover"></canvas>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 pt-2">
+        <button id="switch-camera-btn" type="button" class="p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200" title="Switch Camera">
+          <i class="fa-solid fa-repeat"></i>
+        </button>
+        
+        <button id="capture-photo-btn" type="button" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow">
+          <i class="fa-solid fa-camera"></i>
+          <span data-en="Take Snapshot" data-kn="ಫೋಟೋ ತೆಗೆಯಿರಿ">Take Snapshot</span>
+        </button>
+
+        <button id="retake-photo-btn" type="button" class="hidden flex-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-bold py-3 rounded-xl">
+          <span data-en="Retake" data-kn="ಮತ್ತೆ ತೆಗೆಯಿರಿ">Retake</span>
+        </button>
+
+        <button id="use-photo-btn" type="button" class="hidden flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl">
+          <span data-en="Use Photo" data-kn="ಈ ಫೋಟೋ ಬಳಸಿ">Use Photo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT SECTION (POPULATED AFTER PREDICTION) -->
+  <section id="result-section" class="hidden max-w-5xl mx-auto space-y-8 pt-4">
+    
+    <!-- LOW CONFIDENCE ALERT (< 60%) -->
+    <div id="low-confidence-alert" class="hidden p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border-2 border-amber-300 dark:border-amber-700 shadow-md">
+      <div class="flex items-start space-x-3">
+        <div class="text-amber-500 text-2xl mt-0.5">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <h4 class="text-base font-bold text-amber-900 dark:text-amber-200" data-en="Low Prediction Confidence Alert" data-kn="ಕಡಿಮೆ ನಿಖರತೆಯ ಎಚ್ಚರಿಕೆ">
+            Low Prediction Confidence Alert
+          </h4>
+          <p id="low-confidence-message" class="text-sm text-amber-800 dark:text-amber-300 mt-1">
+            Unable to identify, please upload a clearer image.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN RESULT CARD -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800 shadow-2xl space-y-8">
+      
+      <!-- Top Overview Row -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start pb-8 border-b border-zinc-200 dark:border-zinc-800">
+        
+        <!-- Image Preview Thumbnail -->
+        <div class="md:col-span-4">
+          <div class="rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-lg aspect-square bg-zinc-100 dark:bg-zinc-800">
+            <img id="res-image" src="" alt="Analyzed Crop" class="w-full h-full object-cover">
+          </div>
+        </div>
+
+        <!-- Disease Headline, Confidence, Badges -->
+        <div class="md:col-span-8 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span id="res-severity" class="px-3 py-1 rounded-full text-xs font-bold border bg-red-100 text-red-800 border-red-300">
+              Critical
+            </span>
+            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              MobileNetV2 CNN Diagnosis
+            </span>
+          </div>
+
+          <div>
+            <h2 id="res-disease-name" class="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white">
+              Disease Name
+            </h2>
+            <p id="res-disease-sub" class="text-base font-semibold text-emerald-600 dark:text-emerald-400 font-kannada mt-1">
+              ಕನ್ನಡ ಹೆಸರು
+            </p>
+          </div>
+
+          <div class="text-xs text-zinc-600 dark:text-zinc-400">
+            <span class="font-bold" data-en="Causal Organism / Pathogen:" data-kn="ಕಾರಣವಾದ ರೋಗಾಣು:">Causal Organism / Pathogen:</span>
+            <span id="res-pathogen" class="italic ml-1">Pathogen name</span>
+          </div>
+
+          <!-- Confidence Bar -->
+          <div class="bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 space-y-2">
+            <div class="flex justify-between items-center text-sm font-bold">
+              <span class="text-zinc-700 dark:text-zinc-300" data-en="Confidence Level" data-kn="ನಿಖರತೆಯ ಪ್ರಮಾಣ">Confidence Level</span>
+              <span id="res-confidence-text" class="text-emerald-600 dark:text-emerald-400 text-lg">0%</span>
+            </div>
+            <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-3 rounded-full overflow-hidden">
+              <div id="res-confidence-bar" class="h-3 rounded-full bg-emerald-600 transition-all duration-1000" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- PDF Download Action -->
+          <div class="pt-2 flex flex-wrap gap-3">
+            <button id="download-pdf-btn" type="button" class="inline-flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]">
+              <i class="fa-solid fa-file-pdf text-base"></i>
+              <span data-en="Download Diagnostic PDF Report" data-kn="ಪಿಡಿಎಫ್ ರೋಗ ವರದಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ">Download Diagnostic PDF Report</span>
+            </button>
+            <a href="{{ url_for('detect_page') }}" class="inline-flex items-center space-x-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-sm px-5 py-3 rounded-xl transition-colors">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span data-en="Scan Another Image" data-kn="ಮತ್ತೊಂದು ಚಿತ್ರ ಪರೀಕ್ಷಿಸಿ">Scan Another Image</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- DETAILED TREATMENT & ADVISORY GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left: Symptoms, Causes, Remedies (8 Cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Symptoms Card -->
+          <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+            <h3 class="text-base font-bold text-zinc-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-stethoscope text-emerald-600"></i>
+              <span data-en="Clinical Symptoms" data-kn="ರೋಗದ ಲಕ್ಷಣಗಳು">Clinical Symptoms</span>
+            </h3>
+            <ul id="res-symptoms-list" class="space-y-2"></ul>
+          </div>
+
+          <!-- Causes Card -->
+          <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+            <h3 class="text-base font-bold text-zinc-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-cloud-showers-heavy text-blue-600"></i>
+              <span data-en="Etiology & Spread Factors" data-kn="ರೋಗದ ಕಾರಣಗಳು ಮತ್ತು ಹರಡುವಿಕೆ">Etiology & Spread Factors</span>
+            </h3>
+            <ul id="res-causes-list" class="space-y-2"></ul>
+          </div>
+
+          <!-- Organic Treatment Card -->
+          <div class="bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl p-6 border border-emerald-200 dark:border-emerald-800/60 space-y-3">
+            <h3 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center space-x-2">
+              <i class="fa-solid fa-seedling text-emerald-600"></i>
+              <span data-en="Organic Treatment & Bio-Control" data-kn="ಸಾವಯವ ಚಿಕಿತ್ಸೆ ಮತ್ತು ಜೈವಿಕ ನಿಯಂತ್ರಣ">Organic Treatment & Bio-Control</span>
+            </h3>
+            <ul id="res-organic-list" class="space-y-2"></ul>
+          </div>
+
+          <!-- Chemical Treatment Card -->
+          <div class="bg-amber-50/50 dark:bg-amber-950/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-800/60 space-y-3">
+            <h3 class="text-base font-bold text-amber-900 dark:text-amber-300 flex items-center space-x-2">
+              <i class="fa-solid fa-flask-vial text-amber-600"></i>
+              <span data-en="Chemical Fungicides & Dosages" data-kn="ರಾಸಾಯನಿಕ ಔಷಧಿ ಮತ್ತು ಸಿಂಪಡಣೆ ಪ್ರಮಾಣ">Chemical Fungicides & Dosages</span>
+            </h3>
+            <ul id="res-chemical-list" class="space-y-2"></ul>
+          </div>
+
+          <!-- Prevention Card -->
+          <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+            <h3 class="text-base font-bold text-zinc-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-shield-halved text-indigo-600"></i>
+              <span data-en="Preventive Agronomic Measures" data-kn="ಮುನ್ನೆಚ್ಚರಿಕಾ ಕ್ರಮಗಳು">Preventive Agronomic Measures</span>
+            </h3>
+            <ul id="res-prevention-list" class="space-y-2"></ul>
+          </div>
+
+        </div>
+
+        <!-- Right: Neural Probabilities Distribution (4 Cols) -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700/60 space-y-4">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-500" data-en="Model Class Probabilities" data-kn="ಎಲ್ಲಾ ತರಗತಿಗಳ ಸಂಭವನೀಯತೆ">
+              Model Class Probabilities
+            </h3>
+            <div id="res-probabilities-list" class="space-y-3"></div>
+          </div>
+
+          <!-- Extension Advisory Note -->
+          <div class="bg-blue-50 dark:bg-blue-950/40 rounded-2xl p-5 border border-blue-200 dark:border-blue-900/60 text-xs text-blue-900 dark:text-blue-300 space-y-2">
+            <div class="font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-blue-500"></i>
+              <span data-en="Agronomist Advice" data-kn="ಕೃಷಿ ತಜ್ಞರ ಸಲಹೆ">Agronomist Advice</span>
+            </div>
+            <p data-en="For severe outbreaks of Koleroga or Bud Rot, combine bunch spraying with improved field drainage trenches. Consult CPCRI or your nearest Krishi Vigyan Kendra (KVK)." data-kn="ಕೊಳೆರೋಗ ಅಥವಾ ಸುಳಿ ಕೊಳೆ ತೀವ್ರವಾಗಿದ್ದಾಗ ತೋಟದಲ್ಲಿ ಬಸಿಗಾಲುವೆಗಳನ್ನು ಮಾಡಿ. ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗೆ ಹತ್ತಿರದ ಕೃಷಿ ವಿಜ್ಞಾನ ಕೇಂದ್ರ (KVK) ಅಥವಾ ತೋಟಗಾರಿಕಾ ಇಲಾಖೆಯನ್ನು ಸಂಪರ್ಕಿಸಿ.">
+              For severe outbreaks of Koleroga or Bud Rot, combine bunch spraying with improved field drainage trenches. Consult CPCRI or your nearest Krishi Vigyan Kendra (KVK).
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/detect.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pdf_export.js') }}"></script>
+{% endblock %}

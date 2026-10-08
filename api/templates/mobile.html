@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}Download Android App | ArecaAI Arecanut Disease Detection{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14">
+
+  <!-- HERO / DOWNLOAD CALL-TO-ACTION -->
+  <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-8 sm:p-14 text-white shadow-2xl relative overflow-hidden">
+    <!-- Decorative background blobs -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+      
+      <!-- Left Column: Copy & Download Actions -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center space-x-2 bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-bold px-3.5 py-1.5 rounded-full">
+          <i class="fa-brands fa-android text-base text-emerald-300"></i>
+          <span data-en="Android Mobile Application • Free Download" data-kn="ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್ ಆಪ್ • ಉಚಿತ ಡೌನ್‌ಲೋಡ್">Android Mobile Application • Free Download</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+          <span data-en="Download ArecaAI Mobile App for Farmers" data-kn="ರೈತರಿಗಾಗಿ ArecaAI ಮೊಬೈಲ್ ಆಪ್ ಡೌನ್‌ಲೋಡ್">Download ArecaAI Mobile App for Farmers</span>
+        </h1>
+
+        <p class="text-emerald-100 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0" data-en="Instant, on-device disease diagnosis right inside your plantation — 100% offline with zero internet needed. Snap photos of arecanut bunches, crowns, or trunks to receive immediate organic and chemical remedy recommendations in English and Kannada." data-kn="ತೋಟದಲ್ಲೇ ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದಿದ್ದರೂ 100% ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಅಡಿಕೆ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಿ. ಅಡಿಕೆ ಗೊನೆ, ಸುಳಿ ಅಥವಾ ಕಾಂಡದ ಫೋಟೋ ತೆಗೆದು ತಕ್ಷಣವೇ ಸಾವಯವ ಮತ್ತು ರಾಸಾಯನಿಕ ಚಿಕಿತ್ಸೆಯ ವಿವರಗಳನ್ನು ಕನ್ನಡ ಹಾಗೂ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಪಡೆಯಿರಿ.">
+          Instant, on-device disease diagnosis right inside your plantation — 100% offline with zero internet needed. Snap photos of arecanut bunches, crowns, or trunks to receive immediate organic and chemical remedy recommendations in English and Kannada.
+        </p>
+
+        <!-- Big Download Button -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+          <a href="{{ url_for('download_apk') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-white text-emerald-950 hover:bg-emerald-50 font-black text-lg px-10 py-4 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95">
+            <i class="fa-solid fa-download text-xl text-emerald-700"></i>
+            <span data-en="Download Android APK (Free)" data-kn="ಆಂಡ್ರಾಯ್ಡ್ APK ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ (ಉಚಿತ)">Download Android APK (Free)</span>
+          </a>
+          <a href="{{ url_for('detect_page') }}" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-emerald-800/80 hover:bg-emerald-800 text-white font-semibold text-sm px-6 py-4 rounded-2xl border border-emerald-600/50 transition-all">
+            <i class="fa-solid fa-globe text-emerald-300"></i>
+            <span data-en="Use Web Scanner" data-kn="ವೆಬ್ ಸ್ಕ್ಯಾನರ್ ಬಳಸಿ">Use Web Scanner</span>
+          </a>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-emerald-200/90 font-medium pt-1">
+          <span><i class="fa-solid fa-check text-emerald-300 mr-1"></i> Version 1.0.0</span>
+          <span><i class="fa-solid fa-check text-emerald-300 mr-1"></i> Size: ~18 MB</span>
+          <span><i class="fa-solid fa-check text-emerald-300 mr-1"></i> Android 8.0+</span>
+          <span><i class="fa-solid fa-check text-emerald-300 mr-1"></i> 100% Free for Growers</span>
+        </div>
+      </div>
+
+      <!-- Right Column: Visual Mockup Card -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl max-w-sm w-full space-y-4 text-center">
+          <div class="w-20 h-20 mx-auto rounded-3xl bg-white text-emerald-700 flex items-center justify-center text-4xl shadow-lg">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-white">ArecaAI Mobile</h3>
+            <p class="text-xs text-emerald-200 mt-0.5">Offline Agricultural Diagnostic Suite</p>
+          </div>
+
+          <div class="bg-black/20 rounded-2xl p-4 text-left space-y-2 text-xs text-emerald-100 border border-white/10">
+            <div class="font-bold text-white flex items-center justify-between pb-1 border-b border-white/10">
+              <span>App Highlights:</span>
+              <span class="text-[10px] bg-emerald-500/40 text-emerald-200 px-2 py-0.5 rounded-full">Offline Ready</span>
+            </div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> 100% Offline AI Model on Phone</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Full Kannada & English Support</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Camera & Gallery Leaf Picker</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Organic & Chemical Remedies</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Scan History Saved Locally</div>
+          </div>
+
+          <a href="{{ url_for('download_apk') }}" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold text-sm py-3.5 rounded-xl transition-all shadow">
+            <i class="fa-solid fa-download"></i>
+            <span>Click to Download APK</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW TO INSTALL APK (3 EASY STEPS FOR USERS) -->
+  <div class="space-y-6">
+    <div class="text-center max-w-2xl mx-auto space-y-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400" data-en="Installation Guide" data-kn="ಅಳವಡಿಸುವ ಸುಲಭ ವಿಧಾನ">
+        Installation Guide
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white" data-en="How to Install on Your Android Phone" data-kn="ನಿಮ್ಮ ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್‌ನಲ್ಲಿ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುವುದು ಹೇಗೆ?">
+        How to Install on Your Android Phone
+      </h2>
+      <p class="text-xs sm:text-sm text-zinc-500" data-en="Follow these 3 simple steps to install the APK on any Android smartphone or tablet." data-kn="ಯಾವುದೇ ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್‌ನಲ್ಲಿ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಈ 3 ಸರಳ ಹಂತಗಳನ್ನು ಅನುಸರಿಸಿ.">
+        Follow these 3 simple steps to install the APK on any Android smartphone or tablet.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Step 1 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-4">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-extrabold text-xl shadow-inner">
+          1
+        </div>
+        <h3 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Download APK File" data-kn="1. ಆಪ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ">
+          1. Download APK File
+        </h3>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Tap the 'Download Android APK' button above to save ArecaAI-Release-v1.0.apk to your phone's Downloads folder." data-kn="ಮೇಲಿನ 'Download Android APK' ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ ನಿಮ್ಮ ಮೊಬೈಲ್‌ಗೆ APK ಫೈಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿಕೊಳ್ಳಿ.">
+          Tap the 'Download Android APK' button above to save ArecaAI-Release-v1.0.apk to your phone's Downloads folder.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-4">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-600 font-extrabold text-xl shadow-inner">
+          2
+        </div>
+        <h3 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Allow Installation" data-kn="2. ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಅನುಮತಿಸಿ">
+          2. Allow Installation
+        </h3>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Open your Notifications or Downloads and tap the APK file. If prompted, toggle 'Allow installation from this source' in Settings." data-kn="ಡೌನ್‌ಲೋಡ್ ಆದ ಫೈಲ್ ಮೇಲೆ ಕ್ಲಿಕ್ ಮಾಡಿ. 'Allow from this source' (ಅಥವಾ Unknown sources) ಆನ್ ಮಾಡಿ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ.">
+          Open your Notifications or Downloads and tap the APK file. If prompted, toggle 'Allow installation from this source' in Settings.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm text-center space-y-4">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-teal-100 dark:bg-teal-950 flex items-center justify-center text-teal-600 font-extrabold text-xl shadow-inner">
+          3
+        </div>
+        <h3 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Launch & Diagnose Offline" data-kn="3. ಆಪ್ ಬಳಸಿ ರೋಗ ಪತ್ತೆ ಮಾಡಿ">
+          3. Launch & Diagnose Offline
+        </h3>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Open ArecaAI, grant camera permissions, snap a photo of any diseased leaf or fruit, and get an instant prescription offline!" data-kn="ಆಪ್ ತೆರೆದು ಕ್ಯಾಮೆರಾ ಅನುಮತಿ ನೀಡಿ. ಅಡಿಕೆ ಮರದ ಎಲೆ ಅಥವಾ ಕಾಯಿಯ ಫೋಟೋ ತೆಗೆದು ತಕ್ಷಣವೇ ರೋಗ ಪತ್ತೆ ಮಾಡಿ!">
+          Open ArecaAI, grant camera permissions, snap a photo of any diseased leaf or fruit, and get an instant prescription offline!
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- KEY APP FEATURES FOR FARMERS -->
+  <div class="space-y-6">
+    <div class="text-center max-w-2xl mx-auto space-y-2">
+      <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400" data-en="Farmer-Friendly Features" data-kn="ರೈತಸ್ನೇಹಿ ಸೌಲಭ್ಯಗಳು">
+        Farmer-Friendly Features
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white" data-en="Engineered for Easy Agricultural Use" data-kn="ಅಡಿಕೆ ಬೆಳೆಗಾರರಿಗಾಗಿ ವಿಶೇಷವಾಗಿ ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ">
+        Engineered for Easy Agricultural Use
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 text-xl font-bold">
+          <i class="fa-solid fa-wifi-slash"></i>
+        </div>
+        <h4 class="font-bold text-zinc-900 dark:text-white text-base" data-en="100% Offline Capability" data-kn="ಸಂಪೂರ್ಣ ಆಫ್‌ಲೈನ್ ಬಳಕೆ">100% Offline Capability</h4>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="No internet or mobile signal needed. The entire AI model runs directly on your smartphone processor." data-kn="ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕದ ಅಗತ್ಯವಿಲ್ಲ. ಆಪ್ ನಿಮ್ಮ ಮೊಬೈಲ್‌ನಲ್ಲೇ ಸಂಪೂರ್ಣವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ.">
+          No internet or mobile signal needed. The entire AI model runs directly on your smartphone processor.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950 flex items-center justify-center text-purple-600 text-xl font-bold">
+          <i class="fa-solid fa-language"></i>
+        </div>
+        <h4 class="font-bold text-zinc-900 dark:text-white text-base" data-en="Bilingual: Kannada & English" data-kn="ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಭಾಷೆ">Bilingual: Kannada & English</h4>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Easily toggle between authentic Kannada agricultural vocabulary and English medical terminology." data-kn="ಕರ್ನಾಟಕದ ರೈತರಿಗೆ ಅರ್ಥವಾಗುವಂತೆ ಸ್ಪಷ್ಟ ಕನ್ನಡ ಭಾಷೆಯಲ್ಲಿ ರೋಗದ ವಿವರಣೆ ಮತ್ತು ಔಷಧಿ ಮಾಹಿತಿ ಲಭ್ಯವಿದೆ.">
+          Easily toggle between authentic Kannada agricultural vocabulary and English medical terminology.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-600 text-xl font-bold">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h4 class="font-bold text-zinc-900 dark:text-white text-base" data-en="Low Confidence Warning" data-kn="ಕಡಿಮೆ ನಿಖರತೆ ಎಚ್ಚರಿಕೆ">Low Confidence Warning</h4>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="If a photo is blurry or dark (< 60% confidence), the app alerts you to retake a clearer photo rather than guessing." data-kn="ಚಿತ್ರ ಅಸ್ಪಷ್ಟವಾಗಿದ್ದರೆ ಅಥವಾ ಕತ್ತಲೆಯಾಗಿದ್ದರೆ ತಪ್ಪು ಮಾಹಿತಿ ನೀಡದೆ, ಸ್ಪಷ್ಟ ಫೋಟೋ ತೆಗೆಯಲು ಎಚ್ಚರಿಕೆ ನೀಡುತ್ತದೆ.">
+          If a photo is blurry or dark (< 60% confidence), the app alerts you to retake a clearer photo rather than guessing.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 text-xl font-bold">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <h4 class="font-bold text-zinc-900 dark:text-white text-base" data-en="Organic & Chemical Cures" data-kn="ಸಾವಯವ ಮತ್ತು ರಾಸಾಯನಿಕ ಚಿಕಿತ್ಸೆ">Organic & Chemical Cures</h4>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Offers certified CPCRI/ICAR bio-control sprays (Bordeaux mixture, Trichoderma) and targeted fungicide dosages." data-kn="ಬೋರ್ಡೋ ದ್ರಾವಣ, ಟ್ರೈಕೋಡರ್ಮಾ ಮುಂತಾದ ಸಾವಯವ ಕ್ರಮಗಳು ಹಾಗೂ ನಿಖರ ಶಿಲೀಂಧ್ರನಾಶಕಗಳ ಸಿಂಪಡಣೆ ಪ್ರಮಾಣ.">
+          Offers certified CPCRI/ICAR bio-control sprays (Bordeaux mixture, Trichoderma) and targeted fungicide dosages.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-600 text-xl font-bold">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <h4 class="font-bold text-zinc-900 dark:text-white text-base" data-en="Scan History Archive" data-kn="ಹಿಂದಿನ ಪರೀಕ್ಷಾ ಇತಿಹಾಸ">Scan History Archive</h4>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Automatically saves your previous field scans with date and disease severity, with swipe-to-delete support." data-kn="ಹಿಂದೆ ಪರೀಕ್ಷಿಸಿದ ದಿನಾಂಕ, ರೋಗದ ತೀವ್ರತೆ ಮತ್ತು ಫೋಟೋಗಳು ಮೊಬೈಲ್‌ನಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿ ಸಂಗ್ರಹವಾಗುತ್ತವೆ.">
+          Automatically saves your previous field scans with date and disease severity, with swipe-to-delete support.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-3">
+        <div class="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-950 flex items-center justify-center text-teal-600 text-xl font-bold">
+          <i class="fa-solid fa-book-medical"></i>
+        </div>
+        <h4 class="font-bold text-zinc-900 dark:text-white text-base" data-en="Complete Disease Catalog" data-kn="ರೋಗಗಳ ಸಂಪೂರ್ಣ ಕೈಪಿಡಿ">Complete Disease Catalog</h4>
+        <p class="text-xs text-zinc-500 leading-relaxed" data-en="Browse all 6 conditions: Koleroga, Yellow Leaf, Bud Rot, Stem Bleeding, Leaf Spot, and Healthy Palms." data-kn="ಕೊಳೆರೋಗ, ಹಳದಿ ಎಲೆ, ಸುಳಿ ಕೊಳೆ, ಕಾಂಡ ಸ್ರಾವ, ಎಲೆ ಚುಕ್ಕೆ ಹಾಗೂ ಆರೋಗ್ಯಕರ ಮರಗಳ ಸಮಗ್ರ ವಿವರ.">
+          Browse all 6 conditions: Koleroga, Yellow Leaf, Bud Rot, Stem Bleeding, Leaf Spot, and Healthy Palms.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM DOWNLOAD BANNER -->
+  <div class="text-center py-10 bg-zinc-100 dark:bg-zinc-800/60 rounded-3xl border border-zinc-200 dark:border-zinc-700 space-y-4">
+    <h3 class="text-2xl font-extrabold text-zinc-900 dark:text-white" data-en="Get ArecaAI on Your Mobile Today" data-kn="ಇಂದೇ ನಿಮ್ಮ ಮೊಬೈಲ್‌ನಲ್ಲಿ ArecaAI ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ">
+      Get ArecaAI on Your Mobile Today
+    </h3>
+    <p class="text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto" data-en="Protect your arecanut plantation with early disease detection right from your pocket." data-kn="ನಿಮ್ಮ ಅಡಿಕೆ ತೋಟವನ್ನು ಆರಂಭದಲ್ಲೇ ರೋಗಗಳಿಂದ ರಕ್ಷಿಸಿಕೊಳ್ಳಿ.">
+      Protect your arecanut plantation with early disease detection right from your pocket.
+    </p>
+    <a href="{{ url_for('download_apk') }}" class="inline-flex items-center space-x-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-base px-8 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95">
+      <i class="fa-solid fa-download text-lg"></i>
+      <span data-en="Download Android APK File" data-kn="ಆಂಡ್ರಾಯ್ಡ್ APK ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ">Download Android APK File</span>
+    </a>
+  </div>
+
+  <!-- PROJECT TEAM & GUIDE ACCREDITATION -->
+  <div class="bg-gradient-to-r from-emerald-800 to-green-900 rounded-3xl p-8 sm:p-10 text-white shadow-xl space-y-6">
+    <div class="text-center max-w-2xl mx-auto space-y-2">
+      <span class="text-xs uppercase tracking-wider text-emerald-200 font-bold">Engineering Mini Project • Department of CSE</span>
+      <h3 class="text-2xl sm:text-3xl font-extrabold">Developed by Student Engineering Team</h3>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+        <div class="text-base font-bold">Gurunath P Bankapur</div>
+        <div class="text-xs text-emerald-200 mt-1">Deep Learning & TFLite</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+        <div class="text-base font-bold">S J Ganesh Gowda</div>
+        <div class="text-xs text-emerald-200 mt-1">Backend & API Engine</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+        <div class="text-base font-bold">Sadashiv S Hutagi</div>
+        <div class="text-xs text-emerald-200 mt-1">Mobile & UI/UX Lead</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+        <div class="text-base font-bold">Vinayaka.V</div>
+        <div class="text-xs text-emerald-200 mt-1">Dataset & Field Evaluation</div>
+      </div>
+    </div>
+
+    <div class="text-center pt-2 border-t border-white/20">
+      <span class="text-xs text-emerald-200">Under the Guidance of:</span>
+      <div class="text-lg font-extrabold text-white">Prof. Vinutha H R</div>
+      <div class="text-xs text-emerald-200">Department of Computer Science & Engineering</div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
