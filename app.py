@@ -217,7 +217,7 @@ def get_stats_api():
 
 @app.route('/logo.svg')
 def root_logo():
-    for f in [os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'static', 'images')]:
+    for f in [os.path.join(BASE_DIR, 'public', 'images'), os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'static', 'images')]:
         if os.path.exists(os.path.join(f, 'logo.svg')):
             return send_from_directory(f, 'logo.svg', mimetype='image/svg+xml')
     return "Not Found", 404
@@ -231,14 +231,50 @@ def root_favicon():
             return send_from_directory(f, 'logo.svg', mimetype='image/svg+xml')
     return "Not Found", 404
 
+@app.route('/images/<path:filename>')
+def serve_images(filename):
+    for f in [
+        os.path.join(BASE_DIR, 'public', 'images'),
+        os.path.join(BASE_DIR, 'public', 'static', 'images'),
+        os.path.join(BASE_DIR, 'static', 'images')
+    ]:
+        if os.path.exists(os.path.join(f, filename)):
+            mimetype = 'image/svg+xml' if filename.endswith('.svg') else None
+            return send_from_directory(f, filename, mimetype=mimetype)
+    return "Image not found", 404
+
+@app.route('/css/<path:filename>')
+def serve_css(filename):
+    for f in [
+        os.path.join(BASE_DIR, 'public', 'css'),
+        os.path.join(BASE_DIR, 'public', 'static', 'css'),
+        os.path.join(BASE_DIR, 'static', 'css')
+    ]:
+        if os.path.exists(os.path.join(f, filename)):
+            return send_from_directory(f, filename, mimetype='text/css')
+    return "CSS not found", 404
+
+@app.route('/js/<path:filename>')
+def serve_js(filename):
+    for f in [
+        os.path.join(BASE_DIR, 'public', 'js'),
+        os.path.join(BASE_DIR, 'public', 'static', 'js'),
+        os.path.join(BASE_DIR, 'static', 'js')
+    ]:
+        if os.path.exists(os.path.join(f, filename)):
+            return send_from_directory(f, filename, mimetype='application/javascript')
+    return "JS not found", 404
+
 @app.route('/static/<path:filename>')
 def serve_static_asset(filename):
     for f in [
         os.path.join(BASE_DIR, 'public', 'static'),
-        os.path.join(BASE_DIR, 'static')
+        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'public')
     ]:
         if os.path.exists(os.path.join(f, filename)):
-            return send_from_directory(f, filename)
+            mimetype = 'image/svg+xml' if filename.endswith('.svg') else None
+            return send_from_directory(f, filename, mimetype=mimetype)
     return "Static file not found", 404
 
 # --- ERROR HANDLERS ---

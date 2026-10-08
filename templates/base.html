@@ -9,8 +9,9 @@
   <title>{% block title %}Detection of Diseases in Arecanut Plants using Deep Learning{% endblock %}</title>
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
-  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+  <link rel="alternate icon" href="/logo.svg">
+  <link rel="alternate icon" href="{{ url_for('static', filename='images/logo.svg') }}">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -45,6 +46,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   {% block head_extra %}{% endblock %}
 </head>
@@ -57,7 +59,7 @@
         
         <!-- Logo & Branding -->
         <a href="{{ url_for('home') }}" class="flex items-center space-x-3 group">
-          <img src="{{ url_for('static', filename='images/logo.svg') }}" onerror="this.onerror=null; this.src='/logo.svg';" alt="Arecanut AI Logo" class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105">
+          <img src="/images/logo.svg" onerror="if(this.src.indexOf('/images/logo.svg')!==-1){this.src='/logo.svg';}else if(this.src.indexOf('/logo.svg')!==-1){this.src='{{ url_for('static', filename='images/logo.svg') }}';}" alt="ArecaAI Logo" class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105">
           <div>
             <span class="block text-lg sm:text-xl font-extrabold tracking-tight text-emerald-800 dark:text-emerald-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
               ArecaAI
@@ -169,7 +171,7 @@
         <!-- Col 1: Platform & Team Summary -->
         <div>
           <div class="flex items-center space-x-3 mb-3">
-            <img src="{{ url_for('static', filename='images/logo.svg') }}" onerror="this.onerror=null; this.src='/logo.svg';" alt="Logo" class="w-8 h-8">
+            <img src="/images/logo.svg" onerror="if(this.src.indexOf('/images/logo.svg')!==-1){this.src='/logo.svg';}else if(this.src.indexOf('/logo.svg')!==-1){this.src='{{ url_for('static', filename='images/logo.svg') }}';}" alt="Logo" class="w-8 h-8">
             <span class="text-lg font-bold text-emerald-800 dark:text-emerald-400">ArecaAI Platform</span>
           </div>
           <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-3" data-en="AI-driven agricultural diagnostic suite for Arecanut palms with Web, Android Mobile (TFLite), and Cloud inference." data-kn="ವೆಬ್ ಮತ್ತು ಆಂಡ್ರಾಯ್ಡ್ ಮೊಬೈಲ್ (TFLite) ಮೂಲಕ ಅಡಿಕೆ ಬೆಳೆ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚುವ ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ ವ್ಯವಸ್ಥೆ.">
@@ -269,7 +271,7 @@
   </nav>
 
   <!-- Main Scripts -->
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="/js/main.js" onerror="this.onerror=null; this.src='{{ url_for('static', filename='js/main.js') }}';"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

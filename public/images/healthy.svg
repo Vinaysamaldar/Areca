@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgH" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+    <linearGradient id="trunkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#78716c"/>
+      <stop offset="50%" stop-color="#a8a29e"/>
+      <stop offset="100%" stop-color="#78716c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="16" fill="url(#bgH)"/>
+  <!-- Sunny sky and palm background -->
+  <circle cx="340" cy="60" r="35" fill="#fef08a" opacity="0.6"/>
+  <!-- Healthy palm trunk -->
+  <path d="M190 300 L195 140 L205 140 L210 300 Z" fill="url(#trunkGrad)"/>
+  <ellipse cx="200" cy="140" rx="6" ry="2" fill="#57534e"/>
+  <!-- Trunk rings -->
+  <line x1="192" y1="260" x2="208" y2="260" stroke="#57534e" stroke-width="2"/>
+  <line x1="193" y1="220" x2="207" y2="220" stroke="#57534e" stroke-width="2"/>
+  <line x1="194" y1="180" x2="206" y2="180" stroke="#57534e" stroke-width="2"/>
+  <!-- Crown Fronds (Lush Green) -->
+  <path d="M200 140 Q130 90 70 120 Q120 70 200 140" fill="#15803d"/>
+  <path d="M200 140 Q270 90 330 120 Q280 70 200 140" fill="#16a34a"/>
+  <path d="M200 140 Q150 40 100 50 Q160 30 200 140" fill="#22c55e"/>
+  <path d="M200 140 Q250 40 300 50 Q240 30 200 140" fill="#16a34a"/>
+  <path d="M200 140 Q190 10 200 5 Q210 10 200 140" fill="#4ade80"/>
+  <!-- Healthy arecanuts cluster -->
+  <g transform="translate(185, 142)">
+    <circle cx="5" cy="5" r="7" fill="#16a34a"/>
+    <circle cx="15" cy="7" r="8" fill="#22c55e"/>
+    <circle cx="25" cy="5" r="7" fill="#15803d"/>
+    <circle cx="10" cy="18" r="8" fill="#4ade80"/>
+    <circle cx="20" cy="18" r="8" fill="#16a34a"/>
+    <circle cx="15" cy="27" r="7.5" fill="#22c55e"/>
+  </g>
+  <!-- Healthy Status Badge -->
+  <rect x="20" y="240" width="140" height="38" rx="19" fill="#15803d"/>
+  <text x="90" y="264" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="14" text-anchor="middle">✓ HEALTHY</text>
+</svg>
