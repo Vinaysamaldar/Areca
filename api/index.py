@@ -12,9 +12,9 @@ for path in [root_dir, current_dir]:
 class VercelPathFixMiddleware:
     """
     Handles Vercel internal rewrites.
-    When Vercel rewrites requests to /api/index.py, this middleware inspects
-    Vercel's original path headers (x-matched-path, x-forwarded-uri, etc.)
-    and restores PATH_INFO so Flask routes match accurately.
+    When Vercel rewrites requests to /api/index, this middleware inspects
+    Vercel's original path headers (x-forwarded-uri, x-original-url, etc.)
+    and restores the real incoming PATH_INFO so Flask routes match accurately.
     """
     def __init__(self, wsgi_app):
         self.wsgi_app = wsgi_app
@@ -22,21 +22,32 @@ class VercelPathFixMiddleware:
     def __call__(self, environ, start_response):
         path_info = environ.get('PATH_INFO', '')
         if path_info in ('/api/index.py', '/api/index', '/api'):
-            matched = (
-                environ.get('HTTP_X_MATCHED_PATH') or
-                environ.get('HTTP_X_FORWARDED_URI') or
-                environ.get('HTTP_X_VERCEL_MATCHED_PATH') or
-                environ.get('HTTP_X_REWRITE_URL') or
-                environ.get('HTTP_X_ORIGINAL_URL') or
-                '/'
-            )
-            # If the matched path is not the internal script name, use it
-            if matched not in ('/api/index.py', '/api/index', '/api'):
-                if '?' in matched:
-                    matched = matched.split('?', 1)[0]
-                environ['PATH_INFO'] = matched
+            original_path = None
+            for header in [
+                'HTTP_X_FORWARDED_URI',
+                'HTTP_X_VERCEL_FORWARDED_URI',
+                'HTTP_X_ORIGINAL_URL',
+                'HTTP_X_REWRITE_URL',
+                'REQUEST_URI',
+                'RAW_URI',
+            ]:
+                val = environ.get(header)
+                if val and val not in ('/api/index.py', '/api/index', '/api'):
+                    original_path = val
+                    break
+
+            if original_path:
+                if '?' in original_path:
+                    original_path = original_path.split('?', 1)[0]
+                environ['PATH_INFO'] = original_path
             else:
-                environ['PATH_INFO'] = '/'
+                matched = environ.get('HTTP_X_MATCHED_PATH') or environ.get('HTTP_X_VERCEL_MATCHED_PATH')
+                if matched and matched not in ('/api/index.py', '/api/index', '/api'):
+                    if '?' in matched:
+                        matched = matched.split('?', 1)[0]
+                    environ['PATH_INFO'] = matched
+                else:
+                    environ['PATH_INFO'] = '/'
         return self.wsgi_app(environ, start_response)
 
 try:

@@ -97,6 +97,9 @@ def custom_static_uploads(filename):
 # --- API ENDPOINTS ---
 
 @app.route('/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
+@app.route('/api/index/predict', methods=['POST'])
+@app.route('/api/index.py/predict', methods=['POST'])
 def predict():
     """
     POST /predict

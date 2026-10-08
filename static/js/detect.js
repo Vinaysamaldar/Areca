@@ -343,12 +343,29 @@ function setupAnalyzeAction() {
     formData.append('image', selectedFile);
 
     try {
-      const response = await fetch('/predict', {
+      let response = await fetch('/predict', {
         method: 'POST',
         body: formData
       });
 
+      let contentType = response.headers.get('content-type') || '';
+      // If /predict was rewritten or returned HTML, try fallback to /api/predict
+      if (!contentType.includes('application/json')) {
+        console.warn("Non-JSON response from /predict, trying /api/predict fallback...");
+        response = await fetch('/api/predict', {
+          method: 'POST',
+          body: formData
+        });
+        contentType = response.headers.get('content-type') || '';
+      }
+
       clearInterval(interval);
+
+      if (!contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Server returned HTML error (${response.status}). Please verify API route.`);
+      }
+
       const data = await response.json();
 
       if (!response.ok || !data.success) {
