@@ -167,7 +167,8 @@ def predict():
             "warning_message": result['warning_message'],
             "warning_message_kn": result['warning_message_kn'],
             "details": result['details'],
-            "mode": result['mode']
+            "mode": result['mode'],
+            "features": result.get('features', {})
         }
 
         return jsonify(response_payload), 200
