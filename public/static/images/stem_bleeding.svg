@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <linearGradient id="trunkBark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#57534e"/>
+      <stop offset="50%" stop-color="#78716c"/>
+      <stop offset="100%" stop-color="#44403c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="16" fill="url(#bgS)"/>
+
+  <!-- Closeup of Arecanut Trunk -->
+  <rect x="130" y="0" width="140" height="300" fill="url(#trunkBark)"/>
+
+  <!-- Bark cracks / fissures -->
+  <path d="M160 50 Q168 120 162 190 Q166 240 160 290" stroke="#292524" stroke-width="4" fill="none"/>
+  <path d="M220 80 Q212 140 218 200 Q210 260 216 300" stroke="#292524" stroke-width="5" fill="none"/>
+  <path d="M185 110 Q195 150 190 220" stroke="#1c1917" stroke-width="3" fill="none"/>
+
+  <!-- Reddish-Brown / Rust Colored Exudate (Bleeding Fluid) -->
+  <!-- Upper lesion bleed -->
+  <path d="M162 90 Q166 120 164 160 Q168 210 165 260" stroke="#7c2d12" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <path d="M162 90 Q166 120 164 160 Q168 210 165 260" stroke="#451a03" stroke-width="4" stroke-linecap="round" fill="none"/>
+  
+  <!-- Lower lesion seep -->
+  <ellipse cx="215" cy="150" rx="12" ry="18" fill="#451a03"/>
+  <path d="M215 160 Q218 200 214 270" stroke="#7c2d12" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M215 160 Q218 200 214 270" stroke="#1c1917" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+  <!-- Dried black crust -->
+  <ellipse cx="163" cy="98" rx="8" ry="12" fill="#18181b"/>
+  <ellipse cx="215" cy="148" rx="8" ry="10" fill="#18181b"/>
+
+  <!-- Fluid droplet -->
+  <circle cx="214" cy="272" r="4.5" fill="#9a3412"/>
+
+  <!-- Disease label badge -->
+  <rect x="20" y="235" width="200" height="36" rx="18" fill="#c2410c"/>
+  <text x="120" y="258" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="13" text-anchor="middle">⚠ STEM BLEEDING</text>
+</svg>

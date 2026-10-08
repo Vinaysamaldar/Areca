@@ -7,12 +7,13 @@ from PIL import Image
 import database
 from model_helper import model_manager
 
-# Initialize Flask App
-app = Flask(__name__)
-
 # Application Configuration
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'arecanut-dl-mini-project-secret-2026')
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, 'public', 'static') if os.path.exists(os.path.join(BASE_DIR, 'public', 'static')) else os.path.join(BASE_DIR, 'static')
+
+# Initialize Flask App
+app = Flask(__name__, static_folder=STATIC_DIR, static_url_path='/static')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'arecanut-dl-mini-project-secret-2026')
 
 # Vercel and serverless functions only have write permissions in /tmp
 if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
@@ -211,6 +212,34 @@ def get_stats_api():
     """GET /api/stats - Returns history aggregate statistics."""
     stats = database.get_statistics()
     return jsonify(stats)
+
+# --- STATIC ASSET FALLBACK ROUTES (For Vercel CDN & Edge Deployment) ---
+
+@app.route('/logo.svg')
+def root_logo():
+    for f in [os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'static', 'images')]:
+        if os.path.exists(os.path.join(f, 'logo.svg')):
+            return send_from_directory(f, 'logo.svg', mimetype='image/svg+xml')
+    return "Not Found", 404
+
+@app.route('/favicon.ico')
+def root_favicon():
+    for f in [os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'static', 'images')]:
+        if os.path.exists(os.path.join(f, 'favicon.ico')):
+            return send_from_directory(f, 'favicon.ico')
+        if os.path.exists(os.path.join(f, 'logo.svg')):
+            return send_from_directory(f, 'logo.svg', mimetype='image/svg+xml')
+    return "Not Found", 404
+
+@app.route('/static/<path:filename>')
+def serve_static_asset(filename):
+    for f in [
+        os.path.join(BASE_DIR, 'public', 'static'),
+        os.path.join(BASE_DIR, 'static')
+    ]:
+        if os.path.exists(os.path.join(f, filename)):
+            return send_from_directory(f, filename)
+    return "Static file not found", 404
 
 # --- ERROR HANDLERS ---
 
