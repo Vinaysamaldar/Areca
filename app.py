@@ -40,12 +40,14 @@ database.init_db()
 
 # --- WEB PAGE ROUTES ---
 
-@app.route('/')
-@app.route('/api/index.py')
-@app.route('/api/index')
-@app.route('/api')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/api/index.py', methods=['GET', 'POST'])
+@app.route('/api/index', methods=['GET', 'POST'])
+@app.route('/api', methods=['GET', 'POST'])
 def home():
-    """Renders the Home page."""
+    """Renders the Home page, or handles image prediction if POST arrived here."""
+    if request.method == 'POST' and 'image' in request.files:
+        return predict()
     stats = database.get_statistics()
     return render_template('index.html', active_page='home', stats=stats)
 
@@ -299,6 +301,14 @@ def request_entity_too_large(error):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('index.html', error_notice="Requested page not found."), 404
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    if request.method == 'POST' and 'image' in request.files:
+        return predict()
+    if request.path.startswith('/api') or request.path.startswith('/predict') or request.is_json:
+        return jsonify({"success": False, "error": f"Method {request.method} Not Allowed on {request.path}"}), 405
+    return render_template('index.html', error_notice="Method not allowed."), 405
 
 @app.errorhandler(500)
 def server_error(e):

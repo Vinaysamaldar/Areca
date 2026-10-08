@@ -12,42 +12,54 @@ for path in [root_dir, current_dir]:
 class VercelPathFixMiddleware:
     """
     Handles Vercel internal rewrites.
-    When Vercel rewrites requests to /api/index, this middleware inspects
-    Vercel's original path headers (x-forwarded-uri, x-original-url, etc.)
-    and restores the real incoming PATH_INFO so Flask routes match accurately.
+    Restores the real incoming PATH_INFO from either __path query parameter
+    or Vercel proxy headers so Flask routes match accurately.
     """
     def __init__(self, wsgi_app):
         self.wsgi_app = wsgi_app
 
     def __call__(self, environ, start_response):
-        path_info = environ.get('PATH_INFO', '')
-        if path_info in ('/api/index.py', '/api/index', '/api'):
-            original_path = None
-            for header in [
-                'HTTP_X_FORWARDED_URI',
-                'HTTP_X_VERCEL_FORWARDED_URI',
-                'HTTP_X_ORIGINAL_URL',
-                'HTTP_X_REWRITE_URL',
-                'REQUEST_URI',
-                'RAW_URI',
-            ]:
-                val = environ.get(header)
-                if val and val not in ('/api/index.py', '/api/index', '/api'):
-                    original_path = val
-                    break
+        from urllib.parse import parse_qs, urlencode
 
-            if original_path:
-                if '?' in original_path:
-                    original_path = original_path.split('?', 1)[0]
-                environ['PATH_INFO'] = original_path
+        query_string = environ.get('QUERY_STRING', '')
+        # 1. Check if rewritten via __path query parameter
+        if '__path' in query_string:
+            params = parse_qs(query_string, keep_blank_values=True)
+            if '__path' in params and params['__path'][0]:
+                req_path = params.pop('__path')[0]
+                if not req_path.startswith('/'):
+                    req_path = '/' + req_path
+                environ['PATH_INFO'] = req_path
+                environ['QUERY_STRING'] = urlencode(params, doseq=True)
             else:
-                matched = environ.get('HTTP_X_MATCHED_PATH') or environ.get('HTTP_X_VERCEL_MATCHED_PATH')
-                if matched and matched not in ('/api/index.py', '/api/index', '/api'):
-                    if '?' in matched:
-                        matched = matched.split('?', 1)[0]
-                    environ['PATH_INFO'] = matched
+                params.pop('__path', None)
+                environ['PATH_INFO'] = '/'
+                environ['QUERY_STRING'] = urlencode(params, doseq=True)
+        else:
+            path_info = environ.get('PATH_INFO', '')
+            if path_info in ('/api/index.py', '/api/index', '/api', ''):
+                # 2. Check proxy headers
+                original_path = None
+                for header in [
+                    'HTTP_X_FORWARDED_URI',
+                    'HTTP_X_VERCEL_FORWARDED_URI',
+                    'HTTP_X_ORIGINAL_URL',
+                    'HTTP_X_REWRITE_URL',
+                    'REQUEST_URI',
+                    'RAW_URI',
+                ]:
+                    val = environ.get(header)
+                    if val and val not in ('/api/index.py', '/api/index', '/api'):
+                        original_path = val
+                        break
+
+                if original_path:
+                    if '?' in original_path:
+                        original_path = original_path.split('?', 1)[0]
+                    environ['PATH_INFO'] = original_path
                 else:
                     environ['PATH_INFO'] = '/'
+
         return self.wsgi_app(environ, start_response)
 
 try:
