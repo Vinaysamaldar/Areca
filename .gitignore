@@ -6,4 +6,10 @@ predictions.db
 venv/
 .env
 static/uploads/*
-!static/uploads/.gitkeep
+
+# Node / Frontend
+node_modules/
+dist/
+*.tsbuildinfo
+.next/
+out/
