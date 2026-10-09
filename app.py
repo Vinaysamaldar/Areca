@@ -105,55 +105,20 @@ def live_page():
     return serve_spa_or_template('index.html', active_page='home')
 
 @app.route('/solutions')
-def solutions_page():
-    """Renders Disease Solutions & Seasonal Calendar Advisory."""
-    diseases = model_manager.disease_info.get("diseases", {})
-    calendar = model_manager.disease_info.get("seasonal_calendar", {})
-    return serve_spa_or_template('solutions.html', active_page='solutions', diseases=diseases, calendar=calendar)
-
 @app.route('/analytics')
-def analytics_page():
-    """Renders Comprehensive Analytics Dashboard with Multi-Spectral Feature Extraction, Solutions, Diseases & History."""
-    stats = {}
-    predictions = []
-    try:
-        stats = database.get_statistics()
-        predictions = database.get_all_predictions()
-    except Exception as e:
-        print(f"[WARN] Error fetching analytics data: {e}")
-    diseases = model_manager.disease_info.get("diseases", {})
-    calendar = model_manager.disease_info.get("seasonal_calendar", {})
-    return serve_spa_or_template('analytics.html', active_page='analytics', stats=stats, diseases=diseases, calendar=calendar, predictions=predictions)
-
 @app.route('/diseases')
-def diseases_page():
-    """Renders Disease Information & Advisory catalog."""
-    diseases = model_manager.disease_info.get("diseases", {})
-    return serve_spa_or_template('diseases.html', active_page='diseases', diseases=diseases)
-
 @app.route('/history')
-def history_page():
-    """Renders the History log page."""
-    predictions = []
-    stats = {}
-    try:
-        predictions = database.get_all_predictions()
-        stats = database.get_statistics()
-    except Exception as e:
-        print(f"[WARN] Error fetching history data: {e}")
-    return serve_spa_or_template('history.html', active_page='history', predictions=predictions, stats=stats)
+@app.route('/app')
+@app.route('/mobile')
+@app.route('/download')
+def redirect_to_home():
+    """Redirects removed routes safely back to Home Scanner."""
+    return redirect(url_for('home'))
 
 @app.route('/about')
 def about_page():
     """Renders About page with methodology, team and guide."""
     return serve_spa_or_template('about.html', active_page='about')
-
-@app.route('/app')
-@app.route('/mobile')
-@app.route('/download')
-def mobile_page():
-    """Renders Android Mobile App Download page for users."""
-    return serve_spa_or_template('mobile.html', active_page='mobile')
 
 @app.route('/download-apk')
 def download_apk():

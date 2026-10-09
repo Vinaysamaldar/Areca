@@ -87,24 +87,11 @@
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5">
-          <a href="{{ url_for('home') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
+          <a href="{{ url_for('home') }}" class="px-3 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300" data-en="Home" data-kn="ಮುಖಪುಟ">
             Home
           </a>
-          <a href="{{ url_for('solutions_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'solutions' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Solutions & Calendar" data-kn="ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್">
-            Solutions & Calendar
-          </a>
-          <a href="{{ url_for('analytics_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'analytics' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Analytics" data-kn="ವಿಶ್ಲೇಷಣೆ">
-            Analytics
-          </a>
-          <a href="{{ url_for('diseases_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Diseases" data-kn="ರೋಗಗಳು">
-            Diseases
-          </a>
-          <a href="{{ url_for('history_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
-            History
-          </a>
-          <a href="{{ url_for('mobile_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors flex items-center space-x-1 {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}">
-            <i class="fa-solid fa-download text-xs text-emerald-600"></i>
-            <span data-en="App" data-kn="ಆಪ್">App</span>
+          <a href="/#instant-scanner" class="px-3 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400" data-en="Disease Scanner" data-kn="ರೋಗ ಪರೀಕ್ಷೆ">
+            Disease Scanner
           </a>
         </nav>
 
@@ -143,37 +130,13 @@
 
       <!-- Mobile Dropdown Menu -->
       <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-zinc-200 dark:border-zinc-800 space-y-1.5">
-        <a href="{{ url_for('home') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
+        <a href="{{ url_for('home') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300" data-en="Home" data-kn="ಮುಖಪುಟ">
           <i class="fa-solid fa-house w-6 text-center text-emerald-600"></i>
           <span>Home</span>
         </a>
         <a href="/#instant-scanner" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 text-white shadow-md shadow-emerald-600/20" data-en="Scan Plant Disease" data-kn="ಗಿಡ ರೋಗ ಪರೀಕ್ಷೆ">
           <i class="fa-solid fa-camera w-6 text-center"></i>
           <span>Scan Plant Disease</span>
-        </a>
-        <a href="{{ url_for('solutions_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'solutions' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Solutions & Spray Calendar" data-kn="ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್">
-          <i class="fa-solid fa-calendar-days w-6 text-center text-emerald-600"></i>
-          <span>Solutions & Spray Calendar</span>
-        </a>
-        <a href="{{ url_for('analytics_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'analytics' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Analytics & Model Stats" data-kn="ವಿಶ್ಲೇಷಣೆ">
-          <i class="fa-solid fa-chart-pie w-6 text-center text-emerald-600"></i>
-          <span>Analytics & Model Stats</span>
-        </a>
-        <a href="{{ url_for('mobile_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'mobile' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}">
-          <i class="fa-solid fa-download w-6 text-center text-emerald-600"></i>
-          <span data-en="Download Android App (APK)" data-kn="ಆಂಡ್ರಾಯ್ಡ್ ಆಪ್ ಡೌನ್‌ಲೋಡ್">Download Android App (APK)</span>
-        </a>
-        <a href="{{ url_for('diseases_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'diseases' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Disease Info" data-kn="ರೋಗಗಳ ಮಾಹಿತಿ">
-          <i class="fa-solid fa-book-medical w-6 text-center text-emerald-600"></i>
-          <span>Disease Info</span>
-        </a>
-        <a href="{{ url_for('history_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'history' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="History" data-kn="ಇತಿಹಾಸ">
-          <i class="fa-solid fa-clock-rotate-left w-6 text-center text-emerald-600"></i>
-          <span>History</span>
-        </a>
-        <a href="{{ url_for('about_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'about' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="About Project" data-kn="ಯೋಜನೆಯ ಬಗ್ಗೆ">
-          <i class="fa-solid fa-graduation-cap w-6 text-center text-emerald-600"></i>
-          <span>About Project</span>
         </a>
       </div>
 
@@ -238,57 +201,30 @@
             Quick Links
           </h4>
           <ul class="space-y-1.5 text-xs">
-            <li><a href="/#instant-scanner" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Scan Plant Disease" data-kn="ಗಿಡ ರೋಗ ಪರೀಕ್ಷೆ">Scan Plant Disease</a></li>
-            <li><a href="{{ url_for('diseases_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Treatment Catalog" data-kn="ಚಿಕಿತ್ಸಾ ವಿವರಗಳು">Treatment Catalog</a></li>
-            <li><a href="{{ url_for('history_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Prediction History" data-kn="ಹಿಂದಿನ ವರದಿಗಳು">Prediction History</a></li>
-            <li><a href="{{ url_for('about_page') }}" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Project Architecture" data-kn="ಯೋಜನಾ ವಿನ್ಯಾಸ">Project Architecture</a></li>
+            <li><a href="/#instant-scanner" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors font-medium flex items-center gap-1.5"><i class="fa-solid fa-camera text-emerald-600"></i> <span data-en="Scan Plant Disease" data-kn="ಗಿಡ ರೋಗ ಪರೀಕ್ಷೆ">Scan Plant Disease</span></a></li>
+            <li><a href="/" class="text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 transition-colors" data-en="Home" data-kn="ಮುಖಪುಟ">Home</a></li>
           </ul>
         </div>
       </div>
 
       <div class="pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-        <p>&copy; 2026 Detection of Diseases in Arecanut Plants using Deep Learning. Engineering Mini Project.</p>
-        <p class="mt-2 sm:mt-0 font-medium text-emerald-700 dark:text-emerald-400">MobileNetV2 • TensorFlow Lite • Flutter • Flask</p>
+        <p>&copy; 2026 Detection of Diseases in Arecanut Plants using Deep Learning.</p>
+        <p class="mt-2 sm:mt-0 font-medium text-emerald-700 dark:text-emerald-400">MobileNetV2 CNN • Digital Image Processing</p>
       </div>
     </div>
   </footer>
 
   <!-- MOBILE BOTTOM NAVIGATION DOCK (PHONES & TABLETS) -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-lg border-t border-zinc-200 dark:border-zinc-800 px-2 py-1.5 mobile-bottom-nav shadow-lg transition-colors">
-    <div class="grid grid-cols-5 items-center text-center max-w-lg mx-auto">
-      
-      <!-- 1. Home -->
-      <a href="{{ url_for('home') }}" class="flex flex-col items-center justify-center py-1 rounded-xl transition-colors {% if active_page == 'home' %}text-emerald-600 dark:text-emerald-400 font-bold{% else %}text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200{% endif %}">
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-lg border-t border-zinc-200 dark:border-zinc-800 px-4 py-2 mobile-bottom-nav shadow-lg transition-colors">
+    <div class="flex items-center justify-around max-w-sm mx-auto">
+      <a href="{{ url_for('home') }}" class="flex flex-col items-center justify-center py-1 px-4 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold">
         <i class="fa-solid fa-house text-lg"></i>
         <span class="text-[10px] mt-0.5" data-en="Home" data-kn="ಮುಖಪುಟ">Home</span>
       </a>
-
-      <!-- 2. Diseases Guide -->
-      <a href="{{ url_for('diseases_page') }}" class="flex flex-col items-center justify-center py-1 rounded-xl transition-colors {% if active_page == 'diseases' %}text-emerald-600 dark:text-emerald-400 font-bold{% else %}text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200{% endif %}">
-        <i class="fa-solid fa-book-medical text-lg"></i>
-        <span class="text-[10px] mt-0.5" data-en="Diseases" data-kn="ರೋಗಗಳು">Diseases</span>
+      <a href="/#instant-scanner" class="flex items-center space-x-2 py-2 px-6 rounded-2xl bg-emerald-600 text-white font-bold text-xs shadow-md shadow-emerald-600/30">
+        <i class="fa-solid fa-camera text-base"></i>
+        <span data-en="Scan Plant" data-kn="ಗಿಡ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Scan Plant</span>
       </a>
-
-      <!-- 3. Central Scan Button (Elevated CTA) -->
-      <a href="/#instant-scanner" class="flex flex-col items-center justify-center -mt-5 group" title="Scan Plant Disease">
-        <div class="w-12 h-12 rounded-full bg-emerald-600 group-hover:bg-emerald-700 text-white flex items-center justify-center shadow-lg shadow-emerald-600/40 border-4 border-white dark:border-zinc-900 transition-transform group-active:scale-95">
-          <i class="fa-solid fa-camera text-lg"></i>
-        </div>
-        <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 mt-0.5" data-en="Scan" data-kn="ಸ್ಕ್ಯಾನ್">Scan</span>
-      </a>
-
-      <!-- 4. Download Mobile App -->
-      <a href="{{ url_for('mobile_page') }}" class="flex flex-col items-center justify-center py-1 rounded-xl transition-colors {% if active_page == 'mobile' %}text-emerald-600 dark:text-emerald-400 font-bold{% else %}text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200{% endif %}">
-        <i class="fa-solid fa-download text-lg"></i>
-        <span class="text-[10px] mt-0.5" data-en="App" data-kn="ಆಪ್">App</span>
-      </a>
-
-      <!-- 5. History Log -->
-      <a href="{{ url_for('history_page') }}" class="flex flex-col items-center justify-center py-1 rounded-xl transition-colors {% if active_page == 'history' %}text-emerald-600 dark:text-emerald-400 font-bold{% else %}text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200{% endif %}">
-        <i class="fa-solid fa-clock-rotate-left text-lg"></i>
-        <span class="text-[10px] mt-0.5" data-en="History" data-kn="ಇತಿಹಾಸ">History</span>
-      </a>
-
     </div>
   </nav>
 

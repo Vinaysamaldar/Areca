@@ -37,11 +37,7 @@ export const Footer: React.FC = () => {
           </h4>
           <ul className="space-y-2 text-xs">
             <li><Link to="/" className="hover:text-emerald-400 transition-colors">{t("Home Scanner", "ಮುಖಪುಟ ಸ್ಕ್ಯಾನರ್")}</Link></li>
-            <li><Link to="/solutions" className="hover:text-emerald-400 transition-colors">{t("Solutions & Spray Calendar", "ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್")}</Link></li>
-            <li><Link to="/analytics" className="hover:text-emerald-400 transition-colors">{t("Multi-Spectral Analytics", "ಬಹು-ಸ್ಪೆಕ್ಟ್ರಲ್ ವಿಶ್ಲೇಷಣೆ")}</Link></li>
-            <li><Link to="/diseases" className="hover:text-emerald-400 transition-colors">{t("Disease Library", "ರೋಗಗಳ ಮಾಹಿತಿ")}</Link></li>
-            <li><Link to="/history" className="hover:text-emerald-400 transition-colors">{t("History Archive", "ಇತಿಹಾಸ")}</Link></li>
-            <li><Link to="/app" className="hover:text-emerald-400 transition-colors">{t("Download Android App", "ಆಂಡ್ರಾಯ್ಡ್ ಆಪ್")}</Link></li>
+            <li><a href="/#scanner" className="hover:text-emerald-400 transition-colors">{t("Instant Disease Diagnosis", "ತಕ್ಷಣದ ರೋಗ ಪರೀಕ್ಷೆ")}</a></li>
           </ul>
         </div>
 

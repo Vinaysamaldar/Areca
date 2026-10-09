@@ -1,14 +1,9 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
-import { Solutions } from "./pages/Solutions";
-import { Analytics } from "./pages/Analytics";
-import { Diseases } from "./pages/Diseases";
-import { History } from "./pages/History";
-import { AppDownload } from "./pages/AppDownload";
 import { NotFound } from "./pages/NotFound";
 
 function ScrollToTop() {
@@ -31,11 +26,14 @@ export default function App() {
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/solutions" element={<Solutions />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/diseases" element={<Diseases />} />
-              <Route path="/history" element={<History />} />
-              <Route path="/app" element={<AppDownload />} />
+              {/* Redirect removed routes safely back to Home */}
+              <Route path="/solutions" element={<Navigate to="/" replace />} />
+              <Route path="/analytics" element={<Navigate to="/" replace />} />
+              <Route path="/diseases" element={<Navigate to="/" replace />} />
+              <Route path="/history" element={<Navigate to="/" replace />} />
+              <Route path="/app" element={<Navigate to="/" replace />} />
+              <Route path="/mobile" element={<Navigate to="/" replace />} />
+              <Route path="/download" element={<Navigate to="/" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
