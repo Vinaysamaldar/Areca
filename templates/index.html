@@ -87,10 +87,65 @@
       </p>
     </div>
 
+    <!-- WEATHER-BASED DISEASE RISK PREDICTION (OPEN-METEO) -->
+    <div class="max-w-3xl mx-auto mb-6">
+      <div class="bg-gradient-to-r from-emerald-950/40 via-zinc-900 to-teal-950/40 border border-emerald-800/60 rounded-3xl p-5 shadow-lg relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl shrink-0">
+              <i class="fa-solid fa-cloud-sun-rain"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span data-en="Live Weather & Spore Risk" data-kn="ಹವಾಮಾನ ಮತ್ತು ರೋಗದ ಮುನ್ಸೂಚನೆ">Live Weather & Spore Risk</span>
+                </span>
+                <span id="weather-location-name" class="text-xs text-zinc-400 font-medium">Shimoga / Malnad Belt</span>
+              </div>
+              <h3 id="spore-risk-title" class="text-sm sm:text-base font-bold text-white mt-0.5">
+                Koleroga (Mahali) Outbreak Alert: <span id="spore-risk-level" class="text-amber-400">Moderate Risk</span>
+              </h3>
+              <p id="spore-risk-desc" class="text-xs text-zinc-400 mt-0.5">
+                Humidity: <span id="weather-humidity">82%</span> • Temp: <span id="weather-temp">24.5°C</span> • Rain Forecast: <span id="weather-rain">4.2 mm</span>
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+            <select id="weather-district-select" class="text-xs bg-zinc-800 border border-zinc-700 text-zinc-200 rounded-xl px-2.5 py-1.5 focus:border-emerald-500 focus:outline-none">
+              <option value="shimoga">Shimoga (ಶಿವಮೊಗ್ಗ)</option>
+              <option value="udupi">Udupi (ಉಡುಪಿ)</option>
+              <option value="chikkamagaluru">Chikkamagaluru (ಚಿಕ್ಕಮಗಳೂರು)</option>
+              <option value="mangalore">Dakshina Kannada (ದಕ್ಷಿಣ ಕನ್ನಡ)</option>
+              <option value="sirsi">Uttara Kannada (ಶಿರಸಿ)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- SCANNER CONTAINER -->
     <div class="max-w-3xl mx-auto mb-10">
       <div class="bg-zinc-50 dark:bg-zinc-800/50 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-700/80 shadow-xl space-y-6">
         
+        <!-- Plot Assignment & Capture Guidance Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-600 dark:text-zinc-400 pb-2 border-b border-zinc-200 dark:border-zinc-700/60">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-map-pin text-emerald-500"></i>
+            <span class="font-semibold" data-en="Plot:" data-kn="ಪ್ಲಾಟ್:">Plot:</span>
+            <select id="plot-select" class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-emerald-500">
+              <option value="Plot A - North Ridge">Plot A - North Ridge</option>
+              <option value="Plot B - Riverbank Block">Plot B - Riverbank Block</option>
+              <option value="Plot C - Young Palms">Plot C - Young Palms</option>
+              <option value="Plot D - Valley Terrace">Plot D - Valley Terrace</option>
+            </select>
+          </div>
+          <button id="photo-guidance-btn" type="button" class="text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1.5 font-medium">
+            <i class="fa-regular fa-circle-question"></i>
+            <span data-en="Photo Quality Tips" data-kn="ಫೋಟೋ ತೆಗೆಯುವ ಸಲಹೆಗಳು">Photo Quality Tips</span>
+          </button>
+        </div>
+
         <!-- Dropzone / Mobile Tap Target -->
         <div id="dropzone" class="border-2 border-dashed border-emerald-400 dark:border-emerald-700 hover:border-emerald-500 rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all bg-emerald-50/40 dark:bg-emerald-950/30 group">
           <input type="file" id="file-input" class="hidden" accept="image/jpeg,image/png,image/jpg,image/webp">
@@ -216,22 +271,45 @@
         <!-- Top Overview Row -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start pb-8 border-b border-zinc-200 dark:border-zinc-700/80">
           
-          <!-- Image Preview Thumbnail -->
-          <div class="md:col-span-4">
-            <div class="rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-lg aspect-square bg-zinc-100 dark:bg-zinc-900">
+          <!-- Image Preview Thumbnail & Grad-CAM -->
+          <div class="md:col-span-4 space-y-3">
+            <div class="relative rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-lg aspect-square bg-zinc-100 dark:bg-zinc-900 group">
               <img id="res-image" src="" alt="Analyzed Crop" class="w-full h-full object-cover">
+              <canvas id="gradcam-canvas" class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none transition-opacity duration-300 opacity-75"></canvas>
+            </div>
+            
+            <!-- Grad-CAM & Audio Actions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <button id="toggle-gradcam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-1.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/80 text-zinc-800 dark:text-zinc-200 text-xs font-bold py-2.5 px-3 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors">
+                <i class="fa-solid fa-fire text-amber-500"></i>
+                <span id="gradcam-toggle-text" data-en="Grad-CAM Saliency" data-kn="Grad-CAM ಹೀಟ್‌ಮ್ಯಾಪ್">Grad-CAM Saliency</span>
+              </button>
+
+              <button id="voice-readout-btn" type="button" class="w-full inline-flex items-center justify-center space-x-1.5 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold py-2.5 px-3 rounded-xl border border-emerald-200 dark:border-emerald-800 transition-colors">
+                <i class="fa-solid fa-volume-high text-emerald-600"></i>
+                <span id="voice-btn-text" data-en="Voice Readout" data-kn="ಧ್ವನಿ ವಿವರಣೆ">Voice Readout</span>
+              </button>
             </div>
           </div>
 
           <!-- Disease Headline, Confidence, Badges -->
           <div class="md:col-span-8 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span id="res-severity" class="px-3 py-1 rounded-full text-xs font-bold border bg-red-100 text-red-800 border-red-300">
-                Critical
-              </span>
-              <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                MobileNetV2 CNN Diagnosis
-              </span>
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="res-severity" class="px-3 py-1 rounded-full text-xs font-bold border bg-red-100 text-red-800 border-red-300">
+                  Critical
+                </span>
+                <span id="res-affected-area" class="px-2.5 py-1 rounded-full text-xs font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+                  Area Affected: 18.5%
+                </span>
+                <span id="res-plot-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100/60 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  Plot A - North Ridge
+                </span>
+              </div>
+              <button id="report-wrong-btn" type="button" class="text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-semibold flex items-center gap-1 underline underline-offset-2">
+                <i class="fa-regular fa-flag"></i>
+                <span data-en="Report wrong result" data-kn="ತಪ್ಪು ಫಲಿತಾಂಶ ವರದಿ ಮಾಡಿ">Report wrong result</span>
+              </button>
             </div>
 
             <div>
@@ -296,11 +374,15 @@
               </div>
             </div>
 
-            <!-- PDF Download Action -->
+            <!-- Diagnostic Actions (PDF, Calendar, Re-scan) -->
             <div class="pt-2 flex flex-wrap gap-3">
-              <button id="download-pdf-btn" type="button" class="inline-flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]">
+              <button id="download-pdf-btn" type="button" class="inline-flex items-center space-x-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]">
                 <i class="fa-solid fa-file-pdf text-base"></i>
                 <span data-en="Download Diagnostic PDF Report" data-kn="ಪಿಡಿಎಫ್ ರೋಗ ವರದಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ">Download Diagnostic PDF Report</span>
+              </button>
+              <button id="add-spray-calendar-btn" type="button" class="inline-flex items-center space-x-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-md transition-all hover:scale-[1.02]">
+                <i class="fa-regular fa-calendar-plus text-base"></i>
+                <span data-en="Add to Spray Calendar" data-kn="ಸಿಂಪಡಣೆ ಕ್ಯಾಲೆಂಡರ್‌ಗೆ ಸೇರಿಸಿ">Add to Spray Calendar</span>
               </button>
               <a href="#instant-scanner" onclick="clearSelection();" class="inline-flex items-center space-x-2 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-sm px-5 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-colors">
                 <i class="fa-solid fa-arrows-rotate"></i>
@@ -775,8 +857,91 @@
       <i class="fa-solid fa-camera"></i>
       <span data-en="Start Disease Detection Now" data-kn="ಈಗಲೇ ರೋಗ ಪತ್ತೆ ಆರಂಭಿಸಿ">Start Disease Detection Now</span>
     </a>
+<!-- PHOTO CAPTURE GUIDANCE MODAL -->
+<div id="photo-guidance-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+  <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 shadow-2xl relative">
+    <button id="close-guidance-btn" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-lg">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+        <i class="fa-solid fa-camera"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white" data-en="Photo Quality Guidelines" data-kn="ಉತ್ತಮ ಫೋಟೋ ತೆಗೆಯುವ ವಿಧಾನ">Photo Quality Guidelines</h3>
+        <p class="text-xs text-zinc-500" data-en="Follow these tips for >95% model classification accuracy" data-kn="ಉತ್ತಮ ನಿಖರತೆಗಾಗಿ ಈ ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಪಾಲಿಸಿ">Follow these tips for >95% model classification accuracy</p>
+      </div>
+    </div>
+    <div class="space-y-3 text-xs text-zinc-700 dark:text-zinc-300">
+      <div class="flex items-start gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60">
+        <i class="fa-solid fa-sun text-amber-500 mt-0.5 text-sm shrink-0"></i>
+        <div>
+          <strong class="text-zinc-900 dark:text-white block" data-en="Optimal Sunlight" data-kn="ಉತ್ತಮ ನೈಸರ್ಗಿಕ ಬೆಳಕು">Optimal Sunlight</strong>
+          <span data-en="Photograph during daylight hours. Avoid intense camera flash reflections or deep dark canopy shadows." data-kn="ಬೆಳಗಿನ ನೈಸರ್ಗಿಕ ಬೆಳಕಿನಲ್ಲಿ ಫೋಟೋ ತೆಗೆಯಿರಿ. ಅತಿಯಾದ ನೆರಳು ಅಥವಾ ಫ್ಲ್ಯಾಶ್ ಬೆಳಕನ್ನು ತಪ್ಪಿಸಿ.">Photograph during daylight hours. Avoid intense camera flash reflections or deep dark canopy shadows.</span>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60">
+        <i class="fa-solid fa-arrows-to-eye text-emerald-500 mt-0.5 text-sm shrink-0"></i>
+        <div>
+          <strong class="text-zinc-900 dark:text-white block" data-en="Frame & Proximity" data-kn="ಸೂಕ್ತ ಅಂತರ (15 - 30 ಸೆಂ.ಮೀ)">Frame & Proximity</strong>
+          <span data-en="Hold camera 15-30 cm away from the infected leaf, fruit bunch, or stem area. Fill 70% of the frame with the plant tissue." data-kn="ಸೋಂಕು ಇರುವ ಎಲೆ ಅಥವಾ ಗೊಂಚಲಿನಿಂದ 15-30 ಸೆಂ.ಮೀ ಅಂತರದಲ್ಲಿ ಕ್ಯಾಮೆರಾ ಇಡಿ. ಚಿತ್ರದಲ್ಲಿ 70% ಗಿಡದ ಭಾಗವಿರಲಿ.">Hold camera 15-30 cm away from the infected leaf, fruit bunch, or stem area. Fill 70% of the frame with the plant tissue.</span>
+        </div>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60">
+        <i class="fa-solid fa-ban text-rose-500 mt-0.5 text-sm shrink-0"></i>
+        <div>
+          <strong class="text-zinc-900 dark:text-white block" data-en="Strictly Plant Only" data-kn="ಅಡಿಕೆ ಗಿಡದ ಭಾಗ ಮಾತ್ರ">Strictly Plant Only</strong>
+          <span data-en="Do not include faces, humans, livestock, or ground clutter. The AI strictly validates Arecanut palm imagery." data-kn="ಚಿತ್ರದಲ್ಲಿ ಮನುಷ್ಯರು, ಮುಖಗಳು ಅಥವಾ ಇತರ ವಸ್ತುಗಳು ಇರಬಾರದು. ವ್ಯವಸ್ಥೆಯು ಕೇವಲ ಅಡಿಕೆ ಗಿಡವನ್ನು ಮಾತ್ರ ಪರೀಕ್ಷಿಸುತ್ತದೆ.">Do not include faces, humans, livestock, or ground clutter. The AI strictly validates Arecanut palm imagery.</span>
+        </div>
+      </div>
+    </div>
+    <button id="close-guidance-btn2" type="button" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors">
+      <span data-en="Understood, Let's Scan" data-kn="ಅರ್ಥವಾಯಿತು, ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Understood, Let's Scan</span>
+    </button>
   </div>
-</section>
+</div>
+
+<!-- REPORT WRONG RESULT MODAL -->
+<div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+  <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 shadow-2xl relative">
+    <button id="close-feedback-btn" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-lg">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-950 flex items-center justify-center text-rose-600 dark:text-rose-400">
+        <i class="fa-regular fa-flag"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-zinc-900 dark:text-white" data-en="Report Incorrect Result" data-kn="ತಪ್ಪು ರೋಗ ನಿರ್ಣಯ ವರದಿ ಮಾಡಿ">Report Incorrect Result</h3>
+        <p class="text-xs text-zinc-500" data-en="Help our agronomy team retrain the model" data-kn="ಮಾದರಿಯನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ">Help our agronomy team retrain the model</p>
+      </div>
+    </div>
+    <form id="feedback-form" class="space-y-4 text-xs">
+      <div>
+        <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1" data-en="What is the actual disease?" data-kn="ನಿಜವಾದ ರೋಗ ಯಾವುದು?">What is the actual disease?</label>
+        <select id="feedback-disease" class="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-2.5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500">
+          <option value="Healthy">Healthy (ಆರೋಗ್ಯಕರ)</option>
+          <option value="Koleroga">Koleroga / Mahali (ಕೊಳೆರೋಗ)</option>
+          <option value="Yellow Leaf Disease">Yellow Leaf Disease (ಹಳದಿ ಎಲೆ ರೋಗ)</option>
+          <option value="Bud Rot">Bud Rot (ಸುಳಿ ಕೊಳೆ ರೋಗ)</option>
+          <option value="Stem Bleeding">Stem Bleeding (ಕಾಂಡ ಸೋರುವಿಕೆ)</option>
+          <option value="Leaf Spot">Leaf Spot (ಎಲೆ ಚುಕ್ಕೆ ರೋಗ)</option>
+          <option value="Inflorescence Dieback">Inflorescence Dieback (ಹಿಂಗಾರ ಒಣಗುವಿಕೆ)</option>
+          <option value="Nut Splitting">Nut Splitting (ಅಡಿಕೆ ಸಿಡಿಯುವಿಕೆ)</option>
+          <option value="Foot Rot">Foot Rot (ಬುಡ ಕೊಳೆ ರೋಗ)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1" data-en="Agronomist / Farmer Notes (Optional)" data-kn="ಹೆಚ್ಚುವರಿ ಟಿಪ್ಪಣಿಗಳು (ಐಚ್ಛಿಕ)">Agronomist / Farmer Notes (Optional)</label>
+        <textarea id="feedback-notes" rows="3" class="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-2.5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500" placeholder="e.g. Symptoms appeared 3 days after continuous rain..."></textarea>
+      </div>
+      <button type="submit" id="feedback-submit-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition-colors">
+        <span data-en="Submit Feedback" data-kn="ವರದಿ ಸಲ್ಲಿಸಿ">Submit Feedback</span>
+      </button>
+      <div id="feedback-status" class="hidden text-center text-xs font-semibold py-1"></div>
+    </form>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

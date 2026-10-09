@@ -3,9 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="theme-color" content="#16a34a">
+  <meta name="theme-color" content="#10b981">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ArecaAI">
+  <meta name="application-name" content="ArecaAI">
+  <meta name="description" content="AI-powered precision agriculture for Arecanut (Areca catechu) disease detection, multi-spectral vegetation indices (NDVI/NDRE/GNDVI), and localized agronomic advisories.">
+  <meta name="keywords" content="Arecanut, Betel Nut, Plant Disease, MobileNetV2, Koleroga, Mahali, Yellow Leaf Disease, Multi-spectral, Precision Agriculture, Karnataka">
+  
+  <!-- Open Graph & Social Cards -->
+  <meta property="og:title" content="ArecaAI - Precision Agriculture & Arecanut Pathology">
+  <meta property="og:description" content="Instant MobileNetV2 CNN diagnosis of Koleroga, Yellow Leaf, Bud Rot, and Stem Bleeding in English and Kannada.">
+  <meta property="og:image" content="/images/logo.svg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
   <title>{% block title %}Detection of Diseases in Arecanut Plants using Deep Learning{% endblock %}</title>
   
   <!-- Favicon -->
@@ -279,6 +294,15 @@
 
   <!-- Main Scripts -->
   <script src="/js/main.js" onerror="this.onerror=null; this.src='{{ url_for('static', filename='js/main.js') }}';"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+          console.log('PWA ServiceWorker registration optional:', err);
+        });
+      });
+    }
+  </script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

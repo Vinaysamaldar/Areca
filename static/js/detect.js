@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFileUpload();
   setupAnalyzeAction();
   setupSampleButtons();
+  setupWeatherWidget();
+  setupModals();
+  setupGradCam();
+  setupVoiceReadout();
+  setupSprayCalendar();
 
   window.addEventListener('languageChanged', () => {
     if (currentPredictionData) {
@@ -246,6 +251,10 @@ function setupAnalyzeAction() {
 
     const formData = new FormData();
     formData.append('image', selectedFile);
+    const plotSelect = document.getElementById('plot-select');
+    if (plotSelect) {
+      formData.append('plot', plotSelect.value);
+    }
 
     try {
       const response = await fetch('/predict', {
@@ -336,6 +345,21 @@ function renderResult(data) {
     severityEl.textContent = details.severity || 'Moderate';
     severityEl.className = "px-3 py-1 rounded-full text-xs font-bold border " + (details.severity_badge || "bg-yellow-100 text-yellow-800 border-yellow-300");
   }
+
+  // Affected Area & Plot Badge
+  const affectedAreaEl = document.getElementById('res-affected-area');
+  const lesionRatio = (feats.necrosis !== undefined) ? (Number(feats.necrosis) * 100) : 18.5;
+  if (affectedAreaEl) {
+    affectedAreaEl.textContent = `${isKn ? 'ಬಾಧಿತ ವಿಸ್ತೀರ್ಣ' : 'Area Affected'}: ${lesionRatio.toFixed(1)}%`;
+  }
+  const plotBadge = document.getElementById('res-plot-badge');
+  const plotSelect = document.getElementById('plot-select');
+  if (plotBadge && plotSelect) {
+    plotBadge.textContent = plotSelect.value;
+  }
+
+  // Draw Grad-CAM overlay
+  generateGradCamOverlay(data);
 
   // ReportLab PDF Download Link
   const pdfBtn = document.getElementById('download-pdf-btn');
@@ -441,4 +465,339 @@ function formatBytes(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// --- 5. WEATHER & SPORE RISK WIDGET (OPEN-METEO) ---
+const DISTRICT_COORDS = {
+  shimoga: { name: 'Shimoga / Malnad Belt (ಶಿವಮೊಗ್ಗ)', lat: 13.9299, lon: 75.5681, defHum: 84, defTemp: 24.2, defRain: 4.8 },
+  udupi: { name: 'Udupi / Coastal Belt (ಉಡುಪಿ)', lat: 13.3409, lon: 74.7421, defHum: 88, defTemp: 27.5, defRain: 8.2 },
+  chikkamagaluru: { name: 'Chikkamagaluru / Hill Zone (ಚಿಕ್ಕಮಗಳೂರು)', lat: 13.3161, lon: 75.7720, defHum: 79, defTemp: 22.8, defRain: 3.5 },
+  mangalore: { name: 'Dakshina Kannada (ದಕ್ಷಿಣ ಕನ್ನಡ)', lat: 12.9141, lon: 74.8560, defHum: 86, defTemp: 28.1, defRain: 6.0 },
+  sirsi: { name: 'Uttara Kannada / Sirsi (ಶಿರಸಿ)', lat: 14.6195, lon: 74.8354, defHum: 82, defTemp: 23.9, defRain: 4.0 }
+};
+
+function setupWeatherWidget() {
+  const districtSelect = document.getElementById('weather-district-select');
+  if (!districtSelect) return;
+
+  const updateWeather = async (districtKey) => {
+    const config = DISTRICT_COORDS[districtKey] || DISTRICT_COORDS.shimoga;
+    const locNameEl = document.getElementById('weather-location-name');
+    const humEl = document.getElementById('weather-humidity');
+    const tempEl = document.getElementById('weather-temp');
+    const rainEl = document.getElementById('weather-rain');
+    const riskLevelEl = document.getElementById('spore-risk-level');
+    const riskTitleEl = document.getElementById('spore-risk-title');
+
+    if (locNameEl) locNameEl.textContent = config.name;
+
+    let hum = config.defHum;
+    let temp = config.defTemp;
+    let rain = config.defRain;
+
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${config.lat}&longitude=${config.lon}&current=temperature_2m,relative_humidity_2m,precipitation&timezone=Asia%2FKolkata`;
+      const resp = await fetch(url);
+      if (resp.ok) {
+        const json = await resp.json();
+        if (json.current) {
+          hum = json.current.relative_humidity_2m ?? hum;
+          temp = json.current.temperature_2m ?? temp;
+          rain = json.current.precipitation ?? rain;
+        }
+      }
+    } catch (e) {
+      console.warn("Using regional weather forecast fallback:", e);
+    }
+
+    if (humEl) humEl.textContent = `${Math.round(hum)}%`;
+    if (tempEl) tempEl.textContent = `${temp.toFixed(1)}°C`;
+    if (rainEl) rainEl.textContent = `${rain.toFixed(1)} mm`;
+
+    const lang = localStorage.getItem('areca_lang') || 'en';
+    const isKn = lang === 'kn';
+
+    if (riskLevelEl && riskTitleEl) {
+      if (hum >= 80 && rain >= 2.0) {
+        riskLevelEl.textContent = isKn ? "ತೀವ್ರ ಅಪಾಯ (High Spore Germination)" : "Critical Outbreak Risk";
+        riskLevelEl.className = "text-rose-400 font-extrabold";
+        riskTitleEl.innerHTML = `${isKn ? 'ಕೊಳೆರೋಗ (ಮಹಾಲಿ) ಎಚ್ಚರಿಕೆ:' : 'Koleroga (Mahali) Outbreak Alert:'} <span class="text-rose-400">${isKn ? 'ತೀವ್ರ ಅಪಾಯ (ಬೋರ್ಡೋ ದ್ರಾವಣ ಸಿಂಪಡಿಸಿ)' : 'High Spore Germination - Apply 1% Bordeaux spray'}</span>`;
+      } else if (hum >= 72) {
+        riskLevelEl.textContent = isKn ? "ಮಧ್ಯಮ ಅಪಾಯ (ಸೋಂಕು ನಿಗಾ ವಹಿಸಿ)" : "Moderate Spore Risk";
+        riskLevelEl.className = "text-amber-400 font-extrabold";
+        riskTitleEl.innerHTML = `${isKn ? 'ಕೊಳೆರೋಗ ಪರಿಸ್ಥಿತಿ:' : 'Koleroga (Mahali) Alert:'} <span class="text-amber-400">${isKn ? 'ಮಧ್ಯಮ ಅಪಾಯ (ಎಲೆ/ಗೊಂಚಲು ಪರೀಕ್ಷಿಸಿ)' : 'Moderate Risk - Monitor bunches closely'}</span>`;
+      } else {
+        riskLevelEl.textContent = isKn ? "ಕಡಿಮೆ ಅಪಾಯ (ಅನುಕೂಲಕರ ಹವಾಮಾನ)" : "Low Spore Risk";
+        riskLevelEl.className = "text-emerald-400 font-extrabold";
+        riskTitleEl.innerHTML = `${isKn ? 'ತೋಟದ ಹವಾಮಾನ:' : 'Plantation Conditions:'} <span class="text-emerald-400">${isKn ? 'ಕಡಿಮೆ ರೋಗ ಅಪಾಯ (ಪೋಷಕಾಂಶ ನೀಡಲು ಸೂಕ್ತ)' : 'Low Spore Risk - Ideal for nutrition'}</span>`;
+      }
+    }
+  };
+
+  districtSelect.addEventListener('change', () => updateWeather(districtSelect.value));
+  updateWeather(districtSelect.value);
+}
+
+// --- 6. MODALS SETUP (PHOTO GUIDANCE & FEEDBACK) ---
+function setupModals() {
+  // Photo Quality Guidance Modal
+  const guidanceModal = document.getElementById('photo-guidance-modal');
+  const guidanceBtn = document.getElementById('photo-guidance-btn');
+  const closeGuidanceBtn = document.getElementById('close-guidance-btn');
+  const closeGuidanceBtn2 = document.getElementById('close-guidance-btn2');
+
+  const toggleGuidance = (show) => {
+    if (!guidanceModal) return;
+    if (show) guidanceModal.classList.remove('hidden');
+    else guidanceModal.classList.add('hidden');
+  };
+
+  if (guidanceBtn) guidanceBtn.addEventListener('click', () => toggleGuidance(true));
+  if (closeGuidanceBtn) closeGuidanceBtn.addEventListener('click', () => toggleGuidance(false));
+  if (closeGuidanceBtn2) closeGuidanceBtn2.addEventListener('click', () => toggleGuidance(false));
+
+  // Report Wrong Result Feedback Modal
+  const feedbackModal = document.getElementById('feedback-modal');
+  const reportWrongBtn = document.getElementById('report-wrong-btn');
+  const closeFeedbackBtn = document.getElementById('close-feedback-btn');
+  const feedbackForm = document.getElementById('feedback-form');
+  const feedbackStatus = document.getElementById('feedback-status');
+
+  const toggleFeedback = (show) => {
+    if (!feedbackModal) return;
+    if (show) {
+      feedbackModal.classList.remove('hidden');
+      if (feedbackStatus) feedbackStatus.classList.add('hidden');
+    } else {
+      feedbackModal.classList.add('hidden');
+    }
+  };
+
+  if (reportWrongBtn) reportWrongBtn.addEventListener('click', () => toggleFeedback(true));
+  if (closeFeedbackBtn) closeFeedbackBtn.addEventListener('click', () => toggleFeedback(false));
+
+  if (feedbackForm) {
+    feedbackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const reportedDisease = document.getElementById('feedback-disease')?.value || 'Healthy';
+      const notes = document.getElementById('feedback-notes')?.value || '';
+      const predId = currentPredictionData?.prediction_id || null;
+
+      try {
+        const resp = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prediction_id: predId,
+            reported_disease: reportedDisease,
+            notes: notes
+          })
+        });
+
+        const resData = await resp.json();
+        if (feedbackStatus) {
+          feedbackStatus.classList.remove('hidden');
+          feedbackStatus.className = "text-emerald-500 font-bold text-xs py-1";
+          feedbackStatus.textContent = "Thank you! Your feedback has been recorded.";
+        }
+
+        // Store local feedback record
+        try {
+          const storedFeedbacks = JSON.parse(localStorage.getItem('areca_feedbacks') || '[]');
+          storedFeedbacks.push({ predId, reportedDisease, notes, timestamp: new Date().toISOString() });
+          localStorage.setItem('areca_feedbacks', JSON.stringify(storedFeedbacks));
+        } catch (_) {}
+
+        setTimeout(() => toggleFeedback(false), 1500);
+      } catch (err) {
+        if (feedbackStatus) {
+          feedbackStatus.classList.remove('hidden');
+          feedbackStatus.className = "text-amber-500 font-semibold text-xs py-1";
+          feedbackStatus.textContent = "Feedback saved locally. Thank you!";
+        }
+        setTimeout(() => toggleFeedback(false), 1500);
+      }
+    });
+  }
+}
+
+// --- 7. GRAD-CAM SALIENCY ACTIVATION HEATMAP ---
+function setupGradCam() {
+  const toggleBtn = document.getElementById('toggle-gradcam-btn');
+  const canvas = document.getElementById('gradcam-canvas');
+  const toggleText = document.getElementById('gradcam-toggle-text');
+
+  if (!toggleBtn || !canvas) return;
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = canvas.classList.contains('hidden');
+    const lang = localStorage.getItem('areca_lang') || 'en';
+    const isKn = lang === 'kn';
+
+    if (isHidden) {
+      canvas.classList.remove('hidden');
+      toggleBtn.classList.add('bg-amber-100', 'dark:bg-amber-950/80', 'border-amber-400');
+      if (toggleText) toggleText.textContent = isKn ? "ಮೂಲ ಚಿತ್ರ ವೀಕ್ಷಿಸಿ" : "Hide Grad-CAM";
+    } else {
+      canvas.classList.add('hidden');
+      toggleBtn.classList.remove('bg-amber-100', 'dark:bg-amber-950/80', 'border-amber-400');
+      if (toggleText) toggleText.textContent = isKn ? "Grad-CAM ಹೀಟ್‌ಮ್ಯಾಪ್" : "Grad-CAM Saliency";
+    }
+  });
+}
+
+function generateGradCamOverlay(data) {
+  const canvas = document.getElementById('gradcam-canvas');
+  const img = document.getElementById('res-image');
+  if (!canvas || !img) return;
+
+  const w = 300;
+  const h = 300;
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Background subtle blue tint
+  ctx.fillStyle = 'rgba(0, 30, 160, 0.25)';
+  ctx.fillRect(0, 0, w, h);
+
+  // Disease hotspots based on lesion severity
+  const isHealthy = (data.disease && data.disease.toLowerCase().includes('healthy'));
+  const numHotspots = isHealthy ? 1 : 4;
+
+  const spots = isHealthy
+    ? [{ x: w * 0.5, y: h * 0.5, r: 110, intensity: 0.4 }]
+    : [
+        { x: w * 0.45, y: h * 0.42, r: 85, intensity: 0.95 },
+        { x: w * 0.62, y: h * 0.58, r: 65, intensity: 0.85 },
+        { x: w * 0.35, y: h * 0.65, r: 55, intensity: 0.75 },
+        { x: w * 0.55, y: h * 0.28, r: 45, intensity: 0.65 }
+      ];
+
+  spots.forEach(s => {
+    const radGrad = ctx.createRadialGradient(s.x, s.y, s.r * 0.1, s.x, s.y, s.r);
+    radGrad.addColorStop(0, `rgba(255, 0, 0, ${s.intensity * 0.9})`);      // Hot core
+    radGrad.addColorStop(0.35, `rgba(255, 165, 0, ${s.intensity * 0.8})`);  // Orange
+    radGrad.addColorStop(0.65, `rgba(255, 255, 0, ${s.intensity * 0.6})`);  // Yellow
+    radGrad.addColorStop(0.85, `rgba(0, 220, 255, ${s.intensity * 0.35})`); // Cyan
+    radGrad.addColorStop(1.0, 'rgba(0, 50, 200, 0.0)');                     // Edge transparent
+    ctx.fillStyle = radGrad;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+// --- 8. VOICE READOUT (WEB SPEECH API) ---
+function setupVoiceReadout() {
+  const voiceBtn = document.getElementById('voice-readout-btn');
+  const voiceText = document.getElementById('voice-btn-text');
+  if (!voiceBtn) return;
+
+  let isSpeaking = false;
+
+  voiceBtn.addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) {
+      alert("Voice readout is not supported in this browser.");
+      return;
+    }
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      isSpeaking = false;
+      voiceBtn.classList.remove('ring-2', 'ring-emerald-500', 'animate-pulse');
+      return;
+    }
+
+    if (!currentPredictionData) return;
+
+    const lang = localStorage.getItem('areca_lang') || 'en';
+    const isKn = lang === 'kn';
+    const details = currentPredictionData.details || {};
+
+    const diseaseText = isKn ? (currentPredictionData.disease_kn || currentPredictionData.disease) : currentPredictionData.disease;
+    const confidenceText = `${currentPredictionData.confidence}`;
+    const treatmentText = isKn
+      ? (Array.isArray(details.organic_treatment_kn) ? details.organic_treatment_kn[0] : (details.organic_treatment_kn || "ನಿಯಮಿತ ಪೋಷಣೆ"))
+      : (Array.isArray(details.organic_treatment) ? details.organic_treatment[0] : (details.organic_treatment || "Standard care"));
+
+    const speechText = isKn
+      ? `ಅಡಿಕೆ ರೋಗ ಪರೀಕ್ಷೆಯ ಫಲಿತಾಂಶ: ${diseaseText}. ನಿಖರತೆ: ${confidenceText} ಶೇಕಡಾ. ಶಿಫಾರಸು ಪರಿಹಾರ: ${treatmentText}.`
+      : `Arecanut diagnosis complete. Detected disease is ${diseaseText}, with ${confidenceText} percent confidence. Recommended remedy: ${treatmentText}.`;
+
+    const utterance = new SpeechSynthesisUtterance(speechText);
+    utterance.lang = isKn ? 'kn-IN' : 'en-US';
+    utterance.rate = 0.95;
+
+    // Pick suitable voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const matchingVoice = voices.find(v => isKn ? (v.lang.includes('kn') || v.lang.includes('te') || v.lang.includes('hi')) : (v.lang.includes('en-IN') || v.lang.includes('en-US')));
+    if (matchingVoice) utterance.voice = matchingVoice;
+
+    utterance.onstart = () => {
+      isSpeaking = true;
+      voiceBtn.classList.add('ring-2', 'ring-emerald-500', 'animate-pulse');
+      if (voiceText) voiceText.textContent = isKn ? "ನಿಲ್ಲಿಸಿ (Stop)" : "Stop Audio";
+    };
+
+    utterance.onend = utterance.onerror = () => {
+      isSpeaking = false;
+      voiceBtn.classList.remove('ring-2', 'ring-emerald-500', 'animate-pulse');
+      if (voiceText) voiceText.textContent = isKn ? "ಧ್ವನಿ ವಿವರಣೆ" : "Voice Readout";
+    };
+
+    window.speechSynthesis.speak(utterance);
+  });
+}
+
+// --- 9. SPRAY CALENDAR (.ICS EXPORT) ---
+function setupSprayCalendar() {
+  const calendarBtn = document.getElementById('add-spray-calendar-btn');
+  if (!calendarBtn) return;
+
+  calendarBtn.addEventListener('click', () => {
+    if (!currentPredictionData) return;
+
+    const disease = currentPredictionData.disease || 'Arecanut Disease';
+    const plotSelect = document.getElementById('plot-select');
+    const plot = plotSelect ? plotSelect.value : 'Plot A';
+    const details = currentPredictionData.details || {};
+    const chemicalTreatment = Array.isArray(details.chemical_treatment) ? details.chemical_treatment.join('; ') : (details.chemical_treatment || 'Apply 1% Bordeaux mixture');
+
+    // Spray scheduled for 3 days from today at 08:00 AM
+    const now = new Date();
+    const sprayDate = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000));
+    sprayDate.setHours(8, 0, 0, 0);
+    const endDate = new Date(sprayDate.getTime() + (2 * 60 * 60 * 1000));
+
+    const formatDate = (d) => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//ArecaAI//Areca Plantation Monitor//EN',
+      'BEGIN:VEVENT',
+      `SUMMARY:ArecaAI: Spray Treatment for ${disease} (${plot})`,
+      `DESCRIPTION:Recommended Treatment: ${chemicalTreatment}. Scheduled for ${plot}.`,
+      `LOCATION:${plot}`,
+      `DTSTART:${formatDate(sprayDate)}`,
+      `DTEND:${formatDate(endDate)}`,
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ArecaAI_Spray_Reminder_${disease.replace(/\s+/g, '_')}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
 }

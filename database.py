@@ -38,29 +38,40 @@ def init_db():
                 notes TEXT
             )
         ''')
-        # Safely migrate older schema if 'part' or 'features_json' columns are missing
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS feedbacks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                prediction_id INTEGER,
+                reported_disease TEXT,
+                notes TEXT,
+                created_at TEXT NOT NULL
+            )
+        ''')
+        # Safely migrate older schema if 'part', 'features_json' or 'plot' columns are missing
         cursor.execute("PRAGMA table_info(predictions)")
         columns = [col['name'] for col in cursor.fetchall()]
         if 'part' not in columns:
             cursor.execute("ALTER TABLE predictions ADD COLUMN part TEXT DEFAULT 'leaf'")
         if 'features_json' not in columns:
             cursor.execute("ALTER TABLE predictions ADD COLUMN features_json TEXT DEFAULT '{}'")
+        if 'plot' not in columns:
+            cursor.execute("ALTER TABLE predictions ADD COLUMN plot TEXT DEFAULT 'Plot A'")
 
         conn.commit()
         conn.close()
     except Exception as e:
         print(f"[WARN] Error initializing database: {e}")
 
-def add_prediction(filename, image_url, disease, disease_kn, confidence, severity="Moderate", part="leaf", low_confidence=False, notes="", features=None):
+def add_prediction(filename, image_url, disease, disease_kn, confidence, severity="Moderate", part="leaf", low_confidence=False, notes="", features=None, plot="Plot A"):
     try:
         conn = get_connection()
         cursor = conn.cursor()
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         feat_str = json.dumps(features or {}) if features else "{}"
         cursor.execute('''
-            INSERT INTO predictions (filename, image_url, part, disease, disease_kn, confidence, severity, low_confidence, created_at, notes, features_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (filename, image_url, part, disease, disease_kn, float(confidence), severity, 1 if low_confidence else 0, created_at, notes, feat_str))
+            INSERT INTO predictions (filename, image_url, part, disease, disease_kn, confidence, severity, low_confidence, created_at, notes, features_json, plot)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (filename, image_url, part, disease, disease_kn, float(confidence), severity, 1 if low_confidence else 0, created_at, notes, feat_str, plot))
         pred_id = cursor.lastrowid
         conn.commit()
         conn.close()
@@ -69,12 +80,29 @@ def add_prediction(filename, image_url, disease, disease_kn, confidence, severit
         print(f"[ERROR] Could not insert prediction: {e}")
         return None
 
+def add_feedback(prediction_id, reported_disease, notes=""):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute('''
+            INSERT INTO feedbacks (prediction_id, reported_disease, notes, created_at)
+            VALUES (?, ?, ?, ?)
+        ''', (prediction_id, reported_disease, notes, created_at))
+        feedback_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return feedback_id
+    except Exception as e:
+        print(f"[ERROR] Could not insert feedback: {e}")
+        return None
+
 def get_all_predictions(limit=100):
     try:
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            SELECT id, filename, image_url, part, disease, disease_kn, confidence, severity, low_confidence, created_at, notes, features_json
+            SELECT id, filename, image_url, part, disease, disease_kn, confidence, severity, low_confidence, created_at, notes, features_json, plot
             FROM predictions
             ORDER BY id DESC
             LIMIT ?
@@ -84,6 +112,8 @@ def get_all_predictions(limit=100):
         result = []
         for row in rows:
             d = dict(row)
+            if not d.get('plot'):
+                d['plot'] = 'Plot A'
             try:
                 d['features'] = json.loads(d.get('features_json') or '{}')
             except Exception:
@@ -99,7 +129,7 @@ def get_prediction_by_id(pred_id):
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            SELECT id, filename, image_url, part, disease, disease_kn, confidence, severity, low_confidence, created_at, notes, features_json
+            SELECT id, filename, image_url, part, disease, disease_kn, confidence, severity, low_confidence, created_at, notes, features_json, plot
             FROM predictions
             WHERE id = ?
         ''', (pred_id,))
@@ -107,6 +137,8 @@ def get_prediction_by_id(pred_id):
         conn.close()
         if row:
             d = dict(row)
+            if not d.get('plot'):
+                d['plot'] = 'Plot A'
             try:
                 d['features'] = json.loads(d.get('features_json') or '{}')
             except Exception:

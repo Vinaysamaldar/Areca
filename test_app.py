@@ -191,6 +191,25 @@ def run_tests():
         assert resp.status_code == 200, f"Route {r} returned {resp.status_code}"
         print(f"  [PASS] Route '{r}' returned 200 OK")
 
+    # 7. Test Feedback API & PWA Assets
+    print("\n[TEST 7] Testing Feedback API & PWA Static Assets...")
+    fb_resp = client.post('/api/feedback', json={
+        'prediction_id': new_pred_id,
+        'reported_disease': 'Koleroga',
+        'notes': 'Verified by field agronomist'
+    })
+    assert fb_resp.status_code == 200
+    assert fb_resp.get_json()['success'] is True
+    print("  [PASS] Feedback POST /api/feedback recorded successfully")
+
+    manifest_resp = client.get('/manifest.json')
+    assert manifest_resp.status_code == 200
+    print("  [PASS] PWA /manifest.json served successfully")
+
+    sw_resp = client.get('/sw.js')
+    assert sw_resp.status_code == 200
+    print("  [PASS] PWA /sw.js served successfully")
+
     # Cleanup test DB records
     database.delete_prediction(pred_id)
     database.delete_prediction(new_pred_id)

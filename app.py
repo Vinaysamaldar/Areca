@@ -225,6 +225,7 @@ def predict():
 
             severity = result.get('details', {}).get('severity', 'Moderate')
             
+            plot_name = request.form.get('plot', 'Plot A')
             pred_id = database.add_prediction(
                 filename=unique_name,
                 image_url=image_url,
@@ -234,7 +235,8 @@ def predict():
                 severity=severity,
                 low_confidence=result['low_confidence'],
                 part=result.get('part', 'leaf'),
-                features=result.get('features', {})
+                features=result.get('features', {}),
+                plot=plot_name
             )
 
             res_entry = {
@@ -508,7 +510,42 @@ def get_stats_api():
     stats = database.get_statistics()
     return jsonify(stats)
 
+@app.route('/api/feedback', methods=['POST'])
+def submit_feedback():
+    """
+    POST /api/feedback
+    Farmer reporting incorrect result or providing corrective label.
+    """
+    try:
+        data = request.get_json(silent=True) or request.form.to_dict() or {}
+        pred_id = data.get('prediction_id')
+        reported_disease = data.get('reported_disease', '')
+        notes = data.get('notes', '')
+        fb_id = database.add_feedback(pred_id, reported_disease, notes)
+        return jsonify({
+            "success": True,
+            "message": "Thank you! Your feedback has been recorded to improve future model calibration.",
+            "feedback_id": fb_id
+        }), 200
+    except Exception as e:
+        app.logger.error(f"Error recording feedback: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 # --- STATIC ASSET FALLBACK ROUTES (For Vercel CDN & Edge Deployment) ---
+
+@app.route('/manifest.json')
+def root_manifest():
+    for f in [os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'static')]:
+        if os.path.exists(os.path.join(f, 'manifest.json')):
+            return send_from_directory(f, 'manifest.json', mimetype='application/manifest+json')
+    return "Not Found", 404
+
+@app.route('/sw.js')
+def root_sw():
+    for f in [os.path.join(BASE_DIR, 'public'), os.path.join(BASE_DIR, 'static')]:
+        if os.path.exists(os.path.join(f, 'sw.js')):
+            return send_from_directory(f, 'sw.js', mimetype='application/javascript')
+    return "Not Found", 404
 
 @app.route('/logo.svg')
 def root_logo():
