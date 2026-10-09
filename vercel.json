@@ -2,8 +2,28 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "destination": "/api/index.py?__path=$1"
+    },
+    {
+      "source": "/predict",
+      "destination": "/api/index.py?__path=predict"
+    },
+    {
+      "source": "/report/(.*)",
+      "destination": "/api/index.py?__path=report/$1"
+    },
+    {
+      "source": "/feedback",
+      "destination": "/api/index.py?__path=feedback"
+    },
+    {
+      "source": "/download-apk",
+      "destination": "/api/index.py?__path=download-apk"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
