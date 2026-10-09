@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
 import {
   Camera,
   Upload,
@@ -299,7 +300,20 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+    <div className="space-y-10">
+      {/* 3D Parallax Scrolling Front Page Hero */}
+      <ParallaxComponent
+        title="ArecaAI"
+        badge={t("MobileNetV2 CNN • Multi-Spectral Pathology", "ಮೊಬೈಲ್ ನೆಟ್ V2 • ಬಹು-ಸ್ಪೆಕ್ಟ್ರಲ್ ರೋಗ ಪತ್ತೆ")}
+        subtitle={t(
+          "Precision plant pathology platform for Arecanut palms. Real-time disease detection, Grad-CAM attention hotspots, and localized spray advisories.",
+          "ಅಡಿಕೆ ಕೃಷಿಗಾಗಿ ನಿಖರವಾದ ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ ಆಧಾರಿತ ರೋಗ ಪತ್ತೆ ಮತ್ತು ಪರಿಹಾರ ವೇದಿಕೆ. ತಕ್ಷಣದ ರೋಗ ನಿರ್ಣಯ ಮತ್ತು ಔಷಧ ಸಲಹೆಗಳು."
+        )}
+        ctaText={t("Instant Plant Scanner", "ತಕ್ಷಣದ ಗಿಡ ಪರೀಕ್ಷೆ")}
+        ctaHref="#scanner"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-12">
       
       {/* Hero Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -781,6 +795,7 @@ export const Home: React.FC = () => {
         </div>
       )}
 
+      </div>
     </div>
   );
 };

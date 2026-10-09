@@ -4,19 +4,30 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
+import { Camera, ChevronDown, Sparkles } from 'lucide-react';
 
 export interface ParallaxComponentProps {
   title?: string;
+  subtitle?: string;
+  badge?: string;
+  ctaText?: string;
+  ctaHref?: string;
   layer1Image?: string;
   layer2Image?: string;
   layer4Image?: string;
+  children?: React.ReactNode;
 }
 
 export function ParallaxComponent({
-  title = "Parallax",
-  layer1Image = "https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=1600&q=80",
-  layer2Image = "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80",
-  layer4Image = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1600&q=80"
+  title = "ArecaAI",
+  subtitle = "Precision Agricultural Disease Detection for Arecanut Palms",
+  badge = "MobileNetV2 CNN • Multi-Spectral Pathology",
+  ctaText = "Instant Crop Scanner",
+  ctaHref = "#scanner",
+  layer1Image = "https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=1920&q=80",
+  layer2Image = "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80",
+  layer4Image = "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1920&q=80",
+  children
 }: ParallaxComponentProps) {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -63,8 +74,7 @@ export function ParallaxComponent({
     gsap.ticker.lagSmoothing(0);
 
     return () => {
-      // Clean up GSAP and ScrollTrigger instances
-      ScrollTrigger.getAll().forEach(st => st.kill());
+      ScrollTrigger.getAll().forEach((st) => st.kill());
       if (triggerElement) {
         gsap.killTweensOf(triggerElement);
       }
@@ -74,61 +84,100 @@ export function ParallaxComponent({
   }, []);
 
   return (
-    <div className="parallax relative w-full" ref={parallaxRef}>
-      <section className="parallax__header relative w-full h-screen min-h-[600px] overflow-hidden">
+    <div className="parallax relative w-full overflow-hidden" ref={parallaxRef}>
+      {/* 3D Multi-Layer Parallax Header */}
+      <section className="parallax__header relative w-full h-[85vh] sm:h-[92vh] min-h-[580px] overflow-hidden bg-zinc-950">
         <div className="parallax__visuals relative w-full h-full overflow-hidden">
-          <div className="parallax__black-line-overflow absolute top-0 left-0 w-full h-[2px] bg-transparent z-10"></div>
+          <div className="parallax__black-line-overflow absolute top-0 left-0 w-full h-[2px] bg-transparent z-10 pointer-events-none"></div>
+
           <div data-parallax-layers className="parallax__layers relative w-full h-full overflow-hidden">
+            {/* Layer 1: Background Canopy */}
             <img
               src={layer1Image}
               loading="eager"
-              width="1600"
+              width="1920"
               data-parallax-layer="1"
-              alt="Background layer"
-              className="parallax__layer-img absolute top-0 left-0 w-full h-full object-cover pointer-events-none"
+              alt="Background plantation canopy"
+              className="parallax__layer-img absolute inset-0 w-full h-full object-cover pointer-events-none brightness-75 contrast-110"
             />
+
+            {/* Layer 2: Palm Grove Midground */}
             <img
               src={layer2Image}
               loading="eager"
-              width="1600"
+              width="1920"
               data-parallax-layer="2"
-              alt="Midground layer"
-              className="parallax__layer-img absolute top-0 left-0 w-full h-full object-cover pointer-events-none opacity-85"
+              alt="Midground palm groves"
+              className="parallax__layer-img absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80 mix-blend-screen"
             />
+
+            {/* Layer 3: Title and Interactive Call to Action */}
             <div
               data-parallax-layer="3"
-              className="parallax__layer-title absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+              className="parallax__layer-title absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-20 pointer-events-auto"
             >
-              <h2 className="parallax__title text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight text-white uppercase drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">
-                {title}
-              </h2>
+              {badge && (
+                <div className="inline-flex items-center space-x-2 bg-emerald-950/80 backdrop-blur-md text-emerald-400 text-xs font-bold px-4 py-1.5 rounded-full border border-emerald-500/40 shadow-xl mb-4 animate-in fade-in duration-500">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                  <span>{badge}</span>
+                </div>
+              )}
+
+              <h1 className="parallax__title text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight text-white uppercase drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)]">
+                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">
+                  {title}
+                </span>
+              </h1>
+
+              {subtitle && (
+                <p className="mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-zinc-200 font-medium drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] px-4">
+                  {subtitle}
+                </p>
+              )}
+
+              {ctaText && (
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                  <a
+                    href={ctaHref}
+                    className="inline-flex items-center space-x-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm sm:text-base px-6 py-3.5 rounded-2xl shadow-2xl shadow-emerald-950 transition-all hover:scale-105 active:scale-95"
+                  >
+                    <Camera className="w-5 h-5" />
+                    <span>{ctaText}</span>
+                  </a>
+                </div>
+              )}
             </div>
+
+            {/* Layer 4: Foreground Lush Fronds */}
             <img
               src={layer4Image}
               loading="eager"
-              width="1600"
+              width="1920"
               data-parallax-layer="4"
-              alt="Foreground layer"
-              className="parallax__layer-img absolute top-0 left-0 w-full h-full object-cover pointer-events-none opacity-90"
+              alt="Foreground palm leaves"
+              className="parallax__layer-img absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 contrast-125"
             />
           </div>
-          <div className="parallax__fade absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#070b09] to-transparent pointer-events-none z-20"></div>
+
+          {/* Smooth Fade Transition into Page Content */}
+          <div className="parallax__fade absolute bottom-0 left-0 w-full h-44 sm:h-56 bg-gradient-to-t from-[#070b09] via-[#070b09]/80 to-transparent pointer-events-none z-20 flex items-end justify-center pb-6">
+            <a
+              href="#scanner"
+              className="text-emerald-400 hover:text-emerald-300 transition-colors pointer-events-auto animate-bounce flex flex-col items-center gap-1 text-xs font-semibold"
+            >
+              <span>Scroll to Scanner</span>
+              <ChevronDown className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </section>
-      <section className="parallax__content relative py-20 px-6 flex justify-center items-center bg-[#070b09]">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="100%"
-          viewBox="0 0 160 160"
-          fill="none"
-          className="osmo-icon-svg max-w-[120px] max-h-[120px] text-emerald-400"
-        >
-          <path
-            d="M94.8284 53.8578C92.3086 56.3776 88 54.593 88 51.0294V0H72V59.9999C72 66.6273 66.6274 71.9999 60 71.9999H0V87.9999H51.0294C54.5931 87.9999 56.3777 92.3085 53.8579 94.8283L18.3431 130.343L29.6569 141.657L65.1717 106.142C67.684 103.63 71.9745 105.396 72 108.939V160L88.0001 160L88 99.9999C88 93.3725 93.3726 87.9999 100 87.9999H160V71.9999H108.939C105.407 71.9745 103.64 67.7091 106.12 65.1938L106.142 65.1716L141.657 29.6568L130.343 18.3432L94.8284 53.8578Z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </section>
+
+      {/* Optional Body Content Container */}
+      {children && (
+        <section className="parallax__content relative bg-[#070b09]">
+          {children}
+        </section>
+      )}
     </div>
   );
 }
