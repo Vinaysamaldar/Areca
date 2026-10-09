@@ -156,49 +156,52 @@ class ModelManager:
         if spatial_corr_orig < 0.20 and float(np.std(gray_orig)) > 15.0:
             return False, "Random noise or synthetic static pattern detected"
 
-        # 3. Botanical color indices
+        # 3. Human skin detection in YCbCr color space (detects human faces, portraits, hands, skin)
+        cb = 128.0 - 0.168736 * r - 0.331264 * g + 0.5 * b
+        cr = 128.0 + 0.5 * r - 0.418688 * g - 0.081312 * b
+        skin_mask = (cb >= 88) & (cb <= 135) & (cr >= 130) & (cr <= 175) & (r > g) & (g > b) & (b > 45) & (r - g > 6) & (r - b > 12)
+        human_skin_ratio = float(np.sum(skin_mask) / total_px)
+        if human_skin_ratio > 0.08:
+            return False, f"Human photo or face detected ({human_skin_ratio*100:.1f}% skin tone). Only Arecanut Leaf images are accepted"
+
+        # 4. Botanical vegetation indices (chlorophyll & chlorosis)
         exg = (2.0 * g - r - b) / 255.0
         ndvi = (g - r) / (g + r + 1e-5)
 
         # Foliar chlorophyll
-        green_px = np.sum((exg > 0.05) & (ndvi > 0.02) & (g > r) & (g > b)) / total_px
-        # Foliar chlorosis / yellow leaf
-        yellow_px = np.sum((r > 110) & (g > 100) & (b < 110) & (r > b + 20) & (g > b + 15)) / total_px
+        green_px = float(np.sum((exg > 0.05) & (ndvi > 0.02) & (g > r) & (g > b)) / total_px)
+        # Foliar chlorosis / yellow leaf (high R and G, low B, chlorophyll absorption band)
+        yellow_px = float(np.sum((r > 120) & (g > 110) & (b < 95) & (r > b + 25) & (g > b + 15) & (b / (g + 1e-5) < 0.55)) / total_px)
         # Woody stem / trunk bark / root collar
-        brown_px = np.sum((r > 45) & (g > 25) & (g < 125) & (b < 95) & (r >= g) & (g >= b)) / total_px
+        brown_px = float(np.sum((r > 45) & (g > 25) & (g < 125) & (b < 95) & (r >= g) & (g >= b)) / total_px)
         # Necrotic rot or spot decay
-        dark_rot_px = np.sum((r < 80) & (g < 80) & (b < 75) & (np.abs(r - g) < 25)) / total_px
+        dark_rot_px = float(np.sum((r < 85) & (g < 85) & (b < 80) & (np.abs(r - g) < 25)) / total_px)
 
-        # 4. Non-plant filters (Skin, synthetic blue, synthetic red, unbiological blue spectrum)
+        # 5. Non-plant filters (Indoor scenes, blue dominance, synthetic backgrounds)
         mean_b = float(np.mean(arr[:, :, 2]))
         mean_g = float(np.mean(arr[:, :, 1]))
         mean_r = float(np.mean(arr[:, :, 0]))
 
-        # Arecanut leaves have very low blue compared to foliage green or yellow fronds
-        if mean_b > 110.0 and (mean_b / (mean_g + 1e-5) > 0.85) and (mean_b / (mean_r + 1e-5) > 0.85):
-            return False, "Non-plant image detected (abnormally high blue spectrum)"
+        # Arecanut leaves strongly absorb blue light. High blue means indoor room, electronics or sky.
+        if mean_b > 65.0 and (mean_b / (mean_g + 1e-5) > 0.70) and (green_px + yellow_px) < 0.20:
+            return False, "Non-plant scene or indoor photo detected (High blue reflectance)"
 
-        skin_px = np.sum((r > 100) & (g > 60) & (b > 45) & (r > g) & (g > b) & ((r - g) > 15) & ((r - b) > 25) & (b < 165)) / total_px
-        synthetic_blue_px = np.sum((b > 115) & (b > r + 25) & (b > g + 20)) / total_px
-        synthetic_red_px = np.sum((r > 165) & (g < 70) & (b < 70)) / total_px
-
-        if skin_px > 0.35 and (green_px + yellow_px) < 0.08:
-            return False, "Human face, portrait or skin detected instead of an arecanut leaf"
-
-        if synthetic_blue_px > 0.30 and green_px < 0.08:
+        synthetic_blue_px = float(np.sum((b > 115) & (b > r + 20) & (b > g + 15)) / total_px)
+        if synthetic_blue_px > 0.20 and green_px < 0.10:
             return False, "Synthetic blue object or non-plant background detected"
 
-        if synthetic_red_px > 0.30 and green_px < 0.08:
+        synthetic_red_px = float(np.sum((r > 165) & (g < 75) & (b < 75)) / total_px)
+        if synthetic_red_px > 0.25 and green_px < 0.10:
             return False, "Synthetic artificial red object detected"
 
-        # 5. Non-leaf organ rejection (Stem bark, root collar, woody trunk)
+        # 6. Non-leaf organ rejection (Stem bark, root collar, woody trunk)
         if brown_px > 0.25 and (green_px + yellow_px) < 0.08:
             return False, "Stem or Root detected: Only Arecanut Leaf images are accepted"
 
-        # 6. Leaf foliar presence requirement
-        is_leaf = (green_px > 0.10) or (yellow_px > 0.14) or (green_px > 0.04 and (yellow_px > 0.06 or dark_rot_px > 0.08))
+        # 7. Strict leaf foliar presence requirement
+        is_leaf = (green_px > 0.15) or (yellow_px > 0.20) or (green_px > 0.05 and (yellow_px > 0.08 or dark_rot_px > 0.08))
         if not is_leaf:
-            return False, "Image contains no detectable Arecanut Leaf foliar features"
+            return False, "No arecanut leaf foliar features found. Please scan a clear photo of an arecanut leaf."
 
         return True, "Valid Arecanut Leaf"
 
@@ -294,8 +297,8 @@ class ModelManager:
                 "is_valid": False,
                 "is_leaf": False,
                 "is_arecanut": False,
-                "error": "Invalid image: Only Arecanut Leaf images are accepted. Please scan or upload a clear photo of an arecanut leaf.",
-                "error_kn": "ಅಮಾನ್ಯ ಚಿತ್ರ: ಕೇವಲ ಅಡಿಕೆ ಎಲೆಯ (Leaf) ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ಕ್ಯಾನ್ ಮಾಡಬಹುದು. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಅಡಿಕೆ ಎಲೆಯ ಫೋಟೋವನ್ನು ನೀಡಿ.",
+                "error": f"Invalid image: {reason}. Only Arecanut Leaf images are accepted.",
+                "error_kn": f"ಅಮಾನ್ಯ ಚಿತ್ರ: {reason}. ಕೇವಲ ಅಡಿಕೆ ಎಲೆಯ (Leaf) ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ಕ್ಯಾನ್ ಮಾಡಬಹುದು.",
                 "reason": reason,
                 "part": "invalid",
                 "part_confidence": 0.0,
