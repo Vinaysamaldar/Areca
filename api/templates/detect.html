@@ -104,15 +104,24 @@
         <span id="upload-error-text">Validation error</span>
       </div>
 
+      <!-- Leaf Only Detection Notice -->
+      <div class="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-start space-x-3 text-xs text-emerald-900 dark:text-emerald-300">
+        <i class="fa-solid fa-leaf text-emerald-600 text-base mt-0.5 flex-shrink-0"></i>
+        <div>
+          <span class="font-bold" data-en="CNN Leaf-Only Pathology Model Active:" data-kn="ಸಿಎನ್‌ಎನ್ ಎಲೆ ರೋಗ ಪತ್ತೆ ಮಾದರಿ ಸಕ್ರಿಯವಾಗಿದೆ:">CNN Leaf-Only Pathology Model Active:</span>
+          <span class="ml-1" data-en="The deep learning CNN inspects Arecanut Leaf foliar patterns. Any non-leaf images (stem, root, nut, or non-plant objects) will be rejected as invalid." data-kn="ಅಡಿಕೆ ಎಲೆಯ ರೋಗಗಳನ್ನು ಮಾತ್ರ ಪರೀಕ್ಷಿಸಲಾಗುತ್ತದೆ. ಬೇರೆ ಯಾವುದೇ ಚಿತ್ರಗಳನ್ನು (ಕಾಂಡ, ಬೇರು, ಅಡಿಕೆ ಅಥವಾ ಸಸ್ಯವಲ್ಲದ ವಸ್ತುಗಳು) ಅಮಾನ್ಯವೆಂದು ತಿರಸ್ಕರಿಸಲಾಗುತ್ತದೆ.">The deep learning CNN inspects Arecanut Leaf foliar patterns. Any non-leaf images (stem, root, nut, or non-plant objects) will be rejected as invalid.</span>
+        </div>
+      </div>
+
       <!-- Action Buttons -->
       <div class="space-y-3">
         <div class="grid grid-cols-2 gap-2.5">
-          <button id="mobile-cam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-2.5 px-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm">
-            <i class="fa-solid fa-camera text-emerald-600"></i>
-            <span data-en="Camera Capture" data-kn="ಕ್ಯಾಮರಾ ಫೋಟೋ">Camera Capture</span>
+          <button id="open-cam-modal-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 font-bold py-2.5 px-3 rounded-xl border border-emerald-300 dark:border-emerald-800 text-xs sm:text-sm transition-all shadow-sm">
+            <i class="fa-solid fa-camera text-emerald-600 text-base"></i>
+            <span data-en="Open Camera Viewfinder" data-kn="ಕ್ಯಾಮರಾ ಓಪನ್ ಮಾಡಿ">Open Camera Viewfinder</span>
           </button>
-          <a href="{{ url_for('live_page') }}" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-2.5 px-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm">
-            <i class="fa-solid fa-video text-blue-600"></i>
+          <a href="{{ url_for('live_page') }}" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-2.5 px-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs sm:text-sm transition-all">
+            <i class="fa-solid fa-video text-blue-600 text-base"></i>
             <span data-en="Live Scanner (1 FPS)" data-kn="ಲೈವ್ ಸ್ಕ್ಯಾನ್">Live Scanner (1 FPS)</span>
           </a>
         </div>
@@ -399,6 +408,53 @@
 
     </div>
   </section>
+
+  <!-- IN-PAGE CAMERA VIEWFINDER MODAL -->
+  <div id="camera-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-zinc-900 rounded-3xl p-5 max-w-lg w-full text-center space-y-4 shadow-2xl border border-zinc-800 text-white relative">
+      <button id="close-camera-modal-btn" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center transition-colors">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-left pr-8">
+        <h3 class="text-base font-bold flex items-center gap-2">
+          <i class="fa-solid fa-camera text-emerald-400"></i>
+          <span data-en="Camera Leaf Viewfinder" data-kn="ಕ್ಯಾಮರಾ ಲೈವ್ ಫ್ರೇಮ್">Camera Leaf Viewfinder</span>
+        </h3>
+        <p class="text-xs text-zinc-400 mt-0.5" data-en="Align an arecanut leaf within the reticle and capture a photo for CNN inspection." data-kn="ಅಡಿಕೆ ಎಲೆಯನ್ನು ಫ್ರೇಮ್ ಒಳಗೆ ಹಿಡಿದು ಫೋಟೋ ತೆಗೆಯಿರಿ.">
+          Align an arecanut leaf within the reticle and capture a photo for CNN inspection.
+        </p>
+      </div>
+
+      <!-- Live Video Viewport -->
+      <div class="relative w-full aspect-[4/3] bg-black rounded-2xl overflow-hidden border border-zinc-800 flex items-center justify-center">
+        <video id="modal-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
+        <canvas id="modal-canvas" class="hidden"></canvas>
+        
+        <!-- Reticle Overlay -->
+        <div class="absolute inset-4 pointer-events-none border-2 border-dashed border-emerald-400/60 rounded-xl flex items-center justify-center">
+          <div class="w-8 h-8 border-t-2 border-l-2 border-emerald-400 absolute top-0 left-0"></div>
+          <div class="w-8 h-8 border-t-2 border-r-2 border-emerald-400 absolute top-0 right-0"></div>
+          <div class="w-8 h-8 border-b-2 border-l-2 border-emerald-400 absolute bottom-0 left-0"></div>
+          <div class="w-8 h-8 border-b-2 border-r-2 border-emerald-400 absolute bottom-0 right-0"></div>
+          <span class="bg-zinc-900/90 text-emerald-300 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">🍃 Leaf Reticle</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex items-center justify-between gap-3 pt-1">
+        <button id="modal-flip-cam-btn" type="button" class="py-2.5 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold flex items-center gap-2 transition-all">
+          <i class="fa-solid fa-camera-rotate"></i>
+          <span data-en="Flip" data-kn="ಕ್ಯಾಮರಾ ಬದಲಿಸಿ">Flip</span>
+        </button>
+
+        <button id="modal-snap-btn" type="button" class="flex-1 py-3 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all active:scale-95">
+          <i class="fa-solid fa-circle-dot text-base text-red-400 animate-pulse"></i>
+          <span data-en="Snap Photo & Inspect Leaf" data-kn="ಫೋಟೋ ತೆಗೆದು ರೋಗ ಪರೀಕ್ಷಿಸಿ">Snap Photo & Inspect Leaf</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
 </div>
 {% endblock %}
