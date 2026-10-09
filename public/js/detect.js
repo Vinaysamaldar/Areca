@@ -309,7 +309,24 @@ function renderResult(data) {
 
   // Analyzed Crop Image
   const resImg = document.getElementById('res-image');
-  if (resImg) resImg.src = data.image_url;
+  const previewImg = document.getElementById('preview-image');
+  if (resImg) {
+    if (previewImg && previewImg.src && (previewImg.src.startsWith('data:') || previewImg.src.startsWith('blob:'))) {
+      resImg.src = previewImg.src;
+    } else if (data.image_data) {
+      resImg.src = data.image_data;
+    } else if (data.image_url) {
+      resImg.src = data.image_url;
+    } else if (previewImg && previewImg.src) {
+      resImg.src = previewImg.src;
+    }
+
+    resImg.onerror = function() {
+      if (previewImg && previewImg.src) {
+        this.src = previewImg.src;
+      }
+    };
+  }
 
   // Pathogen & Severity
   const pathogenEl = document.getElementById('res-pathogen');

@@ -181,7 +181,19 @@ def predict():
             unique_name = f"areca_{uuid.uuid4().hex[:10]}_{secure_filename(file.filename)}"
             save_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_name)
             file.save(save_path)
-            image_url = f"/static/uploads/{unique_name}"
+            
+            # Generate Base64 data URI so images never break on serverless/ephemeral filesystems
+            try:
+                with open(save_path, 'rb') as img_f:
+                    img_bytes = img_f.read()
+                    ext = unique_name.rsplit('.', 1)[-1].lower() if '.' in unique_name else 'jpeg'
+                    mime = 'image/png' if ext == 'png' else ('image/webp' if ext == 'webp' else 'image/jpeg')
+                    b64_str = base64.b64encode(img_bytes).decode('utf-8')
+                    data_uri = f"data:{mime};base64,{b64_str}"
+            except Exception:
+                data_uri = f"/static/uploads/{unique_name}"
+
+            image_url = data_uri
 
             # Specific part passed per file or default
             file_part = request.form.get(f'part_{file.filename}', selected_part)
