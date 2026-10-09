@@ -122,20 +122,11 @@ class ModelManager:
         if spatial_corr_orig < 0.20 and float(np.std(gray_orig)) > 15.0:
             return False, "Random noise or synthetic static pattern detected"
 
-        # 3. HUMAN DETECTION (YCbCr Color Space Skin & Melanin Model)
-        # Human skin is tightly clustered: Cb in [88, 135], Cr in [130, 175], R > G > B, B > 45
-        cb = 128.0 - 0.168736 * r - 0.331264 * g + 0.5 * b
-        cr = 128.0 + 0.5 * r - 0.418688 * g - 0.081312 * b
-        skin_mask = (cb >= 88) & (cb <= 135) & (cr >= 130) & (cr <= 175) & (r > g) & (g > b) & (b > 45) & (r - g > 6) & (r - b > 12)
-        human_skin_ratio = float(np.sum(skin_mask) / total_px)
-        if human_skin_ratio > 0.08:
-            return False, f"Human photo or face detected ({human_skin_ratio*100:.1f}% skin tone). This website is built strictly for plant disease detection, not for humans."
-
-        # 4. BOTANICAL VEGETATION INDICES (Leaves, Nuts, Trunks, Foot/Roots)
+        # 3. BOTANICAL VEGETATION INDICES (Leaves, Nuts, Trunks, Foot/Roots)
         exg = (2.0 * g - r - b) / 255.0
         ndvi = (g - r) / (g + r + 1e-5)
 
-        # Foliar chlorophyll (green fronds)
+        # Foliar chlorophyll (green fronds / surrounding plantation foliage)
         green_px = float(np.sum((exg > 0.04) & (ndvi > 0.01) & (g > r) & (g > b)) / total_px)
         # Chlorotic foliar yellow (Yellow Leaf Disease fronds)
         yellow_px = float(np.sum((r > 115) & (g > 105) & (b < 100) & (r > b + 25) & (g > b + 15) & (b / (g + 1e-5) < 0.60)) / total_px)
@@ -143,6 +134,18 @@ class ModelManager:
         brown_px = float(np.sum((r > 40) & (g > 20) & (g < 135) & (b < 105) & (r >= g) & (g >= b)) / total_px)
         # Necrotic rot, fruit rot, dark sap bleeding
         dark_rot_px = float(np.sum((r < 95) & (g < 95) & (b < 90) & (np.abs(r - g) < 30)) / total_px)
+
+        # 4. HUMAN DETECTION (YCbCr Color Space Skin & Melanin Model)
+        # Human skin is clustered: Cb in [88, 135], Cr in [130, 175], R > G > B, B > 45
+        cb = 128.0 - 0.168736 * r - 0.331264 * g + 0.5 * b
+        cr = 128.0 + 0.5 * r - 0.418688 * g - 0.081312 * b
+        skin_mask = (cb >= 88) & (cb <= 135) & (cr >= 130) & (cr <= 175) & (r > g) & (g > b) & (b > 45) & (r - g > 6) & (r - b > 12)
+        human_skin_ratio = float(np.sum(skin_mask) / total_px)
+
+        # Genuine human portraits lack plant chlorophyll (green_px < 0.04) or have massive skin coverage (> 0.50) without foliage
+        is_human = (human_skin_ratio > 0.18 and green_px < 0.04) or (human_skin_ratio > 0.50 and green_px < 0.06)
+        if is_human:
+            return False, f"Human photo or face detected ({human_skin_ratio*100:.1f}% skin tone). This website is built strictly for plant disease detection, not for humans."
 
         # 5. NON-PLANT SCENE & INDOOR ROOM REJECTION
         mean_b = float(np.mean(arr[:, :, 2]))
