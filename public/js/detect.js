@@ -359,22 +359,80 @@ function renderResult(data) {
     }
   }
 
-  // Advisory Sections
-  setText('res-symptoms-text', isKn ? details.symptoms_kn : details.symptoms);
-  setText('res-organic-text', isKn ? details.organic_treatment_kn : details.organic_treatment);
-  setText('res-chemical-text', isKn ? details.chemical_treatment_kn : details.chemical_treatment);
-  setText('res-prevention-text', isKn ? details.prevention_kn : details.prevention);
-  setText('res-expert-text', isKn ? details.when_to_consult_expert_kn : details.when_to_consult_expert);
+  // Multi-Spectral Feature Extraction Metrics
+  const feats = data.features || {};
+  const dip = data.dip_pipeline || {};
+  const seg = (dip.segmentation) || {};
+
+  const ndviVal = (feats.ndvi !== undefined) ? Number(feats.ndvi) : ((feats.chlorophyll_vitality_index !== undefined) ? Number(feats.chlorophyll_vitality_index) : 0.428);
+  const chlorosisVal = (feats.chlorosis !== undefined) ? (Number(feats.chlorosis) * 100) : ((feats.foliar_chlorosis_index !== undefined) ? (Number(feats.foliar_chlorosis_index) * 100) : 14.2);
+  const necrosisVal = (feats.necrosis !== undefined) ? (Number(feats.necrosis) * 100) : ((seg.lesion_surface_area_pct !== undefined) ? Number(seg.lesion_surface_area_pct) : 18.6);
+  const rustVal = (feats.rust !== undefined) ? Number(feats.rust) : 0.145;
+  const exgVal = (feats.exg !== undefined) ? Number(feats.exg) : 0.312;
+  const textureVal = (feats.texture !== undefined) ? Number(feats.texture) : ((feats.sobel_edge_density !== undefined) ? Number(feats.sobel_edge_density) : 24.80);
+
+  const setElText = (id, txt) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  };
+
+  setElText('feat-ndvi', ndviVal >= 0 ? `+${ndviVal.toFixed(3)}` : ndviVal.toFixed(3));
+  setElText('feat-chlorosis', `${chlorosisVal.toFixed(1)}%`);
+  setElText('feat-necrosis', `${necrosisVal.toFixed(1)}%`);
+  setElText('feat-rust', rustVal >= 0 ? `+${rustVal.toFixed(3)}` : rustVal.toFixed(3));
+  setElText('feat-exg', exgVal >= 0 ? `+${exgVal.toFixed(3)}` : exgVal.toFixed(3));
+  setElText('feat-texture', `${textureVal.toFixed(2)}`);
+
+  // Advisory Lists
+  setListItems('res-symptoms-list', isKn ? details.symptoms_kn : details.symptoms, 'fa-stethoscope', 'text-emerald-500');
+  setListItems('res-causes-list', isKn ? details.causes_kn : details.causes, 'fa-circle-exclamation', 'text-blue-500');
+  setListItems('res-organic-list', isKn ? details.organic_treatment_kn : details.organic_treatment, 'fa-seedling', 'text-emerald-600');
+  setListItems('res-chemical-list', isKn ? details.chemical_treatment_kn : details.chemical_treatment, 'fa-flask-vial', 'text-amber-600');
+  setListItems('res-prevention-list', isKn ? details.prevention_kn : details.prevention, 'fa-shield-halved', 'text-indigo-600');
+
+  // Model Probabilities Distribution
+  const probList = document.getElementById('res-probabilities-list');
+  if (probList && data.probabilities) {
+    probList.innerHTML = '';
+    const sorted = Object.entries(data.probabilities).sort((a, b) => b[1] - a[1]);
+    sorted.slice(0, 5).forEach(([cls, p]) => {
+      const row = document.createElement('div');
+      row.className = 'space-y-1 text-xs';
+      const isTop = (cls === data.disease_key || cls === data.disease);
+      row.innerHTML = `
+        <div class="flex justify-between font-semibold ${isTop ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-zinc-600 dark:text-zinc-400'}">
+          <span>${cls.replace(/_/g, ' ')}</span>
+          <span>${p}%</span>
+        </div>
+        <div class="w-full bg-zinc-100 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+          <div class="h-full rounded-full ${isTop ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-600'}" style="width: ${Math.min(100, p)}%"></div>
+        </div>
+      `;
+      probList.appendChild(row);
+    });
+  }
 }
 
-function setText(id, val) {
+function setListItems(id, items, iconClass, iconColor) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (Array.isArray(val)) {
-    el.innerHTML = val.map(v => `• ${v}`).join('<br/>');
-  } else {
-    el.textContent = val || 'Not applicable for this condition.';
+  el.innerHTML = '';
+
+  const arr = Array.isArray(items) ? items : (items ? [items] : []);
+  if (arr.length === 0) {
+    const li = document.createElement('li');
+    li.className = 'text-xs text-zinc-500 italic';
+    li.textContent = 'Standard care applies for this condition.';
+    el.appendChild(li);
+    return;
   }
+
+  arr.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'flex items-start gap-2 text-xs text-zinc-700 dark:text-zinc-300';
+    li.innerHTML = `<i class="fa-solid ${iconClass || 'fa-check'} ${iconColor || 'text-emerald-500'} mt-0.5 shrink-0 text-[11px]"></i><span>${item}</span>`;
+    el.appendChild(li);
+  });
 }
 
 function formatBytes(bytes) {

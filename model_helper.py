@@ -314,7 +314,13 @@ class ModelManager:
                 "sobel_edge_density": round(sobel_edge_density, 2),
                 "chlorophyll_vitality_index": round(green_ratio, 3),
                 "foliar_chlorosis_index": round(yellow_ratio, 3),
-                "necrotic_lesion_index": round(dark_rot_ratio, 3)
+                "necrotic_lesion_index": round(dark_rot_ratio, 3),
+                "ndvi": round(float(np.mean(ndvi[plant_mask])) if np.sum(plant_mask) > 0 else float(np.mean(ndvi)), 3),
+                "chlorosis": round(yellow_ratio, 3),
+                "necrosis": round(lesion_area_pct / 100.0, 3),
+                "rust": round(float(np.mean(exr[plant_mask])) if np.sum(plant_mask) > 0 else float(np.mean(exr)), 3),
+                "exg": round(float(np.mean(exg[plant_mask])) if np.sum(plant_mask) > 0 else float(np.mean(exg)), 3),
+                "texture": round(sobel_edge_density, 2)
             }
         }
 

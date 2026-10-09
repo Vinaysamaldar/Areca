@@ -230,7 +230,8 @@ def predict():
                 confidence=result['confidence'],
                 severity=severity,
                 low_confidence=result['low_confidence'],
-                part=result.get('part', 'leaf')
+                part=result.get('part', 'leaf'),
+                features=result.get('features', {})
             )
 
             res_entry = {

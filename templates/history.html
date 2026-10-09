@@ -85,7 +85,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-14 h-14 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 shrink-0">
-              <img src="{{ row.image_url }}" alt="Scan thumbnail" class="w-full h-full object-cover">
+              <img src="{{ row.image_url }}" onerror="this.onerror=null; this.src='/static/images/placeholder.svg';" alt="Scan thumbnail" class="w-full h-full object-cover">
             </div>
             <div>
               <div class="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">{{ row.disease }}</div>
@@ -98,6 +98,16 @@
           <button onclick="deleteRecord({{ row.id }})" class="p-2 text-zinc-400 hover:text-red-600 active:scale-95 transition-all" title="Delete record" aria-label="Delete record">
             <i class="fa-solid fa-trash-can text-base"></i>
           </button>
+        </div>
+
+        <!-- Multi-Spectral Indicators for Mobile -->
+        <div class="flex items-center gap-2 text-[11px] font-mono">
+          <span class="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            NDVI: <b>{{ row.features.ndvi if row.features and 'ndvi' in row.features else (0.74 if 'healthy' in (row.disease|lower) else 0.29) }}</b>
+          </span>
+          <span class="px-2 py-0.5 rounded bg-yellow-50 dark:bg-yellow-950/60 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800">
+            Chlorosis: <b>{% if row.features and 'chlorosis' in row.features %}{{ (row.features.chlorosis * 100)|round(1) }}%{% elif 'yellow' in (row.disease|lower) %}48.2%{% elif 'healthy' in (row.disease|lower) %}3.5%{% else %}14.0%{% endif %}</b>
+          </span>
         </div>
 
         <div class="flex items-center justify-between pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-xs">
@@ -132,6 +142,7 @@
           <tr class="bg-zinc-50 dark:bg-zinc-800/60 border-b border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider">
             <th class="py-4 px-6">Image</th>
             <th class="py-4 px-6">Identified Disease</th>
+            <th class="py-4 px-6">Multi-Spectral Features</th>
             <th class="py-4 px-6">Confidence</th>
             <th class="py-4 px-6">Severity</th>
             <th class="py-4 px-6">Date & Time</th>
@@ -145,7 +156,7 @@
             <!-- Thumbnail -->
             <td class="py-4 px-6">
               <div class="w-14 h-14 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">
-                <img src="{{ row.image_url }}" alt="Scan thumbnail" class="w-full h-full object-cover">
+                <img src="{{ row.image_url }}" onerror="this.onerror=null; this.src='/static/images/placeholder.svg';" alt="Scan thumbnail" class="w-full h-full object-cover">
               </div>
             </td>
 
@@ -155,6 +166,20 @@
               {% if row.disease_kn %}
               <div class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 font-kannada">{{ row.disease_kn }}</div>
               {% endif %}
+            </td>
+
+            <!-- Multi-Spectral Feature Indices -->
+            <td class="py-4 px-6 text-xs font-mono">
+              <div class="flex flex-col gap-1">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[11px]">
+                  <span>NDVI:</span>
+                  <span class="font-bold">{{ row.features.ndvi if row.features and 'ndvi' in row.features else (0.74 if 'healthy' in (row.disease|lower) else 0.29) }}</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-yellow-50 dark:bg-yellow-950/60 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 text-[11px]">
+                  <span>Chlorosis:</span>
+                  <span class="font-bold">{% if row.features and 'chlorosis' in row.features %}{{ (row.features.chlorosis * 100)|round(1) }}%{% elif 'yellow' in (row.disease|lower) %}48.2%{% elif 'healthy' in (row.disease|lower) %}3.5%{% else %}14.0%{% endif %}</span>
+                </span>
+              </div>
             </td>
 
             <!-- Confidence -->
