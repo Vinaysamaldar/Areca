@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupPartTabs();
   setupModeSwitch();
   setupFileUpload();
+  setupCameraModal();
   setupMultiScanSlots();
   setupAnalyzeAction();
   setupMultiAnalyzeAction();
@@ -141,6 +142,108 @@ function setupFileUpload() {
     removeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       clearSelection();
+    });
+  }
+}
+
+// --- 3B. IN-PAGE LIVE CAMERA MODAL ---
+function setupCameraModal() {
+  const openCamBtn = document.getElementById('open-cam-modal-btn');
+  const modal = document.getElementById('camera-modal');
+  const closeCamBtn = document.getElementById('close-camera-modal-btn');
+  const videoEl = document.getElementById('modal-video');
+  const canvasEl = document.getElementById('modal-canvas');
+  const flipBtn = document.getElementById('modal-flip-cam-btn');
+  const snapBtn = document.getElementById('modal-snap-btn');
+  const cameraInput = document.getElementById('camera-file-input');
+
+  let modalStream = null;
+  let modalFacingMode = 'environment';
+
+  if (!openCamBtn || !modal) return;
+
+  async function startModalCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if (cameraInput) {
+        cameraInput.click();
+      } else {
+        showUploadError("Camera API is not supported in this browser environment. Please use HTTPS or select an image file.");
+      }
+      return;
+    }
+
+    try {
+      modal.classList.remove('hidden');
+      if (modalStream) {
+        modalStream.getTracks().forEach(t => t.stop());
+      }
+      try {
+        modalStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: modalFacingMode }, width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
+        });
+      } catch (err) {
+        modalStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      }
+      videoEl.srcObject = modalStream;
+      await videoEl.play();
+    } catch (err) {
+      console.error("Camera access failed:", err);
+      stopModalCamera();
+      if (cameraInput) {
+        cameraInput.click();
+      } else {
+        showUploadError("Could not access camera. Please allow camera permissions in your browser.");
+      }
+    }
+  }
+
+  function stopModalCamera() {
+    if (modalStream) {
+      modalStream.getTracks().forEach(t => t.stop());
+      modalStream = null;
+    }
+    modal.classList.add('hidden');
+  }
+
+  openCamBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    startModalCamera();
+  });
+
+  if (closeCamBtn) {
+    closeCamBtn.addEventListener('click', () => {
+      stopModalCamera();
+    });
+  }
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      stopModalCamera();
+    }
+  });
+
+  if (flipBtn) {
+    flipBtn.addEventListener('click', async () => {
+      modalFacingMode = (modalFacingMode === 'environment') ? 'user' : 'environment';
+      await startModalCamera();
+    });
+  }
+
+  if (snapBtn) {
+    snapBtn.addEventListener('click', () => {
+      if (!videoEl.videoWidth || !videoEl.videoHeight) return;
+      canvasEl.width = videoEl.videoWidth;
+      canvasEl.height = videoEl.videoHeight;
+      const ctx = canvasEl.getContext('2d');
+      ctx.drawImage(videoEl, 0, 0, canvasEl.width, canvasEl.height);
+
+      canvasEl.toBlob((blob) => {
+        if (!blob) return;
+        const file = new File([blob], 'leaf_camera_scan.jpg', { type: 'image/jpeg' });
+        stopModalCamera();
+        handleFileSelected(file);
+      }, 'image/jpeg', 0.95);
     });
   }
 }

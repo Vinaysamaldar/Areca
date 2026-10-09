@@ -133,18 +133,18 @@ def run_tests():
     assert pred_inv_res['is_valid'] is False
     print(f"  [PASS] Invalid file upload rejected with HTTP 400: {pred_inv_res['error']}")
 
-    # Multi-Part scan test
+    # Multi-Leaf scan test
     b1, b2 = io.BytesIO(), io.BytesIO()
     with open(valid_sample_path, 'rb') as f:
         b1.write(f.read())
-    with open(os.path.join(os.path.dirname(__file__), 'static', 'images', 'sample_koleroga.jpg'), 'rb') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'static', 'images', 'sample_yellow_leaf.jpg'), 'rb') as f:
         b2.write(f.read())
     b1.seek(0)
     b2.seek(0)
     multi_data = {
-        'images': [(b1, 'leaf_sample.jpg'), (b2, 'nut_sample.jpg')],
-        'part_leaf_sample.jpg': 'leaf',
-        'part_nut_sample.jpg': 'nut'
+        'images': [(b1, 'leaf_sample1.jpg'), (b2, 'leaf_sample2.jpg')],
+        'part_leaf_sample1.jpg': 'leaf',
+        'part_leaf_sample2.jpg': 'leaf'
     }
     resp_multi = client.post('/predict', data=multi_data, content_type='multipart/form-data')
     assert resp_multi.status_code == 200

@@ -189,19 +189,20 @@ def predict():
             # Two-stage classification with strict validation
             result = model_manager.predict(save_path, selected_part=file_part)
 
-            # Strict rejection if the image is NOT a genuine Arecanut leaf, root, stem, or nut
-            if not result.get('is_valid', True) or not result.get('is_arecanut', True) or result.get('part') not in ['leaf', 'stem', 'root', 'nut']:
+            # Strict rejection if the image is NOT a genuine Arecanut Leaf
+            if not result.get('is_valid', True) or not result.get('is_leaf', True) or result.get('part') != 'leaf':
                 return jsonify({
                     "success": False,
                     "is_valid": False,
+                    "is_leaf": False,
                     "is_arecanut": False,
-                    "error": result.get("error", "Invalid image: Only Arecanut leaf, root, stem, or nut images are accepted. Please upload a clear photo of an arecanut plant part."),
-                    "error_kn": result.get("error_kn", "ಅಮಾನ್ಯ ಚಿತ್ರ: ಕೇವಲ ಅಡಿಕೆ ಎಲೆ, ಬೇರು, ಕಾಂಡ ಅಥವಾ ಅಡಿಕೆ ಕಾಯಿ ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ವೀಕರಿಸಲಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಅಡಿಕೆ ಸಸ್ಯದ ಭಾಗದ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ."),
-                    "reason": result.get("reason", "Not an arecanut plant organ"),
+                    "error": result.get("error", "Invalid image: Only Arecanut Leaf images are accepted. Please scan or upload a clear photo of an arecanut leaf."),
+                    "error_kn": result.get("error_kn", "ಅಮಾನ್ಯ ಚಿತ್ರ: ಕೇವಲ ಅಡಿಕೆ ಎಲೆಯ (Leaf) ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ಕ್ಯಾನ್ ಮಾಡಬಹುದು. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಅಡಿಕೆ ಎಲೆಯ ಫೋಟೋವನ್ನು ನೀಡಿ."),
+                    "reason": result.get("reason", "Not an arecanut leaf"),
                     "part": "invalid",
                     "part_confidence": 0.0,
-                    "disease": "Invalid image (Not an arecanut plant part)",
-                    "disease_kn": "ಅಮಾನ್ಯ ಚಿತ್ರ (ಅಡಿಕೆ ಸಸ್ಯದ ಭಾಗವಲ್ಲ)",
+                    "disease": "Invalid image (Not an Arecanut leaf)",
+                    "disease_kn": "ಅಮಾನ್ಯ ಚಿತ್ರ (ಅಡಿಕೆ ಎಲೆಯಲ್ಲ)",
                     "confidence": 0.0,
                     "filename": unique_name,
                     "image_url": image_url
