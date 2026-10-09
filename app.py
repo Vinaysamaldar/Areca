@@ -55,13 +55,13 @@ def home():
 
 @app.route('/detect')
 def detect_page():
-    """Renders Part-Wise Upload & Multi-Scan page."""
-    return render_template('detect.html', active_page='detect')
+    """Redirects to main Plant Disease Scanner."""
+    return redirect(url_for('home', _anchor='instant-scanner'))
 
 @app.route('/live')
 def live_page():
-    """Renders Live Camera Real-Time Scanner page."""
-    return render_template('live.html', active_page='live')
+    """Redirects to main Plant Disease Scanner."""
+    return redirect(url_for('home', _anchor='instant-scanner'))
 
 @app.route('/solutions')
 def solutions_page():
@@ -189,20 +189,20 @@ def predict():
             # Two-stage classification with strict validation
             result = model_manager.predict(save_path, selected_part=file_part)
 
-            # Strict rejection if the image is NOT a genuine Arecanut Leaf
-            if not result.get('is_valid', True) or not result.get('is_leaf', True) or result.get('part') != 'leaf':
+            # Strict rejection if the image is NOT a genuine Arecanut Plant (e.g. human or non-plant object)
+            if not result.get('is_valid', True) or not result.get('is_plant', True):
                 return jsonify({
                     "success": False,
                     "is_valid": False,
-                    "is_leaf": False,
+                    "is_plant": False,
                     "is_arecanut": False,
-                    "error": result.get("error", "Invalid image: Only Arecanut Leaf images are accepted. Please scan or upload a clear photo of an arecanut leaf."),
-                    "error_kn": result.get("error_kn", "ಅಮಾನ್ಯ ಚಿತ್ರ: ಕೇವಲ ಅಡಿಕೆ ಎಲೆಯ (Leaf) ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ಕ್ಯಾನ್ ಮಾಡಬಹುದು. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಅಡಿಕೆ ಎಲೆಯ ಫೋಟೋವನ್ನು ನೀಡಿ."),
-                    "reason": result.get("reason", "Not an arecanut leaf"),
+                    "error": result.get("error", "Invalid image: Only Arecanut Plant images are accepted. Please scan or upload a clear photo of an arecanut plant."),
+                    "error_kn": result.get("error_kn", "ಅಮಾನ್ಯ ಚಿತ್ರ: ಕೇವಲ ಅಡಿಕೆ ಗಿಡದ ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ಕ್ಯಾನ್ ಮಾಡಬಹುದು. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಅಡಿಕೆ ಗಿಡದ ಫೋಟೋವನ್ನು ನೀಡಿ."),
+                    "reason": result.get("reason", "Not an arecanut plant"),
                     "part": "invalid",
                     "part_confidence": 0.0,
-                    "disease": "Invalid image (Not an Arecanut leaf)",
-                    "disease_kn": "ಅಮಾನ್ಯ ಚಿತ್ರ (ಅಡಿಕೆ ಎಲೆಯಲ್ಲ)",
+                    "disease": "Invalid image (Not an Arecanut plant)",
+                    "disease_kn": "ಅಮಾನ್ಯ ಚಿತ್ರ (ಅಡಿಕೆ ಗಿಡವಲ್ಲ)",
                     "confidence": 0.0,
                     "filename": unique_name,
                     "image_url": image_url

@@ -75,13 +75,6 @@
           <a href="{{ url_for('home') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'home' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Home" data-kn="ಮುಖಪುಟ">
             Home
           </a>
-          <a href="{{ url_for('detect_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Part Upload" data-kn="ಭಾಗವಾರು ಸ್ಕ್ಯಾನ್">
-            Part Upload
-          </a>
-          <a href="{{ url_for('live_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors flex items-center space-x-1 {% if active_page == 'live' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}">
-            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-            <span data-en="Live Scan" data-kn="ಲೈವ್ ಸ್ಕ್ಯಾನ್">Live Scan</span>
-          </a>
           <a href="{{ url_for('solutions_page') }}" class="px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-semibold transition-colors {% if active_page == 'solutions' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-600 hover:text-emerald-600 dark:text-zinc-300 dark:hover:text-emerald-400{% endif %}" data-en="Solutions & Calendar" data-kn="ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್">
             Solutions & Calendar
           </a>
@@ -119,10 +112,10 @@
             <i class="fa-solid fa-moon theme-icon-moon text-indigo-500"></i>
           </button>
 
-          <!-- Detect CTA Button (Desktop) -->
-          <a href="{{ url_for('live_page') }}" class="hidden sm:inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs lg:text-sm font-semibold px-3.5 py-2 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
-            <i class="fa-solid fa-video"></i>
-            <span data-en="Live Scan" data-kn="ಲೈವ್ ಸ್ಕ್ಯಾನ್">Live Scan</span>
+          <!-- Scan Plant CTA Button (Desktop) -->
+          <a href="/#instant-scanner" class="hidden sm:inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs lg:text-sm font-semibold px-3.5 py-2 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
+            <i class="fa-solid fa-camera"></i>
+            <span data-en="Scan Plant" data-kn="ಗಿಡ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Scan Plant</span>
           </a>
 
           <!-- Mobile Hamburger Menu Button -->
@@ -139,13 +132,9 @@
           <i class="fa-solid fa-house w-6 text-center text-emerald-600"></i>
           <span>Home</span>
         </a>
-        <a href="{{ url_for('live_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 text-white shadow-md shadow-emerald-600/20" data-en="Live Camera Scan" data-kn="ಲೈವ್ ಕ್ಯಾಮೆರಾ ಸ್ಕ್ಯಾನ್">
-          <i class="fa-solid fa-video w-6 text-center"></i>
-          <span>Live Camera Scan</span>
-        </a>
-        <a href="{{ url_for('detect_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'detect' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Part-Wise Upload & Multi-Scan" data-kn="ಭಾಗವಾರು ಸ್ಕ್ಯಾನ್">
-          <i class="fa-solid fa-cloud-arrow-up w-6 text-center text-emerald-600"></i>
-          <span>Part-Wise Upload & Multi-Scan</span>
+        <a href="/#instant-scanner" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 text-white shadow-md shadow-emerald-600/20" data-en="Scan Plant Disease" data-kn="ಗಿಡ ರೋಗ ಪರೀಕ್ಷೆ">
+          <i class="fa-solid fa-camera w-6 text-center"></i>
+          <span>Scan Plant Disease</span>
         </a>
         <a href="{{ url_for('solutions_page') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold {% if active_page == 'solutions' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300{% else %}text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800{% endif %}" data-en="Solutions & Spray Calendar" data-kn="ಚಿಕಿತ್ಸೆ ಮತ್ತು ಕ್ಯಾಲೆಂಡರ್">
           <i class="fa-solid fa-calendar-days w-6 text-center text-emerald-600"></i>
@@ -266,7 +255,7 @@
       </a>
 
       <!-- 3. Central Scan Button (Elevated CTA) -->
-      <a href="{{ url_for('detect_page') }}" class="flex flex-col items-center justify-center -mt-5 group" title="Scan / Detect Disease">
+      <a href="/#instant-scanner" class="flex flex-col items-center justify-center -mt-5 group" title="Scan Plant Disease">
         <div class="w-12 h-12 rounded-full bg-emerald-600 group-hover:bg-emerald-700 text-white flex items-center justify-center shadow-lg shadow-emerald-600/40 border-4 border-white dark:border-zinc-900 transition-transform group-active:scale-95">
           <i class="fa-solid fa-camera text-lg"></i>
         </div>

@@ -13,6 +13,7 @@ import io
 import json
 import base64
 import sys
+import numpy as np
 from PIL import Image
 
 if sys.platform == 'win32':
@@ -77,6 +78,17 @@ def run_tests():
     assert inv_res['part'] == 'invalid'
     print(f"  [PASS] Invalid non-arecanut image correctly rejected: {inv_res['error']}")
 
+    # Human photo rejection test
+    portrait_arr = np.full((224, 224, 3), 190, dtype=np.uint8) # neutral background
+    y, x = np.ogrid[:224, :224]
+    mask = (x - 112)**2 + (y - 112)**2 <= 65**2 # face region (approx 26% of image)
+    portrait_arr[mask] = [218, 162, 128] # Indian / Asian human skin tone (YCbCr compliant)
+    human_portrait_img = Image.fromarray(portrait_arr)
+    human_res = model_manager.predict(human_portrait_img)
+    assert human_res['is_valid'] is False
+    assert "not for humans" in human_res['error'].lower()
+    print(f"  [PASS] Human photo correctly rejected: {human_res['error']}")
+
     # 3. Test Live Frame Real-Time API (POST /predict_frame)
     print("\n[TEST 3] Testing POST /predict_frame (Live Stream)...")
     from app import app
@@ -91,7 +103,7 @@ def run_tests():
     assert resp_frame.status_code == 200, f"/predict_frame returned {resp_frame.status_code}"
     frame_data = json.loads(resp_frame.data)
     assert frame_data['valid'] is True
-    assert frame_data['part'] in ['leaf', 'stem', 'root', 'nut']
+    assert frame_data['part'] in ['leaf', 'stem', 'root', 'nut', 'plant']
     print(f"  [PASS] Valid live frame output: {frame_data['disease']} [Badge: {frame_data['badge_color']}]")
 
     # Invalid live frame test
@@ -116,7 +128,7 @@ def run_tests():
     pred_res = json.loads(resp_pred.data)
     assert pred_res['success'] is True
     assert pred_res['is_valid'] is True
-    assert pred_res['part'] == 'leaf'
+    assert pred_res['part'] in ['leaf', 'stem', 'root', 'nut', 'plant']
     new_pred_id = pred_res['prediction_id']
     print(f"  [PASS] Single scan successful (ID: {new_pred_id})")
 
@@ -175,7 +187,7 @@ def run_tests():
         '/api/analytics', '/api/diseases', '/api/stats', '/export_csv'
     ]
     for r in routes:
-        resp = client.get(r)
+        resp = client.get(r, follow_redirects=True)
         assert resp.status_code == 200, f"Route {r} returned {resp.status_code}"
         print(f"  [PASS] Route '{r}' returned 200 OK")
 

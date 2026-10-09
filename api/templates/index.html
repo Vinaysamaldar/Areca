@@ -139,7 +139,7 @@
 
         <!-- Touch Action Buttons (Mobile Camera / Gallery / Webcam) -->
         <div class="space-y-3">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <!-- Mobile Camera Button -->
             <button id="mobile-cam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-2xl shadow transition-all active:scale-95 text-xs sm:text-sm">
               <i class="fa-solid fa-camera text-base"></i>
@@ -150,12 +150,6 @@
             <button id="choose-file-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3.5 px-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 transition-colors text-xs sm:text-sm">
               <i class="fa-solid fa-images text-emerald-600 text-base"></i>
               <span data-en="Choose Gallery" data-kn="ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆ">Choose Gallery</span>
-            </button>
-
-            <!-- Laptop Webcam Stream -->
-            <button id="open-webcam-btn" type="button" class="w-full inline-flex items-center justify-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold py-3.5 px-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 transition-colors text-xs sm:text-sm">
-              <i class="fa-solid fa-video text-blue-600 text-base"></i>
-              <span data-en="Live Stream" data-kn="ಲೈವ್ ಕ್ಯಾಮೆರಾ">Live Stream</span>
             </button>
           </div>
 
@@ -777,7 +771,7 @@
     <p class="text-emerald-100 max-w-2xl mx-auto text-base" data-en="Upload a photo from your field or use your device camera to run the deep learning classifier immediately." data-kn="ನಿಮ್ಮ ತೋಟದ ಫೋಟೋವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಅಥವಾ ಕ್ಯಾಮೆರಾ ಬಳಸಿ ತಕ್ಷಣ ರೋಗ ಪತ್ತೆ ಮಾಡಿ.">
       Upload a photo from your field or use your device camera to run the deep learning classifier immediately.
     </p>
-    <a href="{{ url_for('detect_page') }}" class="inline-flex items-center space-x-3 bg-white text-emerald-900 hover:bg-emerald-50 font-bold px-8 py-3.5 rounded-2xl shadow-xl transition-all hover:scale-105">
+    <a href="#instant-scanner" class="inline-flex items-center space-x-3 bg-white text-emerald-900 hover:bg-emerald-50 font-bold px-8 py-3.5 rounded-2xl shadow-xl transition-all hover:scale-105">
       <i class="fa-solid fa-camera"></i>
       <span data-en="Start Disease Detection Now" data-kn="ಈಗಲೇ ರೋಗ ಪತ್ತೆ ಆರಂಭಿಸಿ">Start Disease Detection Now</span>
     </a>
