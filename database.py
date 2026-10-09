@@ -14,10 +14,18 @@ else:
 DB_FILE = os.path.join(DB_DIR, 'predictions.db')
 
 def get_connection():
-    os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
-    conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        db_parent = os.path.dirname(DB_FILE)
+        if db_parent:
+            os.makedirs(db_parent, exist_ok=True)
+        conn = sqlite3.connect(DB_FILE, timeout=10.0)
+        conn.row_factory = sqlite3.Row
+        return conn
+    except Exception as e:
+        print(f"[WARN] SQLite filesystem connection error for {DB_FILE}: {e}. Falling back to in-memory database.")
+        conn = sqlite3.connect(":memory:")
+        conn.row_factory = sqlite3.Row
+        return conn
 
 def init_db():
     try:

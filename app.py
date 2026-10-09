@@ -7,10 +7,15 @@ from PIL import Image
 
 import database
 from model_helper import model_manager
-import report_generator
+try:
+    import report_generator
+except Exception as e:
+    print(f"[WARN] Could not import report_generator: {e}")
+    report_generator = None
 
 # Application Configuration
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DIST_DIR = os.path.join(BASE_DIR, 'dist')
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates') if os.path.exists(os.path.join(BASE_DIR, 'templates')) else os.path.join(BASE_DIR, 'api', 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'public', 'static') if os.path.exists(os.path.join(BASE_DIR, 'public', 'static')) else os.path.join(BASE_DIR, 'static')
 
@@ -40,7 +45,39 @@ def allowed_file(filename):
 # Initialize SQLite Database safely
 database.init_db()
 
-# --- WEB PAGE ROUTES ---
+# --- SPA & WEB PAGE ROUTES ---
+
+def serve_spa_or_template(template_name='index.html', active_page='home', **kwargs):
+    """
+    Serves the production built React SPA index.html if present in dist/,
+    otherwise safely falls back to server-side Jinja templates.
+    Never throws unhandled exceptions.
+    """
+    spa_index = os.path.join(DIST_DIR, 'index.html')
+    if os.path.exists(spa_index):
+        return send_file(spa_index)
+    try:
+        return render_template(template_name, active_page=active_page, **kwargs)
+    except Exception as e:
+        import traceback
+        print(f"[WARN] Failed to render template '{template_name}': {e}", file=sys.stderr)
+        traceback.print_exc()
+        if os.path.exists(spa_index):
+            return send_file(spa_index)
+        stats = {}
+        try:
+            stats = database.get_statistics()
+        except Exception:
+            pass
+        return render_template('index.html', active_page='home', stats=stats)
+
+@app.route('/assets/<path:filename>')
+def serve_spa_assets(filename):
+    """Serves Vite compiled JavaScript and CSS assets from dist/assets."""
+    assets_dir = os.path.join(DIST_DIR, 'assets')
+    if os.path.exists(os.path.join(assets_dir, filename)):
+        return send_from_directory(assets_dir, filename)
+    return jsonify({"error": f"Asset {filename} not found"}), 404
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/api/index.py', methods=['GET', 'POST'])
@@ -50,58 +87,73 @@ def home():
     """Renders the Home page, or handles image prediction if POST arrived here."""
     if request.method == 'POST' and ('image' in request.files or 'images' in request.files):
         return predict()
-    stats = database.get_statistics()
-    return render_template('index.html', active_page='home', stats=stats)
+    stats = {}
+    try:
+        stats = database.get_statistics()
+    except Exception as e:
+        print(f"[WARN] Error fetching statistics: {e}")
+    return serve_spa_or_template('index.html', active_page='home', stats=stats)
 
 @app.route('/detect')
 def detect_page():
     """Redirects to main Plant Disease Scanner."""
-    return redirect(url_for('home', _anchor='instant-scanner'))
+    return serve_spa_or_template('index.html', active_page='home')
 
 @app.route('/live')
 def live_page():
     """Redirects to main Plant Disease Scanner."""
-    return redirect(url_for('home', _anchor='instant-scanner'))
+    return serve_spa_or_template('index.html', active_page='home')
 
 @app.route('/solutions')
 def solutions_page():
     """Renders Disease Solutions & Seasonal Calendar Advisory."""
     diseases = model_manager.disease_info.get("diseases", {})
     calendar = model_manager.disease_info.get("seasonal_calendar", {})
-    return render_template('solutions.html', active_page='solutions', diseases=diseases, calendar=calendar)
+    return serve_spa_or_template('solutions.html', active_page='solutions', diseases=diseases, calendar=calendar)
 
 @app.route('/analytics')
 def analytics_page():
     """Renders Comprehensive Analytics Dashboard with Multi-Spectral Feature Extraction, Solutions, Diseases & History."""
-    stats = database.get_statistics()
+    stats = {}
+    predictions = []
+    try:
+        stats = database.get_statistics()
+        predictions = database.get_all_predictions()
+    except Exception as e:
+        print(f"[WARN] Error fetching analytics data: {e}")
     diseases = model_manager.disease_info.get("diseases", {})
     calendar = model_manager.disease_info.get("seasonal_calendar", {})
-    predictions = database.get_all_predictions()
-    return render_template('analytics.html', active_page='analytics', stats=stats, diseases=diseases, calendar=calendar, predictions=predictions)
+    return serve_spa_or_template('analytics.html', active_page='analytics', stats=stats, diseases=diseases, calendar=calendar, predictions=predictions)
 
 @app.route('/diseases')
 def diseases_page():
     """Renders Disease Information & Advisory catalog."""
     diseases = model_manager.disease_info.get("diseases", {})
-    return render_template('diseases.html', active_page='diseases', diseases=diseases)
+    return serve_spa_or_template('diseases.html', active_page='diseases', diseases=diseases)
 
 @app.route('/history')
 def history_page():
     """Renders the History log page."""
-    predictions = database.get_all_predictions()
-    stats = database.get_statistics()
-    return render_template('history.html', active_page='history', predictions=predictions, stats=stats)
+    predictions = []
+    stats = {}
+    try:
+        predictions = database.get_all_predictions()
+        stats = database.get_statistics()
+    except Exception as e:
+        print(f"[WARN] Error fetching history data: {e}")
+    return serve_spa_or_template('history.html', active_page='history', predictions=predictions, stats=stats)
 
 @app.route('/about')
 def about_page():
     """Renders About page with methodology, team and guide."""
-    return render_template('about.html', active_page='about')
+    return serve_spa_or_template('about.html', active_page='about')
 
+@app.route('/app')
 @app.route('/mobile')
 @app.route('/download')
 def mobile_page():
     """Renders Android Mobile App Download page for users."""
-    return render_template('mobile.html', active_page='mobile')
+    return serve_spa_or_template('mobile.html', active_page='mobile')
 
 @app.route('/download-apk')
 def download_apk():
@@ -609,7 +661,31 @@ def serve_static_asset(filename):
             return send_from_directory(f, filename, mimetype=mimetype)
     return "Static file not found", 404
 
-# --- ERROR HANDLERS ---
+# --- SPA CATCH-ALL & ERROR HANDLERS ---
+
+@app.route('/<path:path>', methods=['GET'])
+def client_spa_catch_all(path):
+    """
+    Catch-all route for Single Page Application client routing.
+    Ensures any deep route (e.g. /solutions, /analytics) serves the built index.html.
+    Never throws unhandled exceptions.
+    """
+    if path.startswith('api/') or path.startswith('static/') or path.startswith('assets/') or path.startswith('css/') or path.startswith('js/') or path.startswith('images/'):
+        return jsonify({"success": False, "error": f"Resource /{path} not found"}), 404
+
+    spa_index = os.path.join(DIST_DIR, 'index.html')
+    if os.path.exists(spa_index):
+        return send_file(spa_index)
+
+    try:
+        stats = database.get_statistics()
+        return render_template('index.html', active_page='home', stats=stats)
+    except Exception as e:
+        import traceback
+        import sys
+        print(f"[WARN] Error in catch-all route for /{path}: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        return "ArecaAI Web Service", 200
 
 @app.errorhandler(413)
 def request_entity_too_large(error):
@@ -622,6 +698,11 @@ def request_entity_too_large(error):
 
 @app.errorhandler(404)
 def page_not_found(e):
+    if request.path.startswith('/api') or request.path.startswith('/predict') or request.is_json:
+        return jsonify({"success": False, "error": f"Endpoint {request.path} not found"}), 404
+    spa_index = os.path.join(DIST_DIR, 'index.html')
+    if os.path.exists(spa_index):
+        return send_file(spa_index), 200
     return render_template('index.html', error_notice="Requested page not found."), 404
 
 @app.errorhandler(405)
@@ -634,7 +715,20 @@ def method_not_allowed(e):
 
 @app.errorhandler(500)
 def server_error(e):
-    return jsonify({"success": False, "error": "Internal server error."}), 500
+    import traceback
+    import sys
+    print(f"[FATAL SERVER ERROR] Exception occurred on {request.method} {request.path}:", file=sys.stderr)
+    traceback.print_exc(file=sys.stderr)
+    if request.path.startswith('/api') or request.path.startswith('/predict') or request.is_json:
+        return jsonify({
+            "success": False,
+            "error": "Internal server error.",
+            "details": str(e) if app.debug else None
+        }), 500
+    spa_index = os.path.join(DIST_DIR, 'index.html')
+    if os.path.exists(spa_index):
+        return send_file(spa_index), 200
+    return render_template('base.html', content="An unexpected error occurred. Please refresh the page."), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
