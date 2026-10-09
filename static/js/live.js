@@ -212,11 +212,11 @@ document.addEventListener('DOMContentLoaded', () => {
       frameBuffer.shift();
     }
 
-    // Check for not_arecanut or low confidence
-    const isInvalid = !currentResult.valid || currentResult.part === 'not_arecanut' || currentResult.confidence < 60;
+    // Check for invalid non-arecanut image or low confidence
+    const isInvalid = !currentResult.valid || currentResult.part === 'not_arecanut' || currentResult.part === 'invalid' || currentResult.confidence < 60;
     
     // Count occurrences in buffer
-    const invalidCount = frameBuffer.filter(f => !f.valid || f.part === 'not_arecanut' || f.confidence < 60).length;
+    const invalidCount = frameBuffer.filter(f => !f.valid || f.part === 'not_arecanut' || f.part === 'invalid' || f.confidence < 60).length;
 
     if (invalidCount >= 3 || isInvalid) {
       // Show Alert banner

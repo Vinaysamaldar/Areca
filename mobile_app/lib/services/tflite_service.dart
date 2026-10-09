@@ -221,12 +221,12 @@ class TfliteService {
   TfliteResult _runDIPHeuristicClassification(DipResult dipResult, {String selectedPart = 'auto'}) {
     final f = dipResult.features;
 
-    // Check for non-arecanut rejection
-    if (f.plantTissueRatio < 0.10 && selectedPart == 'auto') {
+    // Check for non-arecanut rejection (human, vehicle, blank, or non-plant objects)
+    if (f.plantTissueRatio < 0.10) {
       return TfliteResult(
-        part: 'not_arecanut',
-        partConfidence: 94.0,
-        disease: 'No arecanut part detected',
+        part: 'invalid',
+        partConfidence: 0.0,
+        disease: 'Invalid Image (Not Arecanut)',
         confidence: 0.0,
         probabilities: {},
         isLowConfidence: true,
@@ -234,7 +234,7 @@ class TfliteService {
         badgeColor: 'gray',
         dipFeatures: f,
         engineMode: 'Digital Image Processing (DIP) Engine',
-        statusMessage: 'No arecanut part detected, move closer or improve lighting',
+        statusMessage: 'Invalid image: Only leaf, root, stem, or nut are accepted',
       );
     }
 

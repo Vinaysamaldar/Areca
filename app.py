@@ -186,8 +186,27 @@ def predict():
             # Specific part passed per file or default
             file_part = request.form.get(f'part_{file.filename}', selected_part)
 
-            # Two-stage classification
+            # Two-stage classification with strict validation
             result = model_manager.predict(save_path, selected_part=file_part)
+
+            # Strict rejection if the image is NOT a genuine Arecanut leaf, root, stem, or nut
+            if not result.get('is_valid', True) or not result.get('is_arecanut', True) or result.get('part') not in ['leaf', 'stem', 'root', 'nut']:
+                return jsonify({
+                    "success": False,
+                    "is_valid": False,
+                    "is_arecanut": False,
+                    "error": result.get("error", "Invalid image: Only Arecanut leaf, root, stem, or nut images are accepted. Please upload a clear photo of an arecanut plant part."),
+                    "error_kn": result.get("error_kn", "ಅಮಾನ್ಯ ಚಿತ್ರ: ಕೇವಲ ಅಡಿಕೆ ಎಲೆ, ಬೇರು, ಕಾಂಡ ಅಥವಾ ಅಡಿಕೆ ಕಾಯಿ ಚಿತ್ರಗಳನ್ನು ಮಾತ್ರ ಸ್ವೀಕರಿಸಲಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಅಡಿಕೆ ಸಸ್ಯದ ಭಾಗದ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ."),
+                    "reason": result.get("reason", "Not an arecanut plant organ"),
+                    "part": "invalid",
+                    "part_confidence": 0.0,
+                    "disease": "Invalid image (Not an arecanut plant part)",
+                    "disease_kn": "ಅಮಾನ್ಯ ಚಿತ್ರ (ಅಡಿಕೆ ಸಸ್ಯದ ಭಾಗವಲ್ಲ)",
+                    "confidence": 0.0,
+                    "filename": unique_name,
+                    "image_url": image_url
+                }), 400
+
             severity = result.get('details', {}).get('severity', 'Moderate')
             
             pred_id = database.add_prediction(
@@ -202,6 +221,9 @@ def predict():
             )
 
             res_entry = {
+                "success": True,
+                "is_valid": True,
+                "is_arecanut": True,
                 "prediction_id": pred_id,
                 "filename": unique_name,
                 "image_url": image_url,

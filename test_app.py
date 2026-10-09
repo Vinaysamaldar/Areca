@@ -61,16 +61,21 @@ def run_tests():
     print(f"  [PASS] Parts supported: {model_manager.part_classes}")
     print(f"  [PASS] Diseases supported: {len(model_manager.disease_classes)} classes")
 
-    # Dummy test image
-    test_img = Image.new('RGB', (224, 224), color=(34, 197, 94))
-    test_img_path = os.path.join(os.path.dirname(__file__), 'test_sample_leaf.jpg')
-    test_img.save(test_img_path)
-
-    result = model_manager.predict(test_img_path, selected_part="leaf")
-    print(f"  [PASS] Inference: Part='{result['part']}', Disease='{result['disease']}', Conf={result['confidence']}%")
-    assert result['part'] in model_manager.part_classes
+    # Test valid vs invalid image rejection
+    valid_sample_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'sample_healthy.jpg')
+    result = model_manager.predict(valid_sample_path, selected_part="leaf")
+    print(f"  [PASS] Valid Inference: Part='{result['part']}', Disease='{result['disease']}', Conf={result['confidence']}%")
+    assert result['is_valid'] is True
+    assert result['part'] in ['leaf', 'stem', 'root', 'nut']
     assert 'details' in result
     assert 'features' in result
+
+    # Invalid non-arecanut image rejection
+    blue_car_img = Image.new('RGB', (224, 224), color=(10, 40, 220))
+    inv_res = model_manager.predict(blue_car_img, selected_part="leaf")
+    assert inv_res['is_valid'] is False
+    assert inv_res['part'] == 'invalid'
+    print(f"  [PASS] Invalid non-arecanut image correctly rejected: {inv_res['error']}")
 
     # 3. Test Live Frame Real-Time API (POST /predict_frame)
     print("\n[TEST 3] Testing POST /predict_frame (Live Stream)...")
@@ -78,36 +83,62 @@ def run_tests():
     client = app.test_client()
 
     buffer = io.BytesIO()
-    test_img.save(buffer, format='JPEG')
-    b64_str = "data:image/jpeg;base64," + base64.b64encode(buffer.getvalue()).decode('utf-8')
+    with open(valid_sample_path, 'rb') as f:
+        valid_bytes = f.read()
+    b64_str = "data:image/jpeg;base64," + base64.b64encode(valid_bytes).decode('utf-8')
 
     resp_frame = client.post('/predict_frame', json={'image': b64_str, 'part': 'auto'})
     assert resp_frame.status_code == 200, f"/predict_frame returned {resp_frame.status_code}"
     frame_data = json.loads(resp_frame.data)
-    assert 'part' in frame_data
-    assert 'disease' in frame_data
-    assert 'badge_color' in frame_data
-    print(f"  [PASS] Live frame output: {frame_data['disease']} [Badge: {frame_data['badge_color']}]")
+    assert frame_data['valid'] is True
+    assert frame_data['part'] in ['leaf', 'stem', 'root', 'nut']
+    print(f"  [PASS] Valid live frame output: {frame_data['disease']} [Badge: {frame_data['badge_color']}]")
+
+    # Invalid live frame test
+    inv_buf = io.BytesIO()
+    blue_car_img.save(inv_buf, format='JPEG')
+    b64_inv = "data:image/jpeg;base64," + base64.b64encode(inv_buf.getvalue()).decode('utf-8')
+    resp_frame_inv = client.post('/predict_frame', json={'image': b64_inv, 'part': 'auto'})
+    assert resp_frame_inv.status_code == 200
+    frame_inv_data = json.loads(resp_frame_inv.data)
+    assert frame_inv_data['valid'] is False
+    print(f"  [PASS] Invalid live frame rejected: {frame_inv_data['message']}")
 
     # 4. Test Single & Multi-Part POST /predict
     print("\n[TEST 4] Testing Single & Multi-Part POST /predict...")
-    buffer.seek(0)
+    buf_valid = io.BytesIO(valid_bytes)
     data = {
-        'image': (buffer, 'test_sample_leaf.jpg'),
+        'image': (buf_valid, 'sample_healthy.jpg'),
         'part': 'leaf'
     }
     resp_pred = client.post('/predict', data=data, content_type='multipart/form-data')
     assert resp_pred.status_code == 200
     pred_res = json.loads(resp_pred.data)
     assert pred_res['success'] is True
+    assert pred_res['is_valid'] is True
     assert pred_res['part'] == 'leaf'
     new_pred_id = pred_res['prediction_id']
     print(f"  [PASS] Single scan successful (ID: {new_pred_id})")
 
+    # Test invalid upload rejection via HTTP 400
+    inv_buf.seek(0)
+    data_inv = {
+        'image': (inv_buf, 'car.jpg'),
+        'part': 'leaf'
+    }
+    resp_pred_inv = client.post('/predict', data=data_inv, content_type='multipart/form-data')
+    assert resp_pred_inv.status_code == 400
+    pred_inv_res = json.loads(resp_pred_inv.data)
+    assert pred_inv_res['success'] is False
+    assert pred_inv_res['is_valid'] is False
+    print(f"  [PASS] Invalid file upload rejected with HTTP 400: {pred_inv_res['error']}")
+
     # Multi-Part scan test
     b1, b2 = io.BytesIO(), io.BytesIO()
-    test_img.save(b1, format='JPEG')
-    test_img.save(b2, format='JPEG')
+    with open(valid_sample_path, 'rb') as f:
+        b1.write(f.read())
+    with open(os.path.join(os.path.dirname(__file__), 'static', 'images', 'sample_koleroga.jpg'), 'rb') as f:
+        b2.write(f.read())
     b1.seek(0)
     b2.seek(0)
     multi_data = {
@@ -148,9 +179,7 @@ def run_tests():
         assert resp.status_code == 200, f"Route {r} returned {resp.status_code}"
         print(f"  [PASS] Route '{r}' returned 200 OK")
 
-    # Cleanup test files & DB records
-    if os.path.exists(test_img_path):
-        os.remove(test_img_path)
+    # Cleanup test DB records
     database.delete_prediction(pred_id)
     database.delete_prediction(new_pred_id)
     for s in multi_res['scans']:

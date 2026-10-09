@@ -204,9 +204,14 @@ function clearSelection() {
 function showUploadError(msg) {
   const errorAlert = document.getElementById('upload-error-alert');
   const errorText = document.getElementById('upload-error-text');
+  const resultSec = document.getElementById('result-section');
+  const multiSec = document.getElementById('multi-result-section');
+  if (resultSec) resultSec.classList.add('hidden');
+  if (multiSec) multiSec.classList.add('hidden');
   if (errorAlert && errorText) {
     errorText.textContent = msg;
     errorAlert.classList.remove('hidden');
+    errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
@@ -307,13 +312,16 @@ function setupAnalyzeAction() {
       clearInterval(interval);
       loadingOverlay.classList.add('hidden');
 
-      if (!response.ok) {
-        throw new Error(`Server returned HTTP ${response.status}`);
-      }
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (e) {}
 
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || "Prediction request failed.");
+      if (!response.ok || (data && !data.success)) {
+        const isKn = (typeof currentLang !== 'undefined' && currentLang === 'kn');
+        const errObj = data || {};
+        const errMsg = (isKn && errObj.error_kn) ? errObj.error_kn : (errObj.error || errObj.message || `Server returned HTTP ${response.status}`);
+        throw new Error(errMsg);
       }
 
       currentPredictionData = data;
@@ -362,10 +370,17 @@ function setupMultiAnalyzeAction() {
       });
 
       loadingOverlay.classList.add('hidden');
-      if (!response.ok) throw new Error("Multi-part scan failed.");
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (e) {}
 
-      const data = await response.json();
-      if (!data.success) throw new Error(data.error || "Evaluation failed");
+      if (!response.ok || (data && !data.success)) {
+        const isKn = (typeof currentLang !== 'undefined' && currentLang === 'kn');
+        const errObj = data || {};
+        const errMsg = (isKn && errObj.error_kn) ? errObj.error_kn : (errObj.error || errObj.message || "Multi-part scan failed.");
+        throw new Error(errMsg);
+      }
 
       const scans = data.scans || (data.prediction_id ? [data] : []);
       multiOverallStatus.textContent = data.overall_health || "Palm Assessment Complete";
