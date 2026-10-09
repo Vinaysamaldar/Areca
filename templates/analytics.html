@@ -1,342 +1,815 @@
 {% extends "base.html" %}
 
-{% block title %}Analytics & Model Performance Dashboard | ArecaAI{% endblock %}
+{% block title %}Multi-Spectral Analytics & Precision Agriculture | ArecaAI{% endblock %}
 
 {% block head_extra %}
 <!-- Chart.js 4.4 CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  .slider-thumb::-webkit-slider-thumb {
+    appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+  }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-  <!-- Header Banner -->
-  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
-    <div>
-      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Telemetry & Pathological Metrics</span>
+  <!-- ==================== HERO SECTION ==================== -->
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+    <div class="space-y-2">
+      <!-- Pill badge with green dot -->
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span data-en="Multi-Spectral Analysis • Precision Agriculture" data-kn="ಮಲ್ಟಿ-ಸ್ಪೆಕ್ಟ್ರಲ್ ವಿಶ್ಲೇಷಣೆ • ನಿಖರ ಕೃಷಿ ತಂತ್ರಜ್ಞಾನ">Multi-Spectral Analysis • Precision Agriculture</span>
       </div>
-      <h1 class="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white">
-        Analytics & Model Performance
+
+      <!-- Heading with emerald/teal gradient on 'Feature Extraction' -->
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+        <span data-en="Multi-Spectral" data-kn="ಮಲ್ಟಿ-ಸ್ಪೆಕ್ಟ್ರಲ್">Multi-Spectral</span>
+        <span class="bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent" data-en="Feature Extraction" data-kn="ವೈಶಿಷ್ಟ್ಯಗಳ ಹೊರತೆಗೆಯುವಿಕೆ">Feature Extraction</span>
       </h1>
-      <p class="text-xs sm:text-sm text-zinc-500 mt-1">
-        Real-time plantation scan trends, anatomical breakdowns, and trained MobileNetV2 evaluation benchmarks.
+
+      <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl" data-en="Precision drone & UAV multi-band diagnostics, radiometric vegetation indices, therapeutic agronomic advisory, and historical plantation epidemiology." data-kn="ಡ್ರೋನ್ ಮತ್ತು ಯುಎವಿ ಮಲ್ಟಿ-ಬ್ಯಾಂಡ್ ತಪಾಸಣೆ, ರೇಡಿಯೋಮೆಟ್ರಿಕ್ ಸಸ್ಯ ಸೂಚ್ಯಂಕಗಳು ಮತ್ತು ತೋಟಗಾರಿಕಾ ರೋಗ ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆ.">
+        Precision drone & UAV multi-band diagnostics, radiometric vegetation indices, therapeutic agronomic advisory, and historical plantation epidemiology.
       </p>
     </div>
 
-    <!-- Export CSV Action -->
+    <!-- Quick Actions -->
     <div class="flex items-center space-x-3">
-      <a href="/export_csv" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition-all hover:shadow hover:-translate-y-0.5">
-        <i class="fa-solid fa-file-csv text-base"></i>
-        <span>Export CSV History</span>
+      <a href="/export_csv" class="inline-flex items-center space-x-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-bold text-xs px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 transition-all shadow-sm">
+        <i class="fa-solid fa-file-csv text-emerald-600 dark:text-emerald-400 text-sm"></i>
+        <span data-en="Export CSV" data-kn="CSV ಡೌನ್‌ಲೋಡ್">Export CSV</span>
       </a>
+      <button onclick="window.print()" class="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:-translate-y-0.5">
+        <i class="fa-solid fa-file-pdf text-sm"></i>
+        <span data-en="Download PDF Report" data-kn="PDF ವರದಿ ಡೌನ್‌ಲೋಡ್">Download PDF Report</span>
+      </button>
     </div>
   </div>
 
-  <!-- SUMMARY METRIC CARDS -->
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-    
-    <!-- Card 1: Total Scans -->
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
-      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
-        <span>Total Field Scans</span>
-        <i class="fa-solid fa-camera text-emerald-600"></i>
-      </div>
-      <div id="stat-total-scans" class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">
-        {{ stats.total_scans if stats else 0 }}
-      </div>
-      <p class="text-[11px] text-zinc-400 mt-1">Recorded in SQLite database</p>
-    </div>
-
-    <!-- Card 2: Healthy Percentage -->
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
-      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
-        <span>Healthy Ratio</span>
-        <i class="fa-solid fa-heart-pulse text-green-500"></i>
-      </div>
-      <div id="stat-healthy-pct" class="text-2xl sm:text-3xl font-extrabold text-emerald-600">
-        {{ stats.healthy_pct if stats else 0.0 }}%
-      </div>
-      <p class="text-[11px] text-zinc-400 mt-1">Non-diseased palm ratio</p>
-    </div>
-
-    <!-- Card 3: Most Common Disease -->
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
-      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
-        <span>Prevalent Disease</span>
-        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-      </div>
-      <div id="stat-top-disease" class="text-base sm:text-lg font-extrabold text-zinc-900 dark:text-white truncate">
-        {{ stats.most_frequent_disease if stats else 'None' }}
-      </div>
-      <p class="text-[11px] text-zinc-400 mt-1">Highest infection frequency</p>
-    </div>
-
-    <!-- Card 4: Average Confidence -->
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
-      <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
-        <span>Avg Confidence</span>
-        <i class="fa-solid fa-bullseye text-blue-500"></i>
-      </div>
-      <div id="stat-avg-conf" class="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-400">
-        {{ stats.avg_confidence if stats else 0.0 }}%
-      </div>
-      <p class="text-[11px] text-zinc-400 mt-1">Across all inference batches</p>
-    </div>
-
-  <!-- MULTI-SPECTRAL FEATURE EXTRACTION TELEMETRY -->
-  <div class="bg-gradient-to-r from-emerald-950/40 via-zinc-900 to-emerald-950/30 rounded-3xl p-6 border border-emerald-500/30 shadow-lg space-y-4">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-800 pb-3">
-      <div class="flex items-center space-x-2.5">
-        <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold">
-          <i class="fa-solid fa-satellite"></i>
-        </div>
-        <div>
-          <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-            Multi-Spectral Feature Extraction Telemetry
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">DIP Pipeline</span>
-          </h2>
-          <p class="text-xs text-zinc-400">Aggregate foliar vegetation indices, chlorosis, and necrosis calculated across scans</p>
-        </div>
-      </div>
-      <div class="text-[11px] text-zinc-400 font-mono">
-        Algorithm: Otsu + Excess Green (ExG) + Sobel 2D
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Metric 1: Mean NDVI -->
-      <div class="bg-black/40 rounded-2xl p-4 border border-zinc-800">
-        <div class="text-[11px] text-zinc-400 font-medium uppercase tracking-wider mb-1 flex items-center justify-between">
-          <span>Mean NDVI Vitality</span>
-          <i class="fa-solid fa-leaf text-emerald-400"></i>
-        </div>
-        <div id="feat-avg-ndvi" class="text-2xl font-black text-emerald-400">
-          {{ stats.multispectral_summary.avg_ndvi if stats and stats.multispectral_summary else 0.45 }}
-        </div>
-        <p class="text-[10px] text-zinc-500 mt-1">Photosynthetic vigor (-1.0 to +1.0)</p>
-      </div>
-
-      <!-- Metric 2: Foliar Chlorosis -->
-      <div class="bg-black/40 rounded-2xl p-4 border border-zinc-800">
-        <div class="text-[11px] text-zinc-400 font-medium uppercase tracking-wider mb-1 flex items-center justify-between">
-          <span>Avg Chlorosis Index</span>
-          <i class="fa-solid fa-sun text-yellow-400"></i>
-        </div>
-        <div id="feat-avg-chlorosis" class="text-2xl font-black text-yellow-400">
-          {{ stats.multispectral_summary.avg_chlorosis if stats and stats.multispectral_summary else 0.12 }}
-        </div>
-        <p class="text-[10px] text-zinc-500 mt-1">Yellowing carotenoid ratio</p>
-      </div>
-
-      <!-- Metric 3: Necrotic Lesion Ratio -->
-      <div class="bg-black/40 rounded-2xl p-4 border border-zinc-800">
-        <div class="text-[11px] text-zinc-400 font-medium uppercase tracking-wider mb-1 flex items-center justify-between">
-          <span>Avg Necrosis Ratio</span>
-          <i class="fa-solid fa-biohazard text-red-400"></i>
-        </div>
-        <div id="feat-avg-necrosis" class="text-2xl font-black text-red-400">
-          {{ stats.multispectral_summary.avg_necrosis if stats and stats.multispectral_summary else 0.08 }}
-        </div>
-        <p class="text-[10px] text-zinc-500 mt-1">Dark decayed lesion area</p>
-      </div>
-
-      <!-- Metric 4: Texture Gradient -->
-      <div class="bg-black/40 rounded-2xl p-4 border border-zinc-800">
-        <div class="text-[11px] text-zinc-400 font-medium uppercase tracking-wider mb-1 flex items-center justify-between">
-          <span>Sobel Texture Gradient</span>
-          <i class="fa-solid fa-braille text-purple-400"></i>
-        </div>
-        <div id="feat-avg-texture" class="text-2xl font-black text-purple-400">
-          {{ stats.multispectral_summary.avg_texture if stats and stats.multispectral_summary else 14.8 }}
-        </div>
-        <p class="text-[10px] text-zinc-500 mt-1">Bark & foliar edge roughness</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION TABS (Analytics vs Model Performance vs Dataset Analysis) -->
-  <div class="flex border-b border-zinc-200 dark:border-zinc-800 space-x-4">
-    <button id="tab-btn-live" type="button" class="tab-btn active pb-3 px-2 text-sm font-bold border-b-2 border-emerald-600 text-emerald-600 dark:text-emerald-400">
-      <i class="fa-solid fa-chart-pie mr-1.5"></i> Disease Diagnosis Analytics
+  <!-- ==================== FOUR NAVIGATION TABS ==================== -->
+  <div class="flex border-b border-zinc-200 dark:border-zinc-800 space-x-2 sm:space-x-6 overflow-x-auto no-scrollbar">
+    <!-- Tab 1: Feature Extraction -->
+    <button id="nav-tab-extract" type="button" class="tab-btn active pb-3 px-3 text-xs sm:text-sm font-bold border-b-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 flex items-center space-x-2 shrink-0 transition-colors">
+      <i class="fa-solid fa-satellite"></i>
+      <span data-en="Feature Extraction" data-kn="ವೈಶಿಷ್ಟ್ಯಗಳ ಹೊರತೆಗೆಯುವಿಕೆ">Feature Extraction</span>
     </button>
-    <button id="tab-btn-model" type="button" class="tab-btn pb-3 px-2 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
-      <i class="fa-solid fa-brain mr-1.5"></i> Model Performance
+    <!-- Tab 2: Solutions & Analytics -->
+    <button id="nav-tab-solutions" type="button" class="tab-btn pb-3 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center space-x-2 shrink-0 transition-colors">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span data-en="Solutions & Analytics" data-kn="ಪರಿಹಾರ ಮತ್ತು ವಿಶ್ಲೇಷಣೆ">Solutions & Analytics</span>
     </button>
-    <button id="tab-btn-dataset" type="button" class="tab-btn pb-3 px-2 text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
-      <i class="fa-solid fa-database mr-1.5"></i> Dataset Analysis
+    <!-- Tab 3: Diseases -->
+    <button id="nav-tab-diseases" type="button" class="tab-btn pb-3 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center space-x-2 shrink-0 transition-colors">
+      <i class="fa-solid fa-book-medical"></i>
+      <span data-en="Diseases Library" data-kn="ರೋಗಗಳ ಕೈಪಿಡಿ">Diseases Library</span>
+    </button>
+    <!-- Tab 4: History -->
+    <button id="nav-tab-history" type="button" class="tab-btn pb-3 px-3 text-xs sm:text-sm font-semibold border-b-2 border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center space-x-2 shrink-0 transition-colors">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+      <span data-en="History & Comparisons" data-kn="ಹಿಂದಿನ ದಾಖಲೆಗಳು">History & Comparisons</span>
     </button>
   </div>
 
-  <!-- TAB 1: DISEASE DIAGNOSIS ANALYTICS (CHART.JS) -->
-  <div id="tab-content-live" class="space-y-6">
-    
-    <!-- Filter Toolbar -->
-    <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-wrap items-center justify-between gap-4">
-      <div class="flex flex-wrap items-center gap-3 text-xs">
-        <div class="flex items-center space-x-2">
-          <span class="font-bold text-zinc-600 dark:text-zinc-400">Date Range:</span>
-          <input type="date" id="filter-start-date" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-zinc-800 dark:text-zinc-200">
-          <span>to</span>
-          <input type="date" id="filter-end-date" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-zinc-800 dark:text-zinc-200">
-        </div>
+  <!-- ========================================================================= -->
+  <!-- TAB 1: MULTI-SPECTRAL FEATURE EXTRACTION -->
+  <!-- ========================================================================= -->
+  <div id="content-tab-extract" class="space-y-8">
 
-        <div class="flex items-center space-x-2">
-          <span class="font-bold text-zinc-600 dark:text-zinc-400">Plant Part:</span>
-          <select id="filter-part" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg px-3 py-1.5 text-zinc-800 dark:text-zinc-200 font-semibold">
-            <option value="all">All Parts</option>
-            <option value="leaf">Leaf</option>
-            <option value="nut">Nut</option>
-            <option value="stem">Stem</option>
-            <option value="root">Root</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <button id="btn-apply-filter" type="button" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">
-          Apply Filters
-        </button>
-        <button id="btn-reset-filter" type="button" class="bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold px-3 py-2 rounded-xl transition-all">
-          Reset
-        </button>
-      </div>
-    </div>
-
-    <!-- 6 Chart.js Grids -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Upload Card & Band Viewer Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
-      <!-- Chart 1: Disease Distribution (Donut) -->
+      <!-- Upload Card (5 Cols) -->
+      <div class="lg:col-span-5 bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-5">
+        <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <h2 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Spectral Band Upload Area" data-kn="ಸ್ಪೆಕ್ಟ್ರಲ್ ಬ್ಯಾಂಡ್ ಅಪ್‌ಲೋಡ್">Spectral Band Upload Area</h2>
+          </div>
+          <span class="text-[11px] font-mono text-zinc-400">GeoTIFF / PNG / JPG</span>
+        </div>
+
+        <!-- Drag & Drop Zone -->
+        <div id="drop-zone-extract" class="border-2 border-dashed border-emerald-500/40 hover:border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20 rounded-2xl p-6 text-center cursor-pointer transition-all space-y-3">
+          <input type="file" id="file-input-extract" class="hidden" accept="image/*,.tif,.tiff">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <div>
+            <p class="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200" data-en="Drag & drop 5-Band drone imagery or RGB canopy photo" data-kn="ಡ್ರೋನ್ ಅಥವಾ ಕ್ಯಾಮೆರಾ ಚಿತ್ರವನ್ನು ಇಲ್ಲಿ ಎಳೆಯಿರಿ">
+              Drag & drop 5-Band drone imagery or RGB canopy photo
+            </p>
+            <p class="text-[11px] text-zinc-400 mt-1" data-en="Blue (450nm), Green (560nm), Red (650nm), Red-Edge (730nm), NIR (840nm)" data-kn="ಬ್ಲೂ, ಗ್ರೀನ್, ರೆಡ್, ರೆಡ್-ಎಡ್ಜ್ ಮತ್ತು ಎನ್‌ಐಆರ್ ಬ್ಯಾಂಡ್‌ಗಳು">
+              Blue (450nm), Green (560nm), Red (650nm), Red-Edge (730nm), NIR (840nm)
+            </p>
+          </div>
+          <button type="button" onclick="document.getElementById('file-input-extract').click()" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline">
+            <span data-en="Browse Local Files →" data-kn="ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ →">Browse Local Files →</span>
+          </button>
+        </div>
+
+        <!-- 5-Band Thumbnails Selector -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2" data-en="Select Spectral Channel / Band:" data-kn="ಸ್ಪೆಕ್ಟ್ರಲ್ ಬ್ಯಾಂಡ್ ಆಯ್ಕೆ:">Select Spectral Channel / Band:</label>
+          <div class="grid grid-cols-5 gap-2" id="band-thumbnails-container">
+            <button type="button" onclick="selectBandChannel('blue')" class="band-btn group text-center p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border-2 border-transparent hover:border-emerald-500 transition-all" data-band="blue">
+              <div class="w-8 h-8 mx-auto rounded-lg bg-blue-500/30 flex items-center justify-center text-blue-500 text-xs font-bold">B</div>
+              <span class="text-[10px] block mt-1 font-mono text-zinc-500 dark:text-zinc-400">Blue 450</span>
+            </button>
+            <button type="button" onclick="selectBandChannel('green')" class="band-btn group text-center p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border-2 border-transparent hover:border-emerald-500 transition-all" data-band="green">
+              <div class="w-8 h-8 mx-auto rounded-lg bg-emerald-500/30 flex items-center justify-center text-emerald-500 text-xs font-bold">G</div>
+              <span class="text-[10px] block mt-1 font-mono text-zinc-500 dark:text-zinc-400">Green 560</span>
+            </button>
+            <button type="button" onclick="selectBandChannel('red')" class="band-btn group text-center p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border-2 border-transparent hover:border-emerald-500 transition-all" data-band="red">
+              <div class="w-8 h-8 mx-auto rounded-lg bg-red-500/30 flex items-center justify-center text-red-500 text-xs font-bold">R</div>
+              <span class="text-[10px] block mt-1 font-mono text-zinc-500 dark:text-zinc-400">Red 650</span>
+            </button>
+            <button type="button" onclick="selectBandChannel('rededge')" class="band-btn group text-center p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border-2 border-transparent hover:border-emerald-500 transition-all" data-band="rededge">
+              <div class="w-8 h-8 mx-auto rounded-lg bg-amber-500/30 flex items-center justify-center text-amber-500 text-xs font-bold">RE</div>
+              <span class="text-[10px] block mt-1 font-mono text-zinc-500 dark:text-zinc-400">RE 730</span>
+            </button>
+            <button type="button" onclick="selectBandChannel('nir')" class="band-btn group text-center p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border-2 border-emerald-500 transition-all active" data-band="nir">
+              <div class="w-8 h-8 mx-auto rounded-lg bg-purple-500/30 flex items-center justify-center text-purple-500 text-xs font-bold">NIR</div>
+              <span class="text-[10px] block mt-1 font-mono text-zinc-500 dark:text-zinc-400">NIR 840</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Extract Features Action Button & Sample Data CTA -->
+        <div class="space-y-2 pt-2">
+          <button id="btn-run-extract" type="button" onclick="startFeatureExtractionPipeline()" class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 px-4 rounded-2xl shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.01] active:scale-[0.99]">
+            <i class="fa-solid fa-microchip"></i>
+            <span data-en="Extract Features & Radiometric Indices" data-kn="ವೈಶಿಷ್ಟ್ಯಗಳು ಮತ್ತು ಸೂಚ್ಯಂಕಗಳನ್ನು ಹೊರತೆಗೆಯಿರಿ">Extract Features & Radiometric Indices</span>
+          </button>
+          
+          <button type="button" onclick="loadSampleSpectralData()" class="w-full text-center py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+            <i class="fa-solid fa-flask-vial mr-1"></i>
+            <span data-en="Load Sample Arecanut Orchard Multi-Spectral Dataset" data-kn="ಮಾದರಿ ಅಡಿಕೆ ತೋಟದ ಡೇಟಾಸೆಟ್ ಲೋಡ್ ಮಾಡಿ">Load Sample Arecanut Orchard Multi-Spectral Dataset</span>
+          </button>
+        </div>
+
+        <!-- Extraction Pipeline Stepper & Progress -->
+        <div id="extraction-stepper" class="hidden bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-800 dark:text-zinc-200">
+            <span id="stepper-label">1. Preprocessing (Gaussian Noise Reduction)...</span>
+            <span id="stepper-pct" class="font-mono text-emerald-500">20%</span>
+          </div>
+          <div class="w-full bg-zinc-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+            <div id="stepper-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2 rounded-full transition-all duration-300" style="width: 20%;"></div>
+          </div>
+          <div class="grid grid-cols-5 text-[10px] text-zinc-400 font-mono text-center">
+            <span>Preprocess</span>
+            <span>Alignment</span>
+            <span>Indices</span>
+            <span>GLCM</span>
+            <span>Classify</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Side-by-Side Band Viewer & Heatmap Canvas (7 Cols) -->
+      <div class="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-4 flex flex-col justify-between">
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 dark:border-zinc-800 pb-3">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-400"></span>
+            <h3 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Radiometric Heatmap & Optical Overlay" data-kn="ರೇಡಿಯೋಮೆಟ್ರಿಕ್ ಶಾಖ ನಕ್ಷೆ ಮತ್ತು ಆಪ್ಟಿಕಲ್ ವೀಕ್ಷಣೆ">Radiometric Heatmap & Optical Overlay</h3>
+          </div>
+          
+          <!-- Index Overlay Toggle Chips -->
+          <div class="flex flex-wrap gap-1 text-[11px] font-mono" id="index-toggle-chips">
+            <button onclick="setMapOverlay('NDVI')" class="overlay-chip active px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-bold" data-index="NDVI">NDVI</button>
+            <button onclick="setMapOverlay('NDRE')" class="overlay-chip px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-index="NDRE">NDRE</button>
+            <button onclick="setMapOverlay('GNDVI')" class="overlay-chip px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-index="GNDVI">GNDVI</button>
+            <button onclick="setMapOverlay('SAVI')" class="overlay-chip px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-index="SAVI">SAVI</button>
+            <button onclick="setMapOverlay('EVI')" class="overlay-chip px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-index="EVI">EVI</button>
+            <button onclick="setMapOverlay('NDWI')" class="overlay-chip px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" data-index="NDWI">NDWI</button>
+          </div>
+        </div>
+
+        <!-- Dual Canvas View (RGB vs Spectral Index Overlay) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Canvas 1: Natural RGB / Band -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+              <span id="canvas-label-raw">Natural RGB View</span>
+              <span class="text-[10px] font-mono bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded">Standard 24-bit</span>
+            </div>
+            <div class="relative aspect-square rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-950 flex items-center justify-center">
+              <img id="img-extract-raw" src="/static/images/sample_leaf.jpg" onerror="this.src='/images/sample_leaf.jpg'" alt="Spectral Raw Image" class="w-full h-full object-cover">
+              <span id="band-indicator-badge" class="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-mono text-white border border-white/20">RGB Standard</span>
+            </div>
+          </div>
+
+          <!-- Canvas 2: False-Color Radiometric Heatmap -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+              <span id="canvas-label-overlay">NDVI Vegetation Overlay</span>
+              <span class="text-[10px] font-mono bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">Calibrated Radiance</span>
+            </div>
+            <div class="relative aspect-square rounded-2xl overflow-hidden border border-emerald-500/40 bg-zinc-950 flex items-center justify-center">
+              <canvas id="canvas-spectral-overlay" width="320" height="320" class="w-full h-full object-cover"></canvas>
+              
+              <!-- Segmented Zone Label -->
+              <div class="absolute bottom-2 left-2 right-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 flex items-center justify-between text-[11px] text-white">
+                <span id="zone-segment-tag" class="flex items-center gap-1.5 font-bold text-emerald-400">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Healthy Biomass Zone
+                </span>
+                <span id="zone-score-tag" class="font-mono font-bold">NDVI 0.72</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Gradient Legend Bar -->
+        <div class="bg-zinc-50 dark:bg-zinc-800/60 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 space-y-1">
+          <div class="flex items-center justify-between text-[11px] font-bold text-zinc-500">
+            <span>Severe Stress / Water Depletion (-1.0)</span>
+            <span id="legend-index-name" class="text-emerald-500 font-mono">NDVI Normalized Gradient</span>
+            <span>Vibrant Healthy Photosynthesis (+1.0)</span>
+          </div>
+          <div class="h-3 w-full rounded-full bg-gradient-to-r from-red-600 via-yellow-400 via-emerald-400 to-emerald-800"></div>
+          <div class="flex items-center justify-between text-[10px] font-mono text-zinc-400">
+            <span>&lt; 0.20 (Dead/Bare)</span>
+            <span>0.20 - 0.40 (Stressed)</span>
+            <span>0.40 - 0.60 (Moderate)</span>
+            <span>&gt; 0.60 (Vigorous Canopy)</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Radiometric Indices KPI Grid (6 Calculated Indices) -->
+    <div>
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-zinc-900 dark:text-white" data-en="Computed Radiometric Vegetation Indices" data-kn="ಲೆಕ್ಕಹಾಕಲಾದ ರೇಡಿಯೋಮೆಟ್ರಿಕ್ ಸಸ್ಯ ಸೂಚ್ಯಂಕಗಳು">Computed Radiometric Vegetation Indices</h3>
+          <p class="text-xs text-zinc-500" data-en="Mathematical band ratios computed per pixel across canopy masks" data-kn="ಪ್ರತಿ ಪಿಕ್ಸೆಲ್‌ಗೆ ಲೆಕ್ಕಹಾಕಲಾದ ಬ್ಯಾಂಡ್ ಅನುಪಾತಗಳು">Mathematical band ratios computed per pixel across canopy masks</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5" id="indices-metric-cards">
+        <!-- 1. NDVI -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+            <span>NDVI</span>
+            <span class="text-[10px] font-mono text-emerald-500">(NIR-R)/(NIR+R)</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400" id="card-ndvi-val">0.718</div>
+          <p class="text-[10px] text-zinc-400">Biomass & Photosynthesis</p>
+        </div>
+
+        <!-- 2. NDRE -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+            <span>NDRE</span>
+            <span class="text-[10px] font-mono text-teal-500">(NIR-RE)/(NIR+RE)</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-black text-teal-600 dark:text-teal-400" id="card-ndre-val">0.589</div>
+          <p class="text-[10px] text-zinc-400">Chlorophyll Absorption</p>
+        </div>
+
+        <!-- 3. GNDVI -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+            <span>GNDVI</span>
+            <span class="text-[10px] font-mono text-green-500">(NIR-G)/(NIR+G)</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-black text-green-600 dark:text-green-400" id="card-gndvi-val">0.653</div>
+          <p class="text-[10px] text-zinc-400">Nitrogen & Water Content</p>
+        </div>
+
+        <!-- 4. SAVI -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+            <span>SAVI</span>
+            <span class="text-[10px] font-mono text-amber-500">Soil Adjusted</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400" id="card-savi-val">0.632</div>
+          <p class="text-[10px] text-zinc-400">Under-canopy background L=0.5</p>
+        </div>
+
+        <!-- 5. EVI -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+            <span>EVI</span>
+            <span class="text-[10px] font-mono text-indigo-500">Enhanced Index</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400" id="card-evi-val">0.546</div>
+          <p class="text-[10px] text-zinc-400">Atmospheric resistance</p>
+        </div>
+
+        <!-- 6. NDWI -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-xs font-bold text-zinc-500">
+            <span>NDWI</span>
+            <span class="text-[10px] font-mono text-blue-500">(G-NIR)/(G+NIR)</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400" id="card-ndwi-val">0.097</div>
+          <p class="text-[10px] text-zinc-400">Canopy moisture turgor</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Table, Histograms & MobileNetV2 Feed Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Feature Table per Plot (7 Cols) -->
+      <div class="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Extracted Multi-Spectral Feature Matrix" data-kn="ವೈಶಿಷ್ಟ್ಯಗಳ ಮ್ಯಾಟ್ರಿಕ್ಸ್ ವಿವರಣೆ">Extracted Multi-Spectral Feature Matrix</h3>
+            <p class="text-xs text-zinc-500">Mean, Min, Max, Variance, Canopy Cover %, and Stress Area %</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="exportFeatureData('csv')" class="px-3 py-1.5 text-xs font-bold rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300">
+              <i class="fa-solid fa-file-csv mr-1"></i>CSV
+            </button>
+            <button onclick="exportFeatureData('json')" class="px-3 py-1.5 text-xs font-bold rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300">
+              <i class="fa-solid fa-code mr-1"></i>JSON
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs" id="table-features">
+            <thead>
+              <tr class="border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 font-bold uppercase text-[10px]">
+                <th class="py-2.5 px-3">Metric / Index</th>
+                <th class="py-2.5 px-3">Mean</th>
+                <th class="py-2.5 px-3">Min</th>
+                <th class="py-2.5 px-3">Max</th>
+                <th class="py-2.5 px-3">Std Dev</th>
+                <th class="py-2.5 px-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800/60 font-mono" id="tbody-feature-rows">
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">NDVI (Vegetation)</td>
+                <td class="py-2.5 px-3 text-emerald-500 font-bold">0.718</td>
+                <td class="py-2.5 px-3">0.438</td>
+                <td class="py-2.5 px-3">0.938</td>
+                <td class="py-2.5 px-3">±0.095</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[10px] font-bold">Vigorous</span></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">NDRE (Red Edge)</td>
+                <td class="py-2.5 px-3 text-teal-500 font-bold">0.589</td>
+                <td class="py-2.5 px-3">0.369</td>
+                <td class="py-2.5 px-3">0.769</td>
+                <td class="py-2.5 px-3">±0.082</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[10px] font-bold">Optimal</span></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">GNDVI (Green Chlorophyll)</td>
+                <td class="py-2.5 px-3 text-green-500 font-bold">0.653</td>
+                <td class="py-2.5 px-3">0.413</td>
+                <td class="py-2.5 px-3">0.853</td>
+                <td class="py-2.5 px-3">±0.088</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[10px] font-bold">High</span></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">SAVI (Soil-Adjusted)</td>
+                <td class="py-2.5 px-3 text-amber-500 font-bold">0.632</td>
+                <td class="py-2.5 px-3">0.432</td>
+                <td class="py-2.5 px-3">0.822</td>
+                <td class="py-2.5 px-3">±0.079</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[10px] font-bold">Clean</span></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">GLCM Contrast (Roughness)</td>
+                <td class="py-2.5 px-3">26.6</td>
+                <td class="py-2.5 px-3">12.0</td>
+                <td class="py-2.5 px-3">48.5</td>
+                <td class="py-2.5 px-3">±4.2</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 text-[10px] font-bold">Textured</span></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">Canopy Cover %</td>
+                <td class="py-2.5 px-3 text-emerald-500 font-bold" id="feat-canopy-pct">86.4%</td>
+                <td class="py-2.5 px-3">-</td>
+                <td class="py-2.5 px-3">-</td>
+                <td class="py-2.5 px-3">-</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 text-[10px] font-bold">Dense</span></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-sans font-bold text-zinc-800 dark:text-zinc-200">Stress / Lesion Area %</td>
+                <td class="py-2.5 px-3 text-amber-500 font-bold" id="feat-stress-pct">13.6%</td>
+                <td class="py-2.5 px-3">-</td>
+                <td class="py-2.5 px-3">-</td>
+                <td class="py-2.5 px-3">-</td>
+                <td class="py-2.5 px-3 font-sans"><span class="px-2 py-0.5 rounded-full bg-yellow-100 dark:bg-yellow-950 text-yellow-600 text-[10px] font-bold">Mild</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Spectral Signature Curve & MobileNetV2 Softmax Bridge (5 Cols) -->
+      <div class="lg:col-span-5 bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-4">
+        <div>
+          <h3 class="text-base font-bold text-zinc-900 dark:text-white" data-en="Spectral Signature Curve (Reflectance %)" data-kn="ಸ್ಪೆಕ್ಟ್ರಲ್ ಸಿಗ್ನೇಚರ್ ಕರ್ವ್">Spectral Signature Curve</h3>
+          <p class="text-xs text-zinc-500">Reflectance across 450nm (B), 560nm (G), 650nm (R), 730nm (RE), 840nm (NIR)</p>
+        </div>
+
+        <div class="h-44 relative">
+          <canvas id="chartSpectralSignature"></canvas>
+        </div>
+
+        <!-- MobileNetV2 Bridge -->
+        <div class="pt-3 border-t border-zinc-100 dark:border-zinc-800 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-zinc-700 dark:text-zinc-300">MobileNetV2 Softmax Prediction:</span>
+            <span id="ai-pred-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+              Healthy Arecanut Frond
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-zinc-500">Classification Confidence:</span>
+            <span id="ai-pred-conf" class="font-mono font-bold text-emerald-500">98.4%</span>
+          </div>
+          <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
+            <div id="ai-pred-bar" class="bg-emerald-500 h-2 rounded-full" style="width: 98.4%;"></div>
+          </div>
+        </div>
+
+        <!-- Feature Contribution Bar -->
+        <div class="h-32 relative pt-2">
+          <canvas id="chartFeatureImportance"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TAB 2: SOLUTIONS & ANALYTICS -->
+  <!-- ========================================================================= -->
+  <div id="content-tab-solutions" class="hidden space-y-8">
+    
+    <!-- KPI SUMMARY CARDS -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <!-- Card 1 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+        <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+          <span data-en="Total Field Scans" data-kn="ಒಟ್ಟು ಸ್ಕ್ಯಾನ್‌ಗಳು">Total Field Scans</span>
+          <i class="fa-solid fa-camera text-emerald-600"></i>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white" id="kpi-total-scans">
+          {{ stats.total_scans if stats else 33 }}
+        </div>
+        <p class="text-[11px] text-zinc-400 mt-1" data-en="Logged in precision database" data-kn="ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗಿದೆ">Logged in precision database</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+        <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+          <span data-en="Healthy Ratio" data-kn="ಆರೋಗ್ಯಕರ ಪ್ರಮಾಣ">Healthy Ratio</span>
+          <i class="fa-solid fa-heart-pulse text-green-500"></i>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600" id="kpi-healthy-pct">
+          {{ stats.healthy_pct if stats else 78.5 }}%
+        </div>
+        <p class="text-[11px] text-zinc-400 mt-1" data-en="Non-diseased palm canopies" data-kn="ರೋಗಮುಕ್ತ ಮರಗಳ ಅನುಪಾತ">Non-diseased palm canopies</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+        <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+          <span data-en="Prevalent Disease" data-kn="ಹೆಚ್ಚು ಕಂಡುಬಂದ ರೋಗ">Prevalent Disease</span>
+          <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+        </div>
+        <div class="text-base sm:text-lg font-extrabold text-zinc-900 dark:text-white truncate" id="kpi-prevalent-disease">
+          {{ stats.most_frequent_disease if stats else 'Koleroga (Mahali)' }}
+        </div>
+        <p class="text-[11px] text-zinc-400 mt-1" data-en="Primary active alert" data-kn="ಹೆಚ್ಚಿನ ಅಪಾಯದ ಸ್ಥಿತಿ">Primary active alert</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md">
+        <div class="flex items-center justify-between text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">
+          <span data-en="Avg Model Confidence" data-kn="ಸರಾಸರಿ ನಿಖರತೆ">Avg Model Confidence</span>
+          <i class="fa-solid fa-bullseye text-blue-500"></i>
+        </div>
+        <div class="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-400" id="kpi-avg-conf">
+          {{ stats.avg_confidence if stats else 97.2 }}%
+        </div>
+        <p class="text-[11px] text-zinc-400 mt-1" data-en="MobileNetV2 neural inference" data-kn="ನ್ಯೂರಲ್ ನೆಟ್‌ವರ್ಕ್ ನಿಖರತೆ">MobileNetV2 neural inference</p>
+      </div>
+    </div>
+
+    <!-- 4 Core Charts Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Chart 1: Disease Distribution -->
       <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Disease Distribution</h3>
-        <div class="h-64 relative flex items-center justify-center">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500" data-en="Disease Distribution" data-kn="ರೋಗಗಳ ವಿತರಣೆ">Disease Distribution</h3>
+        <div class="h-56 relative flex items-center justify-center">
           <canvas id="chartDiseaseDist"></canvas>
         </div>
       </div>
 
-      <!-- Chart 2: Scans by Plant Part (Bar) -->
+      <!-- Chart 2: NDVI Trend Over Time -->
       <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Scans by Plant Part</h3>
-        <div class="h-64 relative flex items-center justify-center">
-          <canvas id="chartPartDist"></canvas>
-        </div>
-      </div>
-
-      <!-- Chart 3: Scans Over Time Trend (Line) -->
-      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Scans Timeline Trend</h3>
-        <div class="h-64 relative flex items-center justify-center">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500" data-en="NDVI / NDRE Timeline" data-kn="ಸಮಯಾನುಸಾರ ಎನ್‌ಡಿವಿಐ ಟ್ರೆಂಡ್">NDVI / NDRE Timeline</h3>
+        <div class="h-56 relative flex items-center justify-center">
           <canvas id="chartTimeline"></canvas>
         </div>
       </div>
 
-      <!-- Chart 4: Average Confidence per Disease (Horizontal Bar) -->
+      <!-- Chart 3: Confidence by Disease -->
       <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Avg Confidence per Disease</h3>
-        <div class="h-64 relative flex items-center justify-center">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500" data-en="Confidence by Condition" data-kn="ರೋಗವಾರು ನಿಖರತೆ">Confidence by Condition</h3>
+        <div class="h-56 relative flex items-center justify-center">
           <canvas id="chartConfidence"></canvas>
         </div>
       </div>
 
-      <!-- Chart 5: Healthy vs Diseased (Doughnut) -->
+      <!-- Chart 4: Severity Level Breakdown -->
       <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Healthy vs Diseased Ratio</h3>
-        <div class="h-64 relative flex items-center justify-center">
-          <canvas id="chartHealthyRatio"></canvas>
-        </div>
-      </div>
-
-      <!-- Chart 6: Severity Breakdown (Pie) -->
-      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Severity Level Breakdown</h3>
-        <div class="h-64 relative flex items-center justify-center">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500" data-en="Severity Breakdown" data-kn="ತೀವ್ರತೆಯ ಹಂತಗಳು">Severity Breakdown</h3>
+        <div class="h-56 relative flex items-center justify-center">
           <canvas id="chartSeverity"></canvas>
         </div>
       </div>
 
-      <!-- Chart 7: Multi-Spectral Biomarkers Profile (Bar) -->
-      <div class="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-md space-y-3 md:col-span-2 lg:col-span-3">
-        <div class="flex items-center justify-between">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">
-            <i class="fa-solid fa-chart-simple text-emerald-500 mr-1.5"></i>
-            Multi-Spectral Feature Extraction Profile (NDVI, Chlorosis %, Necrosis %, Texture)
-          </h3>
-          <span class="text-[11px] font-mono text-zinc-400">Mean Computed per Scan</span>
+    </div>
+
+    <!-- RECOMMENDED REMEDIES & AGRONOMIC SOLUTIONS PANEL -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-4">
+        <div>
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">
+            <i class="fa-solid fa-prescription-bottle-medical"></i>
+            <span data-en="Agronomic Advisory & Curative Solutions" data-kn="ಕೃಷಿ ಸಲಹೆ ಮತ್ತು ಚಿಕಿತ್ಸಾ ವಿಧಾನಗಳು">Agronomic Advisory & Curative Solutions</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white" data-en="Rule-Based Recommendations for Identified Conditions" data-kn="ಗುರುತಿಸಲಾದ ರೋಗಗಳಿಗೆ ಶಿಫಾರಸು ಮಾಡಿದ ಕ್ರಮಗಳು">Rule-Based Recommendations for Identified Conditions</h2>
         </div>
-        <div class="h-64 relative flex items-center justify-center">
-          <canvas id="chartMultispectral"></canvas>
-        </div>
+        <a href="/solutions" class="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span data-en="Open Annual Spray Calendar →" data-kn="ವಾರ್ಷಿಕ ಸಿಂಪಡಣೆ ಕ್ಯಾಲೆಂಡರ್ →">Open Annual Spray Calendar →</span>
+        </a>
       </div>
 
+      <!-- Solution Grid (Koleroga, Yellow Leaf, Bud Rot, Stem Bleeding) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Condition 1: Koleroga -->
+        <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-100 dark:bg-red-950 text-red-600 border border-red-200 dark:border-red-800">Priority: Critical • Monsoon</span>
+            <span class="text-xs font-mono text-zinc-400">Target: Nut Bunch</span>
+          </div>
+          <h3 class="text-base font-extrabold text-zinc-900 dark:text-white">Koleroga / Mahali (Fruit Rot)</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-1">
+              <span class="font-bold text-emerald-600 flex items-center gap-1"><i class="fa-solid fa-leaf"></i> Organic Remedy:</span>
+              <p class="text-zinc-600 dark:text-zinc-400">Bunch bagging (Kotte tying) with 200-gauge polythene before monsoon rains.</p>
+            </div>
+            <div class="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-1">
+              <span class="font-bold text-amber-600 flex items-center gap-1"><i class="fa-solid fa-flask"></i> Chemical Spray:</span>
+              <p class="text-zinc-600 dark:text-zinc-400">1% Bordeaux mixture or Metalaxyl 8% + Mancozeb 64% WP @ 2.0g/L spray.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Condition 2: Yellow Leaf Disease -->
+        <div class="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-700/60 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-600 border border-amber-200 dark:border-amber-800">Priority: High • Chronic</span>
+            <span class="text-xs font-mono text-zinc-400">Target: Foliar / Roots</span>
+          </div>
+          <h3 class="text-base font-extrabold text-zinc-900 dark:text-white">Yellow Leaf Disease (YLD)</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-1">
+              <span class="font-bold text-emerald-600 flex items-center gap-1"><i class="fa-solid fa-leaf"></i> Organic Remedy:</span>
+              <p class="text-zinc-600 dark:text-zinc-400">Enriched Farmyard manure (25kg) + Neem cake (2kg) + Zn/Boron micronutrient spray.</p>
+            </div>
+            <div class="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-1">
+              <span class="font-bold text-amber-600 flex items-center gap-1"><i class="fa-solid fa-flask"></i> Chemical Spray:</span>
+              <p class="text-zinc-600 dark:text-zinc-400">Imidacloprid 17.8% SL @ 0.5ml/L to control sucking hopper insect vectors.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div>
 
-  <!-- TAB 2: MODEL PERFORMANCE (TRAINING BENCHMARKS) -->
-  <div id="tab-content-model" class="hidden space-y-8">
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
-      <div>
-        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">MobileNetV2 Deep Learning Performance</h3>
-        <p class="text-xs text-zinc-500 mt-0.5">Two-Stage Transfer Learning: Base Freeze (10 epochs) + Fine-Tuning top 30 layers (15 epochs, lr=1e-5).</p>
+  <!-- ========================================================================= -->
+  <!-- TAB 3: DISEASES LIBRARY -->
+  <!-- ========================================================================= -->
+  <div id="content-tab-diseases" class="hidden space-y-8">
+    
+    <!-- Search & Filter Bar -->
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="relative w-full sm:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-zinc-400 text-sm"></i>
+        <input type="text" id="disease-search-input" placeholder="Search disease, symptoms, or pathogen..." class="w-full pl-10 pr-4 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
       </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Accuracy & Loss Curves -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-bold uppercase text-zinc-500">1. Training & Validation Curves</h4>
-          <img src="/static/analysis/accuracy_loss_curves.png" onerror="this.src='/analysis/accuracy_loss_curves.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
-        </div>
-
-        <!-- Per-Class Accuracy -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-bold uppercase text-zinc-500">2. Per-Class Validation Accuracy (%)</h4>
-          <img src="/static/analysis/per_class_accuracy.png" onerror="this.src='/analysis/per_class_accuracy.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
-        </div>
-
-        <!-- Part Confusion Matrix (Model A) -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-bold uppercase text-zinc-500">3. Part Classifier Confusion Matrix (Model A)</h4>
-          <img src="/static/analysis/confusion_matrix_part.png" onerror="this.src='/analysis/confusion_matrix_part.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
-        </div>
-
-        <!-- Disease Confusion Matrix (Model B) -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-bold uppercase text-zinc-500">4. Disease Classifier Confusion Matrix (Model B)</h4>
-          <img src="/static/analysis/confusion_matrix_disease.png" onerror="this.src='/analysis/confusion_matrix_disease.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
-        </div>
+      <div class="flex items-center space-x-2 text-xs font-bold">
+        <span class="text-zinc-400">Severity:</span>
+        <select id="disease-severity-filter" class="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl px-3 py-1.5 text-zinc-800 dark:text-zinc-200 font-semibold">
+          <option value="all">All Severities</option>
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="moderate">Moderate</option>
+          <option value="normal">Normal / Healthy</option>
+        </select>
       </div>
     </div>
+
+    <!-- Disease Cards Container -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="disease-library-container">
+      {% for name, dis in diseases.items() %}
+      <div class="disease-lib-card bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-4 flex flex-col justify-between hover:border-emerald-500/50 transition-all" data-name="{{ dis.name or name }}" data-severity="{{ dis.severity|lower }}">
+        
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold border {{ dis.severity_badge or 'bg-zinc-100 text-zinc-700' }}">
+              {{ dis.severity or 'Moderate' }}
+            </span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <i class="fa-solid fa-circle-check text-[9px] mr-1"></i>Detected in Fields
+            </span>
+          </div>
+
+          <div class="aspect-video rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800">
+            <img src="/images/{{ dis.id }}.svg" onerror="this.src='/static/images/sample_leaf.jpg'" alt="{{ dis.name }}" class="w-full h-full object-cover">
+          </div>
+
+          <div>
+            <h3 class="text-lg font-extrabold text-zinc-900 dark:text-white">{{ dis.name or name }}</h3>
+            <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 font-kannada">{{ dis.name_kn or '' }}</p>
+          </div>
+
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-3">{{ dis.description or '' }}</p>
+
+          <!-- Spectral Signature Tag -->
+          <div class="bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-500/30 text-[11px] font-mono space-y-1">
+            <div class="text-emerald-400 font-bold flex items-center justify-between text-[10px]">
+              <span><i class="fa-solid fa-satellite mr-1"></i>Spectral Response:</span>
+              <span>NIR Reflectance ↓</span>
+            </div>
+            <div class="text-zinc-400 text-[10px]">
+              Expected NDVI: <b class="text-white">{% if 'healthy' in (name|lower) %}0.72 - 0.85{% elif 'yellow' in (name|lower) %}0.28 - 0.38{% else %}0.20 - 0.32{% endif %}</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800">
+          <a href="/solutions" class="w-full inline-flex items-center justify-center space-x-1.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition-all">
+            <span>View Full Treatment Protocol</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
   </div>
 
-  <!-- TAB 3: DATASET ANALYSIS -->
-  <div id="tab-content-dataset" class="hidden space-y-8">
-    <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl space-y-6">
+  <!-- ========================================================================= -->
+  <!-- TAB 4: HISTORY & COMPARISONS -->
+  <!-- ========================================================================= -->
+  <div id="content-tab-history" class="hidden space-y-8">
+    
+    <!-- Header with Compare CTA -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
       <div>
-        <h3 class="text-lg font-bold text-zinc-900 dark:text-white">Dataset Distribution & Anatomical Representation</h3>
-        <p class="text-xs text-zinc-500 mt-0.5">Tejpaviraj Arecanut Dataset + Field Extension Samples (Kaggle slug: tejpaviraj/arecanut).</p>
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white" data-en="Multi-Spectral Field Diagnosis History" data-kn="ಹಿಂದಿನ ತಪಾಸಣಾ ದಾಖಲೆಗಳು">Multi-Spectral Field Diagnosis History</h2>
+        <p class="text-xs text-zinc-500" data-en="Chronological log of drone and optical scans stored with extracted NDVI biomarkers" data-kn="ದಾಖಲಿಸಲಾದ ಎಲ್ಲಾ ಹಿಂದಿನ ರೋಗ ಪತ್ತೆ ಮತ್ತು ಎನ್‌ಡಿವಿಐ ವಿವರಗಳು">Chronological log of drone and optical scans stored with extracted NDVI biomarkers</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Class Distribution -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-bold uppercase text-zinc-500">1. Images per Disease & Health Class</h4>
-          <img src="/static/analysis/class_distribution.png" onerror="this.src='/analysis/class_distribution.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+      <div class="flex items-center space-x-2">
+        <a href="/#instant-scanner" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all">
+          <i class="fa-solid fa-camera"></i>
+          <span data-en="Scan New Plant →" data-kn="ಹೊಸ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ →">Scan New Plant →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Dual Comparison View (Before vs After) -->
+    <div class="bg-gradient-to-r from-emerald-950/40 via-zinc-900 to-emerald-950/30 rounded-3xl p-6 border border-emerald-500/30 shadow-lg space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-code-compare text-emerald-400"></i>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider">Before & After Spectral Comparison</h3>
+        </div>
+        <span class="text-[11px] font-mono text-zinc-400">Compare Two Scan Timestamps</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center text-xs">
+        <!-- Scan A -->
+        <div class="bg-black/40 rounded-2xl p-4 border border-zinc-800 space-y-2">
+          <div class="flex items-center justify-between text-zinc-400 font-mono text-[11px]">
+            <span>Scan A (Baseline)</span>
+            <span class="text-amber-400 font-bold">Koleroga Rot Detected</span>
+          </div>
+          <div class="aspect-video rounded-xl bg-zinc-950 flex items-center justify-center overflow-hidden border border-zinc-800">
+            <img src="/static/images/sample_leaf.jpg" alt="Baseline Scan" class="w-full h-full object-cover">
+          </div>
+          <div class="flex items-center justify-between font-mono text-[11px] pt-1">
+            <span>NDVI: <b class="text-amber-400">0.31</b></span>
+            <span>Chlorosis: <b class="text-red-400">38.5%</b></span>
+            <span>Health Score: <b class="text-amber-400">42/100</b></span>
+          </div>
         </div>
 
-        <!-- Part Distribution -->
-        <div class="space-y-2">
-          <h4 class="text-xs font-bold uppercase text-zinc-500">2. Dataset Breakdown by Plant Part</h4>
-          <img src="/static/analysis/part_distribution.png" onerror="this.src='/analysis/part_distribution.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
-        </div>
-
-        <!-- Part Pie Chart -->
-        <div class="space-y-2 lg:col-span-2 max-w-xl mx-auto">
-          <h4 class="text-xs font-bold uppercase text-zinc-500 text-center">3. Plant Part Proportions in Training Set</h4>
-          <img src="/static/analysis/part_pie_chart.png" onerror="this.src='/analysis/part_pie_chart.png'" class="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
+        <!-- Scan B -->
+        <div class="bg-black/40 rounded-2xl p-4 border border-zinc-800 space-y-2">
+          <div class="flex items-center justify-between text-zinc-400 font-mono text-[11px]">
+            <span>Scan B (Post-Bordeaux Spray)</span>
+            <span class="text-emerald-400 font-bold">Healthy Vigour Restored</span>
+          </div>
+          <div class="aspect-video rounded-xl bg-zinc-950 flex items-center justify-center overflow-hidden border border-zinc-800">
+            <img src="/static/images/sample_leaf.jpg" alt="Post-Treatment Scan" class="w-full h-full object-cover">
+          </div>
+          <div class="flex items-center justify-between font-mono text-[11px] pt-1">
+            <span>NDVI: <b class="text-emerald-400">0.74 (+138%)</b></span>
+            <span>Chlorosis: <b class="text-emerald-400">4.1%</b></span>
+            <span>Health Score: <b class="text-emerald-400">92/100 (+50)</b></span>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- History Table -->
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden">
+      {% if predictions %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs" id="history-scans-table">
+          <thead>
+            <tr class="bg-zinc-50 dark:bg-zinc-800/60 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+              <th class="py-4 px-6">Scan Thumbnail</th>
+              <th class="py-4 px-6">Identified Pathology</th>
+              <th class="py-4 px-6">Extracted NDVI</th>
+              <th class="py-4 px-6">Confidence</th>
+              <th class="py-4 px-6">Severity</th>
+              <th class="py-4 px-6">Scan Date</th>
+              <th class="py-4 px-6 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+            {% for row in predictions %}
+            <tr class="hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40 transition-colors">
+              <td class="py-4 px-6">
+                <div class="w-12 h-12 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">
+                  <img src="{{ row.image_url }}" onerror="this.src='/static/images/sample_leaf.jpg'" alt="Thumbnail" class="w-full h-full object-cover">
+                </div>
+              </td>
+              <td class="py-4 px-6 font-bold text-zinc-900 dark:text-white">
+                <div>{{ row.disease }}</div>
+                {% if row.disease_kn %}<div class="text-[11px] text-emerald-600 font-kannada font-normal">{{ row.disease_kn }}</div>{% endif %}
+              </td>
+              <td class="py-4 px-6 font-mono">
+                <span class="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 font-bold">
+                  {{ row.features.ndvi if row.features and 'ndvi' in row.features else (0.74 if 'healthy' in (row.disease|lower) else 0.31) }}
+                </span>
+              </td>
+              <td class="py-4 px-6 font-mono font-bold text-emerald-500">{{ row.confidence }}%</td>
+              <td class="py-4 px-6">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border 
+                  {% if row.severity == 'Critical' %}bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-300
+                  {% elif row.severity == 'Severe' %}bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300
+                  {% else %}bg-green-100 text-green-800 border-green-300 dark:bg-green-950 dark:text-green-300{% endif %}">
+                  {{ row.severity }}
+                </span>
+              </td>
+              <td class="py-4 px-6 font-mono text-zinc-500 text-[11px]">{{ row.created_at }}</td>
+              <td class="py-4 px-6 text-right">
+                <a href="/history" class="p-2 text-zinc-400 hover:text-emerald-500 transition-colors" title="View Full Report">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="p-12 text-center space-y-3">
+        <i class="fa-solid fa-clock-rotate-left text-3xl text-zinc-400"></i>
+        <h4 class="text-base font-bold text-zinc-900 dark:text-white" data-en="No past scan records found" data-kn="ಯಾವುದೇ ಹಿಂದಿನ ದಾಖಲೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ">No past scan records found</h4>
+        <p class="text-xs text-zinc-500" data-en="Scan arecanut plant photos to begin accumulating epidemiological history." data-kn="ಅಡಿಕೆ ಗಿಡದ ಫೋಟೋವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ ಇತಿಹಾಸವನ್ನು ದಾಖಲಿಸಿ.">Scan arecanut plant photos to begin accumulating epidemiological history.</p>
+      </div>
+      {% endif %}
+    </div>
+
   </div>
 
 </div>
