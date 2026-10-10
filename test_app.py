@@ -78,16 +78,49 @@ def run_tests():
     assert inv_res['part'] == 'invalid'
     print(f"  [PASS] Invalid non-arecanut image correctly rejected: {inv_res['error']}")
 
-    # Human photo rejection test
+    # Comprehensive Human photo rejection tests
+    # 1. Standard face portrait
     portrait_arr = np.full((224, 224, 3), 190, dtype=np.uint8) # neutral background
     y, x = np.ogrid[:224, :224]
-    mask = (x - 112)**2 + (y - 112)**2 <= 65**2 # face region (approx 26% of image)
-    portrait_arr[mask] = [218, 162, 128] # Indian / Asian human skin tone (YCbCr compliant)
+    mask = (x - 112)**2 + (y - 112)**2 <= 65**2 # face region
+    portrait_arr[mask] = [218, 162, 128] # human skin tone
+    # Eyes
+    portrait_arr[90:105, 80:100] = [35, 30, 25]
+    portrait_arr[90:105, 124:144] = [35, 30, 25]
+    # Hair
+    portrait_arr[40:70, 70:154] = [30, 25, 20]
     human_portrait_img = Image.fromarray(portrait_arr)
     human_res = model_manager.predict(human_portrait_img)
     assert human_res['is_valid'] is False
     assert "not for humans" in human_res['error'].lower()
-    print(f"  [PASS] Human photo correctly rejected: {human_res['error']}")
+    print(f"  [PASS] Standard human photo correctly rejected: {human_res['error']}")
+
+    # 2. Face with green shirt / clothing
+    green_shirt_arr = np.copy(portrait_arr)
+    green_shirt_arr[175:, :] = [35, 140, 50]
+    res_shirt = model_manager.predict(Image.fromarray(green_shirt_arr))
+    assert res_shirt['is_valid'] is False
+    print(f"  [PASS] Face with green clothing rejected: {res_shirt['error']}")
+
+    # 3. Face with outdoor garden / farm foliage background
+    garden_arr = np.full((224, 224, 3), [45, 125, 35], dtype=np.uint8)
+    garden_arr[mask] = [218, 162, 128]
+    garden_arr[90:105, 80:100] = [35, 30, 25]
+    garden_arr[90:105, 124:144] = [35, 30, 25]
+    garden_arr[40:70, 70:154] = [30, 25, 20]
+    res_garden = model_manager.predict(Image.fromarray(garden_arr))
+    assert res_garden['is_valid'] is False
+    print(f"  [PASS] Face in outdoor plantation foliage rejected: {res_garden['error']}")
+
+    # 4. Darker skin tone face portrait
+    dark_skin_arr = np.full((224, 224, 3), 200, dtype=np.uint8)
+    dark_skin_arr[mask] = [155, 105, 75]
+    dark_skin_arr[90:105, 80:100] = [25, 20, 15]
+    dark_skin_arr[90:105, 124:144] = [25, 20, 15]
+    dark_skin_arr[40:70, 70:154] = [25, 20, 15]
+    res_dark = model_manager.predict(Image.fromarray(dark_skin_arr))
+    assert res_dark['is_valid'] is False
+    print(f"  [PASS] Dark skin face portrait rejected: {res_dark['error']}")
 
     # 3. Test Live Frame Real-Time API (POST /predict_frame)
     print("\n[TEST 3] Testing POST /predict_frame (Live Stream)...")
