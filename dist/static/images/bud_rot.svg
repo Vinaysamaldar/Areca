@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgB" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="16" fill="url(#bgB)"/>
+
+  <!-- Palm trunk -->
+  <path d="M190 300 L195 160 L205 160 L210 300 Z" fill="#78716c"/>
+
+  <!-- Wilted collapsed outer fronds hanging downwards -->
+  <path d="M195 160 Q120 180 80 230 Q110 190 195 160" fill="#a16207"/>
+  <path d="M205 160 Q280 180 320 230 Q290 190 205 160" fill="#854d0e"/>
+
+  <!-- Rotten, snapped Central Spindle Leaf -->
+  <path d="M200 160 Q196 110 170 85 Q190 120 200 160" fill="#292524"/>
+  <path d="M170 85 Q160 80 145 95 Q165 92 170 85" fill="#451a03"/>
+
+  <!-- Spindle base rotting oozing cavity -->
+  <ellipse cx="200" cy="155" rx="14" ry="10" fill="#1c1917"/>
+  <circle cx="200" cy="153" r="5" fill="#44403c"/>
+
+  <!-- Exclamation icon indicating bud failure -->
+  <circle cx="200" cy="50" r="18" fill="#e11d48"/>
+  <line x1="200" y1="40" x2="200" y2="52" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="200" cy="60" r="2" fill="#ffffff"/>
+
+  <!-- Disease label badge -->
+  <rect x="20" y="235" width="200" height="36" rx="18" fill="#e11d48"/>
+  <text x="120" y="258" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="13" text-anchor="middle">☠ BUD ROT (SULI KOLE)</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgK" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#fee2e2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="16" fill="url(#bgK)"/>
+  <!-- Rain clouds in background -->
+  <path d="M50 40 Q70 20 100 30 Q130 15 160 35 Q180 30 190 45 Q160 65 50 40" fill="#94a3b8" opacity="0.6"/>
+  <!-- Rain streaks -->
+  <line x1="80" y1="60" x2="60" y2="100" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 8"/>
+  <line x1="120" y1="65" x2="100" y2="115" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 8"/>
+  <line x1="160" y1="60" x2="140" y2="110" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 8"/>
+
+  <!-- Arecanut stalk with decaying fruits -->
+  <path d="M200 40 Q220 90 230 160" stroke="#451a03" stroke-width="6" fill="none"/>
+  
+  <!-- Rotting Nuts hanging -->
+  <g transform="translate(190, 80)">
+    <!-- Nut 1: Rotting at calyx -->
+    <ellipse cx="20" cy="20" rx="18" ry="24" fill="#65a30d"/>
+    <path d="M5 10 Q20 28 35 10 Q20 5 5 10" fill="#1c1917" opacity="0.85"/>
+    <ellipse cx="20" cy="12" rx="10" ry="6" fill="#f8fafc" opacity="0.8"/>
+  </g>
+  <g transform="translate(230, 110)">
+    <!-- Nut 2: Half rotten with mycelium -->
+    <ellipse cx="15" cy="20" rx="16" ry="22" fill="#4d7c0f"/>
+    <path d="M2 15 Q15 35 28 20 Q15 5 2 15" fill="#292524" opacity="0.9"/>
+    <!-- Cottony white mycelium -->
+    <circle cx="16" cy="22" r="6" fill="#ffffff" opacity="0.9"/>
+    <circle cx="12" cy="25" r="4" fill="#f1f5f9" opacity="0.9"/>
+  </g>
+
+  <!-- Dropped / Shed nuts on plantation ground -->
+  <path d="M0 260 Q200 240 400 260 L400 300 L0 300 Z" fill="#78350f" opacity="0.8"/>
+  <ellipse cx="90" cy="275" rx="14" ry="10" fill="#292524"/>
+  <circle cx="92" cy="274" r="5" fill="#ffffff" opacity="0.8"/>
+  <ellipse cx="130" cy="285" rx="15" ry="11" fill="#44403c"/>
+  <circle cx="132" cy="284" r="6" fill="#ffffff" opacity="0.75"/>
+  <ellipse cx="320" cy="270" rx="13" ry="9" fill="#1c1917"/>
+
+  <!-- Danger Tag -->
+  <rect x="20" y="235" width="220" height="36" rx="18" fill="#b91c1c"/>
+  <text x="130" y="258" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="13" text-anchor="middle">⚠ KOLEROGA (FRUIT ROT)</text>
+</svg>

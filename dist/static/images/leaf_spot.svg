@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="100%" stop-color="#fef9c3"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#65a30d"/>
+      <stop offset="100%" stop-color="#4d7c0f"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" rx="16" fill="url(#bgL)"/>
+
+  <!-- Large Arecanut Leaflet blade -->
+  <path d="M50 260 C120 180 200 120 360 40 C310 130 220 220 110 280 Z" fill="url(#leafGrad)"/>
+  
+  <!-- Central Leaf Vein -->
+  <path d="M50 260 Q180 160 360 40" stroke="#84cc16" stroke-width="3" fill="none"/>
+
+  <!-- Chlorotic Brown / Ashen Necrotic Spots -->
+  <!-- Spot 1 -->
+  <g transform="translate(180, 140)">
+    <circle cx="0" cy="0" r="22" fill="#facc15" opacity="0.6"/> <!-- Yellow halo -->
+    <circle cx="0" cy="0" r="15" fill="#78350f"/> <!-- Dark brown border -->
+    <circle cx="0" cy="0" r="8" fill="#e2e8f0"/> <!-- Ash grey center -->
+  </g>
+
+  <!-- Spot 2 -->
+  <g transform="translate(240, 100)">
+    <circle cx="0" cy="0" r="18" fill="#facc15" opacity="0.6"/>
+    <circle cx="0" cy="0" r="12" fill="#713f12"/>
+    <circle cx="0" cy="0" r="6" fill="#cbd5e1"/>
+  </g>
+
+  <!-- Spot 3: Small spot -->
+  <g transform="translate(130, 200)">
+    <circle cx="0" cy="0" r="14" fill="#facc15" opacity="0.6"/>
+    <circle cx="0" cy="0" r="9" fill="#78350f"/>
+    <circle cx="0" cy="0" r="4" fill="#e2e8f0"/>
+  </g>
+
+  <!-- Spot 4 & 5: Coalescing spots -->
+  <g transform="translate(290, 70)">
+    <ellipse cx="0" cy="0" rx="16" ry="12" fill="#78350f"/>
+    <ellipse cx="0" cy="0" rx="9" ry="6" fill="#cbd5e1"/>
+  </g>
+
+  <!-- Disease label badge -->
+  <rect x="20" y="235" width="200" height="36" rx="18" fill="#a16207"/>
+  <text x="120" y="258" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="13" text-anchor="middle">⚠ LEAF SPOT / BLIGHT</text>
+</svg>

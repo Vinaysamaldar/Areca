@@ -1,4 +1,5 @@
 import os
+import sys
 import io
 import uuid
 from flask import Flask, request, jsonify, render_template, redirect, url_for, send_from_directory, send_file, Response
@@ -106,26 +107,45 @@ def live_page():
 
 @app.route('/solutions')
 def solutions_page():
-    return serve_spa_or_template('solutions.html', active_page='solutions')
+    diseases = model_manager.disease_info.get("diseases", {})
+    calendar = model_manager.disease_info.get("seasonal_calendar", {})
+    return serve_spa_or_template('solutions.html', active_page='solutions', diseases=diseases, calendar=calendar)
 
 @app.route('/analytics')
 def analytics_page():
-    return serve_spa_or_template('analytics.html', active_page='analytics')
+    stats = {}
+    predictions = []
+    try:
+        stats = database.get_statistics()
+        predictions = database.get_all_predictions()
+    except Exception as e:
+        print(f"[WARN] Error fetching analytics data: {e}")
+    diseases = model_manager.disease_info.get("diseases", {})
+    calendar = model_manager.disease_info.get("seasonal_calendar", {})
+    return serve_spa_or_template('analytics.html', active_page='analytics', stats=stats, diseases=diseases, calendar=calendar, predictions=predictions)
+
+@app.route('/diseases')
+def diseases_page():
+    diseases = model_manager.disease_info.get("diseases", {})
+    return serve_spa_or_template('diseases.html', active_page='diseases', diseases=diseases)
 
 @app.route('/history')
 def history_page():
-    return serve_spa_or_template('history.html', active_page='history')
-
-@app.route('/diseases')
-def diseases_alias():
-    return redirect(url_for('solutions_page'))
+    predictions = []
+    stats = {}
+    try:
+        predictions = database.get_all_predictions()
+        stats = database.get_statistics()
+    except Exception as e:
+        print(f"[WARN] Error fetching history data: {e}")
+    return serve_spa_or_template('history.html', active_page='history', predictions=predictions, stats=stats)
 
 @app.route('/app')
 @app.route('/mobile')
 @app.route('/download')
-def redirect_to_home():
-    """Redirects legacy mobile routes safely back to Home."""
-    return redirect(url_for('home'))
+def mobile_page():
+    """Renders Android Mobile App Download page or redirects to Home."""
+    return serve_spa_or_template('mobile.html', active_page='mobile')
 
 @app.route('/about')
 def about_page():
