@@ -19,7 +19,10 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { to: "/", labelEn: "Home", labelKn: "ಮುಖಪುಟ", icon: Home }
+    { to: "/", labelEn: "Home", labelKn: "ಮುಖಪುಟ", icon: Home },
+    { to: "/solutions", labelEn: "Solutions & Calendar", labelKn: "ಚಿಕಿತ್ಸೆ & ಕ್ಯಾಲೆಂಡರ್", icon: Calendar },
+    { to: "/analytics", labelEn: "Analytics", labelKn: "ವಿಶ್ಲೇಷಣೆ", icon: Activity },
+    { to: "/history", labelEn: "History", labelKn: "ಇತಿಹಾಸ", icon: History }
   ];
 
   return (
@@ -120,21 +123,27 @@ export const Navbar: React.FC = () => {
           {/* Mobile Dropdown Menu */}
           {mobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-zinc-800 space-y-2 animate-in slide-in-from-top duration-200">
-              <NavLink
-                to="/"
-                end
-                onClick={() => setMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    isActive
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                      : "text-zinc-300 hover:bg-zinc-900"
-                  }`
-                }
-              >
-                <Home className="w-5 h-5 text-emerald-400" />
-                <span>{lang === "kn" ? "ಮುಖಪುಟ" : "Home"}</span>
-              </NavLink>
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    end={link.to === "/"}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                        isActive
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "text-zinc-300 hover:bg-zinc-900"
+                      }`
+                    }
+                  >
+                    <Icon className="w-5 h-5 text-emerald-400" />
+                    <span>{lang === "kn" ? link.labelKn : link.labelEn}</span>
+                  </NavLink>
+                );
+              })}
               <a
                 href="/#scanner"
                 onClick={() => setMobileMenuOpen(false)}
@@ -150,27 +159,28 @@ export const Navbar: React.FC = () => {
       </header>
 
       {/* Mobile Bottom Dock Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-lg border-t border-zinc-800 px-4 py-2 shadow-2xl">
-        <div className="grid grid-cols-2 items-center text-center max-w-sm mx-auto gap-3">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `flex items-center justify-center gap-2 py-2.5 rounded-xl transition-colors ${
-                isActive ? "bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30" : "text-zinc-400 hover:text-zinc-200"
-              }`
-            }
-          >
-            <Home className="w-4 h-4" />
-            <span className="text-xs">{lang === "kn" ? "ಮುಖಪುಟ" : "Home"}</span>
-          </NavLink>
-          <a
-            href="/#scanner"
-            className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-md shadow-emerald-950"
-          >
-            <Camera className="w-4 h-4" />
-            <span>{lang === "kn" ? "ಸ್ಕ್ಯಾನ್ ಮಾಡಿ" : "Scan Plant"}</span>
-          </a>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-lg border-t border-zinc-800 px-2 py-1.5 shadow-2xl">
+        <div className="grid grid-cols-4 items-center text-center max-w-md mx-auto gap-1">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.to === "/"}
+                className={({ isActive }) =>
+                  `flex flex-col items-center justify-center py-1.5 rounded-xl transition-colors ${
+                    isActive ? "text-emerald-400 font-bold bg-emerald-500/10" : "text-zinc-500 hover:text-zinc-300"
+                  }`
+                }
+              >
+                <Icon className="w-4 h-4" />
+                <span className="text-[10px] mt-0.5 truncate max-w-[72px]">
+                  {lang === "kn" ? link.labelKn : link.labelEn}
+                </span>
+              </NavLink>
+            );
+          })}
         </div>
       </nav>
     </>

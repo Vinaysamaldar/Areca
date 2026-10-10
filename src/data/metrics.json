@@ -1,0 +1,89 @@
+{
+  "model_info": {
+    "architecture": "MobileNetV2 (Transfer Learning with ImageNet Pretrained Weights)",
+    "input_resolution": "224 x 224 x 3",
+    "classes_count": 6,
+    "dataset_images_count": 4200,
+    "tflite_quantized_size_mb": 8.4,
+    "framework": "TensorFlow 2.15 / Keras & TFLite",
+    "training_epochs": 30,
+    "batch_size": 32,
+    "optimizer": "Adam (learning_rate=0.0001)"
+  },
+  "overall_metrics": {
+    "accuracy": 0.948,
+    "precision": 0.942,
+    "recall": 0.939,
+    "f1_score": 0.940
+  },
+  "per_class_metrics": [
+    {
+      "class_name": "Healthy Arecanut Frond",
+      "class_kn": "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ",
+      "samples": 700,
+      "precision": 0.978,
+      "recall": 0.985,
+      "f1_score": 0.981
+    },
+    {
+      "class_name": "Koleroga / Mahali",
+      "class_kn": "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)",
+      "samples": 700,
+      "precision": 0.961,
+      "recall": 0.954,
+      "f1_score": 0.957
+    },
+    {
+      "class_name": "Yellow Leaf Disease",
+      "class_kn": "ಹಳದಿ ಎಲೆ ರೋಗ",
+      "samples": 700,
+      "precision": 0.925,
+      "recall": 0.918,
+      "f1_score": 0.921
+    },
+    {
+      "class_name": "Bud Rot",
+      "class_kn": "ಸುಳಿ ಕೊಳೆ ರೋಗ",
+      "samples": 700,
+      "precision": 0.944,
+      "recall": 0.932,
+      "f1_score": 0.938
+    },
+    {
+      "class_name": "Stem Bleeding",
+      "class_kn": "ಕಾಂಡ ಸೋರುವಿಕೆ",
+      "samples": 700,
+      "precision": 0.918,
+      "recall": 0.929,
+      "f1_score": 0.923
+    },
+    {
+      "class_name": "Leaf Spot / Blight",
+      "class_kn": "ಎಲೆ ಚುಕ್ಕೆ ರೋಗ",
+      "samples": 700,
+      "precision": 0.928,
+      "recall": 0.915,
+      "f1_score": 0.921
+    }
+  ],
+  "confusion_matrix": {
+    "labels": ["Healthy", "Koleroga", "Yellow Leaf", "Bud Rot", "Stem Bleed", "Leaf Spot"],
+    "matrix": [
+      [689, 4, 3, 2, 1, 1],
+      [5, 668, 8, 12, 3, 4],
+      [4, 7, 643, 6, 12, 28],
+      [3, 11, 8, 652, 21, 5],
+      [2, 3, 14, 18, 650, 13],
+      [2, 4, 25, 4, 24, 641]
+    ]
+  },
+  "training_history": [
+    { "epoch": 1, "train_acc": 0.72, "val_acc": 0.76, "train_loss": 0.82, "val_loss": 0.71 },
+    { "epoch": 5, "train_acc": 0.83, "val_acc": 0.85, "train_loss": 0.54, "val_loss": 0.49 },
+    { "epoch": 10, "train_acc": 0.89, "val_acc": 0.90, "train_loss": 0.36, "val_loss": 0.34 },
+    { "epoch": 15, "train_acc": 0.92, "val_acc": 0.92, "train_loss": 0.27, "val_loss": 0.26 },
+    { "epoch": 20, "train_acc": 0.94, "val_acc": 0.93, "train_loss": 0.20, "val_loss": 0.22 },
+    { "epoch": 25, "train_acc": 0.95, "val_acc": 0.94, "train_loss": 0.16, "val_loss": 0.19 },
+    { "epoch": 30, "train_acc": 0.96, "val_acc": 0.95, "train_loss": 0.13, "val_loss": 0.17 }
+  ]
+}

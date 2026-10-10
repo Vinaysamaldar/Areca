@@ -105,14 +105,26 @@ def live_page():
     return serve_spa_or_template('index.html', active_page='home')
 
 @app.route('/solutions')
+def solutions_page():
+    return serve_spa_or_template('solutions.html', active_page='solutions')
+
 @app.route('/analytics')
-@app.route('/diseases')
+def analytics_page():
+    return serve_spa_or_template('analytics.html', active_page='analytics')
+
 @app.route('/history')
+def history_page():
+    return serve_spa_or_template('history.html', active_page='history')
+
+@app.route('/diseases')
+def diseases_alias():
+    return redirect(url_for('solutions_page'))
+
 @app.route('/app')
 @app.route('/mobile')
 @app.route('/download')
 def redirect_to_home():
-    """Redirects removed routes safely back to Home Scanner."""
+    """Redirects legacy mobile routes safely back to Home."""
     return redirect(url_for('home'))
 
 @app.route('/about')

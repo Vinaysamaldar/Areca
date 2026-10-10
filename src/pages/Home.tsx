@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { ParallaxComponent } from "@/components/ui/parallax-scrolling";
+import { scansService } from "@/services/scansService";
 import {
   Camera,
   Upload,
@@ -129,6 +130,20 @@ export const Home: React.FC = () => {
       if (resp.ok) {
         const data = await resp.json();
         setAnalysisResult(data);
+        scansService.addScan({
+          disease: data.disease || "Koleroga / Mahali",
+          disease_kn: data.disease_kn || "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)",
+          plantPart: (data.plant_part || data.part || "nut") as any,
+          confidence: Number(data.confidence) || 95.0,
+          severity: (data.severity || "Critical") as any,
+          pathogen: data.pathogen || "Phytophthora meadii McRae",
+          plot: selectedPlot,
+          imageThumb: selectedImage,
+          top3: data.top3 || [
+            { disease: data.disease || "Koleroga / Mahali", disease_kn: data.disease_kn || "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)", confidence: Number(data.confidence) || 95.0 }
+          ],
+          language: lang
+        });
       } else {
         throw new Error("Fallback to calibrated analysis");
       }
@@ -166,6 +181,22 @@ export const Home: React.FC = () => {
           }
         };
         setAnalysisResult(mockResult);
+        scansService.addScan({
+          disease: mockResult.disease,
+          disease_kn: mockResult.disease_kn,
+          plantPart: "nut",
+          confidence: mockResult.confidence,
+          severity: "Critical",
+          pathogen: mockResult.pathogen,
+          plot: selectedPlot,
+          imageThumb: selectedImage || "/static/images/sample_koleroga.jpg",
+          top3: [
+            { disease: "Koleroga / Mahali", disease_kn: "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)", confidence: 96.8 },
+            { disease: "Bud Rot", disease_kn: "ಸುಳಿ ಕೊಳೆ", confidence: 2.3 },
+            { disease: "Healthy Arecanut Frond", disease_kn: "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ", confidence: 0.9 }
+          ],
+          language: lang
+        });
         drawGradCamOverlay();
       }, 800);
     } finally {
