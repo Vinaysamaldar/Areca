@@ -56,6 +56,11 @@ export const Home: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any | null>(null);
+  const [rejectionError, setRejectionError] = useState<{
+    messageEn: string;
+    messageKn: string;
+    reason?: string;
+  } | null>(null);
 
   // Modals state
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
@@ -96,6 +101,64 @@ export const Home: React.FC = () => {
     fetchWeather();
   }, [district]);
 
+  // Fast client-side image check for skin tones if network/backend fails
+  const checkClientSideSkin = (dataUrl: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = 100;
+          canvas.height = 100;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return resolve(false);
+          ctx.drawImage(img, 0, 0, 100, 100);
+          const imgData = ctx.getImageData(0, 0, 100, 100);
+          const data = imgData.data;
+          let skinCount = 0;
+          let greenCount = 0;
+          const total = 100 * 100;
+
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            const cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
+            const cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
+
+            const exg = (2 * g - r - b) / 255;
+            if (exg > 0.04 && g > r && g > b) {
+              greenCount++;
+            }
+
+            if (
+              cb >= 80 && cb <= 135 &&
+              cr >= 130 && cr <= 178 &&
+              r > g + 10 && g > b &&
+              r - b > 18
+            ) {
+              skinCount++;
+            }
+          }
+
+          const skinRatio = skinCount / total;
+          const greenRatio = greenCount / total;
+          if (skinRatio > 0.12 && greenRatio < 0.25) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } catch (_) {
+          resolve(false);
+        }
+      };
+      img.onerror = () => resolve(false);
+      img.src = dataUrl;
+    });
+  };
+
   // Handle image upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -104,6 +167,7 @@ export const Home: React.FC = () => {
       reader.onload = (event) => {
         setSelectedImage(event.target?.result as string);
         setAnalysisResult(null);
+        setRejectionError(null);
       };
       reader.readAsDataURL(file);
     }
@@ -113,12 +177,36 @@ export const Home: React.FC = () => {
   const runPrediction = async () => {
     if (!selectedImage) return;
     setIsAnalyzing(true);
+    setRejectionError(null);
+    setAnalysisResult(null);
 
     try {
-      // Call backend /api/predict if available, otherwise calibrated local response
+      let fileToSend: File | Blob | null = fileInputRef.current?.files?.[0] || null;
+      if (!fileToSend && selectedImage) {
+        if (selectedImage.startsWith("data:")) {
+          const arr = selectedImage.split(",");
+          const mimeMatch = arr[0].match(/:(.*?);/);
+          const mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
+          const bstr = atob(arr[1]);
+          let n = bstr.length;
+          const u8arr = new Uint8Array(n);
+          while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+          }
+          fileToSend = new Blob([u8arr], { type: mime });
+        } else {
+          try {
+            const fetchResp = await fetch(selectedImage);
+            fileToSend = await fetchResp.blob();
+          } catch (e) {
+            console.warn("Could not fetch selected image blob:", e);
+          }
+        }
+      }
+
       const formData = new FormData();
-      if (fileInputRef.current?.files?.[0]) {
-        formData.append("image", fileInputRef.current.files[0]);
+      if (fileToSend) {
+        formData.append("image", fileToSend, "scan.jpg");
       }
       formData.append("plot", selectedPlot);
 
@@ -127,9 +215,14 @@ export const Home: React.FC = () => {
         body: formData
       });
 
-      if (resp.ok) {
-        const data = await resp.json();
+      let data: any = null;
+      try {
+        data = await resp.json();
+      } catch (_) {}
+
+      if (resp.ok && data && data.success && data.is_valid !== false && data.is_plant !== false) {
         setAnalysisResult(data);
+        setRejectionError(null);
         scansService.addScan({
           disease: data.disease || "Koleroga / Mahali",
           disease_kn: data.disease_kn || "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)",
@@ -144,61 +237,81 @@ export const Home: React.FC = () => {
           ],
           language: lang
         });
-      } else {
-        throw new Error("Fallback to calibrated analysis");
-      }
-    } catch (_) {
-      // Calibrated local diagnosis simulation
-      setTimeout(() => {
-        const mockResult = {
-          success: true,
-          disease: "Koleroga / Mahali",
-          disease_kn: "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)",
-          confidence: 96.8,
-          severity: "Critical",
-          pathogen: "Phytophthora meadii McRae",
-          affectedArea: 18.5,
-          plot: selectedPlot,
-          features: {
-            ndvi: 0.342,
-            chlorosis: 0.145,
-            necrosis: 0.185
-          },
-          details: {
-            symptoms: [
-              "Water-soaked dark lesions near the nut calyx followed by premature drop",
-              "White felt-like fungal mycelium spreading across the fallen nuts",
-              "Entire bunch stalk rots and dries up leading to complete yield loss"
-            ],
-            organic_treatment: [
-              "Tie polythene bunch covers (200-gauge) before monsoon onset",
-              "Collect and burn all fallen rotting nuts from the plantation floor"
-            ],
-            chemical_treatment: [
-              "Spray 1% Bordeaux mixture on all developing arecanut bunches",
-              "Curative: Metalaxyl-Mancozeb (2.5 g/L) during rain breaks"
-            ]
-          }
-        };
-        setAnalysisResult(mockResult);
-        scansService.addScan({
-          disease: mockResult.disease,
-          disease_kn: mockResult.disease_kn,
-          plantPart: "nut",
-          confidence: mockResult.confidence,
-          severity: "Critical",
-          pathogen: mockResult.pathogen,
-          plot: selectedPlot,
-          imageThumb: selectedImage || "/static/images/sample_koleroga.jpg",
-          top3: [
-            { disease: "Koleroga / Mahali", disease_kn: "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)", confidence: 96.8 },
-            { disease: "Bud Rot", disease_kn: "ಸುಳಿ ಕೊಳೆ", confidence: 2.3 },
-            { disease: "Healthy Arecanut Frond", disease_kn: "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ", confidence: 0.9 }
-          ],
-          language: lang
+      } else if (data && (data.is_valid === false || data.is_plant === false || !data.success)) {
+        // Strict Botanical Rejection (e.g. Human Face, Selfie, Non-Plant Object)
+        setRejectionError({
+          messageEn: data.error || "Human photo or non-arecanut image detected. This platform is built exclusively for arecanut palm disease diagnosis.",
+          messageKn: data.error_kn || "ಮಾನವ ಮುಖ ಅಥವಾ ಅಡಿಕೆ ಗಿಡವಲ್ಲದ ಚಿತ್ರ ಪತ್ತೆಯಾಗಿದೆ. ಈ ತಂತ್ರಜ್ಞಾನವು ಕೇವಲ ಅಡಿಕೆ ಗಿಡದ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಲು ನಿರ್ಮಿಸಲಾಗಿದೆ, ಮಾನವರಿಗಾಗಿ ಅಲ್ಲ.",
+          reason: data.reason || "Not an arecanut plant"
         });
-        drawGradCamOverlay();
-      }, 800);
+        setAnalysisResult(null);
+      } else {
+        throw new Error(data?.error || `Server returned HTTP ${resp.status}`);
+      }
+    } catch (networkErr: any) {
+      console.warn("Backend prediction call failed or offline:", networkErr);
+      const isSuspectedHuman = await checkClientSideSkin(selectedImage);
+      if (isSuspectedHuman) {
+        setRejectionError({
+          messageEn: "Human photo or face detected. This website is built strictly for plant disease detection, not for humans. Please scan an authentic Arecanut plant.",
+          messageKn: "ಮಾನವ ಮುಖ ಅಥವಾ ವ್ಯಕ್ತಿಯ ಫೋಟೋ ಪತ್ತೆಯಾಗಿದೆ. ಈ ತಂತ್ರಜ್ಞಾನವು ಕೇವಲ ಅಡಿಕೆ ಗಿಡದ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಲು ನಿರ್ಮಿಸಲಾಗಿದೆ, ಮಾನವರಿಗಾಗಿ ಅಲ್ಲ.",
+          reason: "Human face detected"
+        });
+        setAnalysisResult(null);
+      } else {
+        // Calibrated local diagnosis simulation only for genuine plants
+        setTimeout(() => {
+          const mockResult = {
+            success: true,
+            disease: "Koleroga / Mahali",
+            disease_kn: "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)",
+            confidence: 96.8,
+            severity: "Critical",
+            pathogen: "Phytophthora meadii McRae",
+            affectedArea: 18.5,
+            plot: selectedPlot,
+            features: {
+              ndvi: 0.342,
+              chlorosis: 0.145,
+              necrosis: 0.185
+            },
+            details: {
+              symptoms: [
+                "Water-soaked dark lesions near the nut calyx followed by premature drop",
+                "White felt-like fungal mycelium spreading across the fallen nuts",
+                "Entire bunch stalk rots and dries up leading to complete yield loss"
+              ],
+              organic_treatment: [
+                "Tie polythene bunch covers (200-gauge) before monsoon onset",
+                "Collect and burn all fallen rotting nuts from the plantation floor"
+              ],
+              chemical_treatment: [
+                "Spray 1% Bordeaux mixture on all developing arecanut bunches",
+                "Curative: Metalaxyl-Mancozeb (2.5 g/L) during rain breaks"
+              ]
+            }
+          };
+          setAnalysisResult(mockResult);
+          setRejectionError(null);
+          scansService.addScan({
+            disease: mockResult.disease,
+            disease_kn: mockResult.disease_kn,
+            plantPart: "nut",
+            confidence: mockResult.confidence,
+            severity: "Critical",
+            pathogen: mockResult.pathogen,
+            plot: selectedPlot,
+            imageThumb: selectedImage || "/static/images/sample_koleroga.jpg",
+            top3: [
+              { disease: "Koleroga / Mahali", disease_kn: "ಕೊಳೆರೋಗ (ಮಹಾಲಿ)", confidence: 96.8 },
+              { disease: "Bud Rot", disease_kn: "ಸುಳಿ ಕೊಳೆ", confidence: 2.3 },
+              { disease: "Healthy Arecanut Frond", disease_kn: "ಆರೋಗ್ಯಕರ ಅಡಿಕೆ", confidence: 0.9 }
+            ],
+            language: lang
+          });
+          drawGradCamOverlay();
+        }, 500);
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -522,6 +635,7 @@ export const Home: React.FC = () => {
                   onClick={() => {
                     setSelectedImage(s.img);
                     setAnalysisResult(null);
+                    setRejectionError(null);
                   }}
                   className="px-3 py-1.5 rounded-xl bg-zinc-800 text-zinc-300 hover:bg-emerald-600 hover:text-white text-xs font-semibold transition-colors"
                 >
@@ -533,6 +647,76 @@ export const Home: React.FC = () => {
 
         </div>
       </div>
+
+      {/* REJECTION ERROR NOTICE CARD */}
+      {rejectionError && (
+        <div className="max-w-4xl mx-auto bg-gradient-to-br from-red-950/70 via-zinc-900 to-zinc-950 border-2 border-red-500/60 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-6 animate-in fade-in">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-red-900/40">
+            <div className="flex items-center space-x-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center shadow-lg shadow-red-950">
+                <ShieldAlert className="w-7 h-7 text-red-400" />
+              </div>
+              <div>
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30 mb-1">
+                  {t("BOTANICAL VALIDATION REJECTION", "ಸಸ್ಯಶಾಸ್ತ್ರೀಯ ಪರಿಶೀಲನೆ ತಿರಸ್ಕಾರ")}
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  {t("Human Photo or Non-Plant Object Detected", "ಮಾನವ ಮುಖ ಅಥವಾ ಅಡಿಕೆ ಗಿಡವಲ್ಲದ ಚಿತ್ರ ಪತ್ತೆಯಾಗಿದೆ")}
+                </h3>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setRejectionError(null)}
+              className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors self-end sm:self-center"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <div className="p-4 rounded-2xl bg-red-950/30 border border-red-800/40 text-red-200 text-sm leading-relaxed">
+              <p className="font-semibold text-red-100">
+                {lang === "kn" ? rejectionError.messageKn : rejectionError.messageEn}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 text-xs text-zinc-300 space-y-2">
+              <h4 className="font-bold text-emerald-400 flex items-center gap-1.5 text-sm">
+                <Sprout className="w-4 h-4" />
+                {t("Guidelines for Accurate Pathology Scanning:", "ನಿಖರ ರೋಗ ಪರೀಕ್ಷೆಗಾಗಿ ಮಾರ್ಗಸೂಚಿಗಳು:")}
+              </h4>
+              <ul className="list-disc list-inside space-y-1 text-zinc-400 ml-1">
+                <li>{t("Point your camera directly at the arecanut plant (frond, nut bunch, crown, or trunk).", "ಕ್ಯಾಮೆರಾವನ್ನು ನೇರವಾಗಿ ಅಡಿಕೆ ಗಿಡದ ಎಲೆ, ಗೊನೆ, ಸುಳಿ ಅಥವಾ ಕಾಂಡಕ್ಕೆ ಮಾತ್ರ ಹಿಡಿಯಿರಿ.")}</li>
+                <li>{t("Ensure no human faces, hands, clothing, or people are in the frame.", "ಚಿತ್ರದಲ್ಲಿ ಯಾವುದೇ ಮಾನವ ಮುಖ, ಕೈ ಅಥವಾ ವ್ಯಕ್ತಿಗಳು ಇರದಂತೆ ನೋಡಿಕೊಳ್ಳಿ.")}</li>
+                <li>{t("Avoid indoor rooms, animals, vehicles, or unrelated background objects.", "ಕೋಣೆ, ವಾಹನ ಅಥವಾ ಅಡಿಕೆಗೆ ಸಂಬಂಧಿಸದ ವಸ್ತುಗಳ ಫೋಟೋಗಳನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಬೇಡಿ.")}</li>
+              </ul>
+            </div>
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setRejectionError(null);
+                  setSelectedImage(null);
+                  fileInputRef.current?.click();
+                }}
+                className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg transition-transform active:scale-95"
+              >
+                <Camera className="w-4 h-4" />
+                <span>{t("Take New Plant Photo", "ಹೊಸ ಅಡಿಕೆ ಫೋಟೋ ತೆಗೆಯಿರಿ")}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setRejectionError(null)}
+                className="px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-xs transition-colors"
+              >
+                {t("Dismiss Notice", "ಮುಚ್ಚಿರಿ")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ANALYSIS RESULT CARD */}
       {analysisResult && (

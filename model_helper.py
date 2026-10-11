@@ -127,23 +127,113 @@ class ModelManager:
         ndvi = (g - r) / (g + r + 1e-5)
 
         # Foliar chlorophyll (green fronds / surrounding plantation foliage)
-        green_px = float(np.sum((exg > 0.04) & (ndvi > 0.01) & (g > r) & (g > b)) / total_px)
-        # Chlorotic foliar yellow (Yellow Leaf Disease fronds)
-        yellow_px = float(np.sum((r > 115) & (g > 105) & (b < 100) & (r > b + 25) & (g > b + 15) & (b / (g + 1e-5) < 0.60)) / total_px)
+        green_mask = (exg > 0.04) & (ndvi > 0.01) & (g > r) & (g > b)
+        green_px = float(np.sum(green_mask) / total_px)
+        # Chlorotic foliar yellow (Yellow Leaf Disease fronds: high red AND high green, low blue)
+        yellow_leaf_mask = (r > 120) & (g > 105) & (b < 100) & (g / (r + 1e-5) > 0.68)
+        yellow_px = float(np.sum(yellow_leaf_mask) / total_px)
         # Woody trunk, stem cracking bark, basal foot collar
         brown_px = float(np.sum((r > 40) & (g > 20) & (g < 135) & (b < 105) & (r >= g) & (g >= b)) / total_px)
         # Necrotic rot, fruit rot, dark sap bleeding
         dark_rot_px = float(np.sum((r < 95) & (g < 95) & (b < 90) & (np.abs(r - g) < 30)) / total_px)
 
-        # 4. HUMAN DETECTION (YCbCr Color Space Skin & Melanin Model)
-        # Human skin is clustered: Cb in [88, 135], Cr in [130, 175], R > G > B, B > 45
+        # Tree trunk / fibrous bark texture (Sobel vertical vs horizontal)
+        gx = np.abs(grayscale[:, 1:] - grayscale[:, :-1])
+        gy = np.abs(grayscale[1:, :] - grayscale[:-1, :])
+        mean_gx = float(np.mean(gx))
+        mean_gy = float(np.mean(gy))
+        # Tree trunks have strong vertical fiber striations (gx >> gy)
+        is_vertical_bark = (mean_gx > 2.5 and mean_gx / (mean_gy + 1e-5) > 2.5)
+
+        # 4. COMPREHENSIVE HUMAN FACE & PERSON DETECTION (All ethnicities I-VI)
+        # Melanin balance in YCbCr & RGB
         cb = 128.0 - 0.168736 * r - 0.331264 * g + 0.5 * b
         cr = 128.0 + 0.5 * r - 0.418688 * g - 0.081312 * b
-        skin_mask = (cb >= 88) & (cb <= 135) & (cr >= 130) & (cr <= 175) & (r > g) & (g > b) & (b > 45) & (r - g > 6) & (r - b > 12)
+        skin_mask = (
+            (cb >= 85) & (cb <= 135) & 
+            (cr >= 132) & (cr <= 175) & 
+            (r > g + 10) & (g > b) & 
+            (r - b > 20) & 
+            (grayscale >= 40) & (grayscale <= 240) & 
+            (~green_mask) & 
+            (~yellow_leaf_mask)
+        )
         human_skin_ratio = float(np.sum(skin_mask) / total_px)
 
-        # Genuine human portraits lack plant chlorophyll (green_px < 0.04) or have massive skin coverage (> 0.50) without foliage
-        is_human = (human_skin_ratio > 0.18 and green_px < 0.04) or (human_skin_ratio > 0.50 and green_px < 0.06)
+        # Border analysis: Tree trunks touch top and bottom borders; faces are bounded within the frame
+        top_skin = float(np.sum(skin_mask[0:8, :]) / (8 * 160))
+        bottom_skin = float(np.sum(skin_mask[152:160, :]) / (8 * 160))
+        left_skin = float(np.sum(skin_mask[:, 0:8]) / (160 * 8))
+        right_skin = float(np.sum(skin_mask[:, 152:160]) / (160 * 8))
+        border_skin = (top_skin + bottom_skin + left_skin + right_skin) / 4.0
+        is_bounded_face_region = (border_skin < 0.35)
+
+        center_skin = skin_mask[24:136, 24:136]
+        center_skin_ratio = float(np.sum(center_skin) / (112.0 * 112.0))
+
+        # Facial Geometry & Landmark Analysis (Eyes and Bilateral Symmetry)
+        eye_pair_found = False
+        symmetry_score = 0.0
+
+        if human_skin_ratio > 0.05 and not is_vertical_bark:
+            y_idx, x_idx = np.where(skin_mask)
+            if len(y_idx) > 200:
+                ymin, ymax = int(np.percentile(y_idx, 5)), int(np.percentile(y_idx, 95))
+                xmin, xmax = int(np.percentile(x_idx, 5)), int(np.percentile(x_idx, 95))
+                bw = max(1, xmax - xmin)
+                bh = max(1, ymax - ymin)
+                aspect_ratio = bh / float(bw)
+
+                if 0.60 <= aspect_ratio <= 2.4:
+                    # Bilateral symmetry
+                    mid_x = (xmin + xmax) // 2
+                    half_w = min(mid_x - xmin, xmax - mid_x)
+                    if half_w > 10 and bh > 18:
+                        left_face = grayscale[ymin:ymax, mid_x - half_w:mid_x]
+                        right_face = np.fliplr(grayscale[ymin:ymax, mid_x:mid_x + half_w])
+                        diff = np.mean(np.abs(left_face - right_face)) / (np.std(grayscale[ymin:ymax, mid_x-half_w:mid_x+half_w]) + 1e-5)
+                        symmetry_score = float(max(0.0, 1.0 - diff))
+
+                    # Eye pair in upper 15%-55% of face bounding box
+                    eye_y1 = int(ymin + 0.15 * bh)
+                    eye_y2 = int(ymin + 0.55 * bh)
+                    left_eye_x1 = int(xmin + 0.10 * bw)
+                    left_eye_x2 = int(xmin + 0.45 * bw)
+                    right_eye_x1 = int(xmin + 0.55 * bw)
+                    right_eye_x2 = int(xmin + 0.90 * bw)
+
+                    if eye_y2 > eye_y1 and left_eye_x2 > left_eye_x1 and right_eye_x2 > right_eye_x1:
+                        med_skin_y = float(np.median(grayscale[skin_mask]))
+                        left_eye_dark = np.sum(grayscale[eye_y1:eye_y2, left_eye_x1:left_eye_x2] < med_skin_y - 14)
+                        right_eye_dark = np.sum(grayscale[eye_y1:eye_y2, right_eye_x1:right_eye_x2] < med_skin_y - 14)
+                        if left_eye_dark >= 8 and right_eye_dark >= 8 and symmetry_score > 0.40:
+                            eye_pair_found = True
+
+        # Hair / head contour above face
+        hair_detected = False
+        if human_skin_ratio > 0.05:
+            y_idx, x_idx = np.where(skin_mask)
+            if len(y_idx) > 200:
+                ymin = int(np.percentile(y_idx, 5))
+                if ymin > 10:
+                    above_head = grayscale[max(0, ymin - 20):ymin, :]
+                    if np.mean(above_head) < np.mean(grayscale[skin_mask]) - 18:
+                        hair_detected = True
+
+        # Human detection decision matrix
+        is_human = False
+        if not is_vertical_bark:
+            if (eye_pair_found or (symmetry_score > 0.65 and is_bounded_face_region)) and human_skin_ratio > 0.06:
+                is_human = True
+            elif hair_detected and center_skin_ratio > 0.10 and is_bounded_face_region and symmetry_score > 0.35:
+                is_human = True
+            elif human_skin_ratio > 0.16 and green_px < 0.25 and is_bounded_face_region and symmetry_score > 0.30:
+                is_human = True
+            elif center_skin_ratio > 0.20 and green_px < 0.05 and is_bounded_face_region:
+                is_human = True
+            elif human_skin_ratio > 0.25 and is_bounded_face_region:
+                is_human = True
+
         if is_human:
             return False, f"Human photo or face detected ({human_skin_ratio*100:.1f}% skin tone). This website is built strictly for plant disease detection, not for humans."
 
